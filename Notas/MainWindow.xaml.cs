@@ -4,6 +4,7 @@ using Notas.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Notas
@@ -30,6 +31,7 @@ namespace Notas
                 PostItField postIt = new PostItField();
                 postIt.Click += PostItSelect_Click;
                 postIt.TextFocus += PostIt_TextFocus;
+                postIt.TextChanged += PostIt_TextChanged;
                 postIt.LostFocus += PostIt_LostFocus;
                 postIt.Margin = new Thickness(0, 0, 0, 15);
                 postIt.Id = temp.Id;
@@ -59,6 +61,7 @@ namespace Notas
             PostItField postIt = new PostItField();
             postIt.Click += PostItSelect_Click;
             postIt.TextFocus += PostIt_TextFocus;
+            postIt.TextChanged += PostIt_TextChanged;
             postIt.LostFocus += PostIt_LostFocus;
             postIt.Margin = new Thickness(0, 0, 0, 15);
             postIt.Id = -1;
@@ -89,6 +92,32 @@ namespace Notas
             }
 
             btnDel.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(UIElement element in groupPostIt.Children)
+            {
+                PostItField postIt = (PostItField) element;
+                if (postIt.TextFocused)
+                {
+                    if (postIt.Id == -1)
+                    {
+                        PostIt temp = new PostIt(postIt.Text);
+                        PersistencePostIt.Add(temp);
+                    }
+                    else
+                    {
+                        PostIt temp = new PostIt(postIt.Id, postIt.Text);
+                        PersistencePostIt.Update(temp);
+                    }
+
+                    postIt.TextFocused = false;
+                    postIt.OldText = postIt.Text;
+                }
+            }
+
+            btnSave.Visibility = Visibility.Collapsed;
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -124,24 +153,21 @@ namespace Notas
             btnDel.Visibility = Visibility.Collapsed;
         }
 
+        private void PostIt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PostItField postIt = (PostItField)sender;
+
+            if (postIt.TextFocused == false)
+                return;
+
+            btnSave.Visibility = postIt.OldText != postIt.Text ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void PostIt_LostFocus(object sender, RoutedEventArgs e)
         {
             PostItField postIt = (PostItField)sender;
             if (string.IsNullOrWhiteSpace(postIt.Text))
                 groupPostIt.Children.Remove(postIt);
-            else
-            {
-                if (postIt.Id == -1)
-                {
-                    PostIt temp = new PostIt(postIt.Text);
-                    PersistencePostIt.Add(temp);
-                }
-                else
-                {
-                    PostIt temp = new PostIt(postIt.Id, postIt.Text);
-                    PersistencePostIt.Update(temp);
-                }
-            }
         }
     }
 }

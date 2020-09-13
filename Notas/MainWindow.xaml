@@ -38,7 +38,7 @@
                 </Button.Content>
             </Button>
 
-            <Button x:Name="btnSave" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Visibility="Collapsed" Width="45">
+            <Button x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Visibility="Collapsed" Width="45">
                 <Button.Content>
                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="&#xE74E;" VerticalAlignment="Center"/>
                 </Button.Content>

@@ -19,11 +19,15 @@ namespace Notas.UserControls
             set;
         }
 
+        public bool TextFocused { get; set; }
+
         public bool IsSelected
         {
             get => (bool)GetValue(IsSelectedProperty);
             set => SetValue(IsSelectedProperty, value);
         }
+
+        public string OldText { get; set; }
 
         public string Text
         {
@@ -33,6 +37,7 @@ namespace Notas.UserControls
 
         public event RoutedEventHandler Click;
         public event RoutedEventHandler TextFocus;
+        public event TextChangedEventHandler TextChanged;
         public new event RoutedEventHandler LostFocus;
 
         public PostItField()
@@ -56,12 +61,25 @@ namespace Notas.UserControls
         }
 
         private void TextField_LostFocus(object sender, RoutedEventArgs e)
-            => LostFocus?.Invoke(this, e);
+        {
+            OldText = "";
+
+            LostFocus?.Invoke(this, e);
+        }
 
         private void TextField_TextChanged(object sender, TextChangedEventArgs e)
-            => SetValue(TextProperty, textField.Text);
+        {
+            SetValue(TextProperty, textField.Text);
+
+            TextChanged?.Invoke(this, e);
+        }
 
         private void TextField_GotFocus(object sender, RoutedEventArgs e)
-            => TextFocus?.Invoke(this, e);
+        {
+            OldText = Text;
+            TextFocused = true;
+
+            TextFocus?.Invoke(this, e);
+        }
     }
 }
