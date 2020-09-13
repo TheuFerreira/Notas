@@ -7,7 +7,7 @@
         xmlns:control="clr-namespace:Notas.UserControls"
         mc:Ignorable="d"
         Icon="Resources/ic_notes.ico"
-        Title="Notas" Height="700" Width="400" ResizeMode="NoResize" WindowStyle="None">
+        Title="Notas" Height="500" Width="300" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="{StaticResource Background}">
 
         <Grid.RowDefinitions>
@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="15,15,15,0">
+            <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0">
 
             </StackPanel>
         </ScrollViewer>

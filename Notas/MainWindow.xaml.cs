@@ -33,7 +33,7 @@ namespace Notas
                 postIt.TextFocus += PostIt_TextFocus;
                 postIt.TextChanged += PostIt_TextChanged;
                 postIt.LostFocus += PostIt_LostFocus;
-                postIt.Margin = new Thickness(0, 0, 0, 15);
+                postIt.Margin = new Thickness(0, 0, 0, 10);
                 postIt.Id = temp.Id;
                 postIt.Text = temp.Content;
                 groupPostIt.Children.Insert(0, postIt);
@@ -63,7 +63,7 @@ namespace Notas
             postIt.TextFocus += PostIt_TextFocus;
             postIt.TextChanged += PostIt_TextChanged;
             postIt.LostFocus += PostIt_LostFocus;
-            postIt.Margin = new Thickness(0, 0, 0, 15);
+            postIt.Margin = new Thickness(0, 0, 0, 10);
             postIt.Id = -1;
             groupPostIt.Children.Insert(0, postIt);
             postIt.FocusTextField();

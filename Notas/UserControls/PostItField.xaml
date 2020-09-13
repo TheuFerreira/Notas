@@ -6,8 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="175" d:DesignWidth="400">
-    <Border Background="#1B1B1B" CornerRadius="15" Height="175">
+             d:DesignHeight="125" d:DesignWidth="400">
+    <Border Background="#1B1B1B" CornerRadius="10" Height="125">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"/>
         </Border.Effect>
