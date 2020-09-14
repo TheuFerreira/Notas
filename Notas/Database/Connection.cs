@@ -11,7 +11,8 @@ namespace Notas.Database
         {
             try
             {
-                string path = "DataSource=notas.db";
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Ferreira\Notas\";
+                string path = $"DataSource={folder}notas.db";
                 SQLiteConnection = new SQLiteConnection(path);
                 SQLiteConnection.Open();
             }

@@ -23,17 +23,13 @@ namespace Notas
             itemClose.Index = 0;
             itemClose.Text = "E&xit";
 
-            MenuItem itemShow = new MenuItem();
-            itemShow.Click += (sender, ev) => main.Show();
-            itemShow.Index = 1;
-            itemShow.Text = "Mostrar Notas";
-
             ContextMenu contextMenu = new ContextMenu();
-            contextMenu.MenuItems.AddRange(new MenuItem[] { itemShow, itemClose });
+            contextMenu.MenuItems.AddRange(new MenuItem[] { itemClose });
 
             icon = new NotifyIcon();
             Stream iconStream = GetResourceStream(new Uri("Resources/ic_notes.ico", UriKind.Relative)).Stream;
             icon.Icon = new Icon(iconStream);
+            icon.Click += (sender, ev) => main.Show();
 
             icon.ContextMenu = contextMenu;
             icon.Text = "Notas";
