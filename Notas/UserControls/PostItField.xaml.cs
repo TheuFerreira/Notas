@@ -71,6 +71,10 @@ namespace Notas.UserControls
         {
             SetValue(TextProperty, textField.Text);
 
+            int lineCount = textField.Text.Split(new char[] { '\n' }).Length;
+            textField.Height = lineCount * 30;
+            border.Height = textField.Height + 30;
+
             TextChanged?.Invoke(this, e);
         }
 
