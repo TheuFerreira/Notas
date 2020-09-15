@@ -7,57 +7,41 @@
         xmlns:control="clr-namespace:Notas.UserControls"
         mc:Ignorable="d"
         Icon="Resources/ic_notes.ico"
+        AllowsTransparency="True" Background="Transparent"
         Title="Notas" Height="500" Width="300" ResizeMode="NoResize" WindowStyle="None">
-    <Grid Background="{StaticResource Background}">
+    <Border Background="{StaticResource Background}" CornerRadius="15,15,0,0">
+        <Grid Background="Transparent">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0">
+            <ScrollViewer Grid.Row="1">
+                <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0">
 
-            </StackPanel>
-        </ScrollViewer>
+                </StackPanel>
+            </ScrollViewer>
 
-        <Grid x:Name="topBar" Grid.Row="0" Background="{StaticResource Foreground}" MouseDown="TopBar_MouseDown">
-            <Grid.Effect>
-                <DropShadowEffect Direction="270" BlurRadius="15"/>
-            </Grid.Effect>
+            <Border x:Name="topBar" CornerRadius="10,10,0,0" Grid.Row="0" Background="{StaticResource Foreground}" MouseDown="TopBar_MouseDown">
+                <Border.Effect>
+                    <DropShadowEffect Direction="270" BlurRadius="15"/>
+                </Border.Effect>
+                
+                <Grid Background="Transparent">
 
-            <Button x:Name="btnAdd" Click="BtnAdd_Click" Height="35" HorizontalAlignment="Left" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Width="45">
-                <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="&#xE710;" VerticalAlignment="Center"/>
-                </Button.Content>
-            </Button>
+                    <control:TopButton Click="BtnAdd_Click" Height="35" HorizontalAlignment="Left" Radius="10,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE710;" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#59213;" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE74E;" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
 
-            <Button x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Width="45">
-                <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Left" Text="&#59213;" VerticalAlignment="Center"/>
-                </Button.Content>
-            </Button>
+                    <TextBlock FontSize="18" Foreground="White" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 
-            <Button x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Visibility="Collapsed" Width="45">
-                <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="&#xE74E;" VerticalAlignment="Center"/>
-                </Button.Content>
-            </Button>
+                    <control:TopButton Click="BtnMinimize_Click" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" SelectionColor="{StaticResource Background}" Text="&#59192;" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton Click="BtnClose_Click" Height="35" HorizontalAlignment="Right" Radius="0,10,0,0" SelectionColor="Red" Text="&#59540;" VerticalAlignment="Center" Width="45"/>
+                </Grid>
+            </Border>
 
-            <TextBlock FontSize="18" Foreground="White" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
-
-            <Button x:Name="btnMinimize" Click="BtnMinimize_Click" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Width="45">
-                <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Right" Text="&#59192;" VerticalAlignment="Center"/>
-                </Button.Content>
-            </Button>
-
-            <Button x:Name="btnClose" Click="BtnClose_Click" Foreground="Red" Height="35" HorizontalAlignment="Right" Style="{StaticResource BtnTop}" VerticalAlignment="Center" Width="45">
-                <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Right" Text="&#59540;" VerticalAlignment="Center"/>
-                </Button.Content>
-            </Button>
         </Grid>
-
-    </Grid>
+    </Border>
+    
 </Window>

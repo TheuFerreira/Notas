@@ -1,7 +1,6 @@
 ﻿using Notas.Database.Persistence;
 using Notas.Database.Table;
 using Notas.UserControls;
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,9 +95,9 @@ namespace Notas
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            foreach(UIElement element in groupPostIt.Children)
+            foreach (UIElement element in groupPostIt.Children)
             {
-                PostItField postIt = (PostItField) element;
+                PostItField postIt = (PostItField)element;
                 if (postIt.TextFocused)
                 {
                     if (postIt.Id == -1)
@@ -133,9 +132,7 @@ namespace Notas
             {
                 PostItField postIt = (PostItField)element;
                 if (postIt.IsSelected == true)
-                {
                     showDelete = true;
-                }
             }
 
             btnDel.Visibility = showDelete ? Visibility.Visible : Visibility.Collapsed;
@@ -160,14 +157,33 @@ namespace Notas
             if (postIt.TextFocused == false)
                 return;
 
-            btnSave.Visibility = postIt.OldText != postIt.Text ? Visibility.Visible : Visibility.Collapsed;
+            bool show = false;
+            foreach (UIElement element in groupPostIt.Children)
+            {
+                PostItField temp = (PostItField)element;
+                if (temp.OldText != temp.Text)
+                {
+                    show = true;
+                    break;
+                }
+            }
+
+            btnSave.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void PostIt_LostFocus(object sender, RoutedEventArgs e)
         {
             PostItField postIt = (PostItField)sender;
             if (string.IsNullOrWhiteSpace(postIt.Text))
+            {
+                if (postIt.Id != -1)
+                {
+                    PostIt temp = new PostIt(postIt.Id);
+                    PersistencePostIt.Delete(temp);
+                }
+
                 groupPostIt.Children.Remove(postIt);
+            }
         }
     }
 }
