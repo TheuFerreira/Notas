@@ -52,6 +52,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7609CED973DA4B18B41917E9AEB2DBDF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_79D93B2BFBF462C88F7A92BA3139505C"
         "OwnerKey" = "8:_44C551F7426645BFB041155BC15A3981"
         "MsmSig" = "8:_UNDEFINED"
@@ -60,12 +66,6 @@
         {
         "MsmKey" = "8:_90CF095545DDC960E361DA328474EFD1"
         "OwnerKey" = "8:_44C551F7426645BFB041155BC15A3981"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B64152E1CE58400187D2EE209B452103"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -191,6 +191,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -303,6 +311,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7609CED973DA4B18B41917E9AEB2DBDF"
+            {
+            "SourcePath" = "8:..\\Notas\\notas.db"
+            "TargetName" = "8:notas.db"
+            "Tag" = "8:"
+            "Folder" = "8:_DF37624CA72045B99FB5DDCD7AC661B0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_79D93B2BFBF462C88F7A92BA3139505C"
             {
             "AssemblyRegister" = "3:1"
@@ -363,26 +391,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B64152E1CE58400187D2EE209B452103"
-            {
-            "SourcePath" = "8:..\\Notas\\notas.db"
-            "TargetName" = "8:notas.db"
-            "Tag" = "8:"
-            "Folder" = "8:_E996144144D644DC9674ED0BBB61BDDF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EC518EC730C014B362D429593A94E2E5"
@@ -486,39 +494,6 @@
                 {
                 }
             }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_9331A1EC319C4C8D97B6994482132020"
-            {
-            "Name" = "8:#1915"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:AppDataFolder"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_77D0C7BE14574852A3C5359C738AE4C0"
-                    {
-                    "Name" = "8:Ferreira"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_D691A5A4A9FC4704864E896CAFEB8DB6"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E996144144D644DC9674ED0BBB61BDDF"
-                            {
-                            "Name" = "8:Notas"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_516A47E54DC0452CBD316911F494CFC6"
-                                "Folders"
-                                {
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_DF37624CA72045B99FB5DDCD7AC661B0"
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
@@ -559,7 +534,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Notas"
         "ProductCode" = "8:{3E691764-E677-4FA0-AFF8-F4300B65BC72}"
-        "PackageCode" = "8:{0E2DF85B-C195-489A-8412-4DBA2A760CB7}"
+        "PackageCode" = "8:{303E8D03-06F2-473A-94C2-22BE54139188}"
         "UpgradeCode" = "8:{CF066A05-24AF-4DB9-99B2-88042B5605D5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -602,13 +577,109 @@
                         {
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6293DB7DD4BC498F9780DF12A2F0F831"
                             {
-                            "Name" = "8:[Manufacturer]"
+                            "Name" = "8:Microsoft"
                             "Condition" = "8:"
                             "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_1A7105E517784B6B86CB294C442C0A6E"
+                                    {
+                                    "Name" = "8:Windows"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_1DF7896CD06B4F6896E05C4EB927AD3D"
+                                            {
+                                            "Name" = "8:CurrentVersion"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_78AE6183C84D4B3E86690E1CE35C2B99"
+                                                    {
+                                                    "Name" = "8:Uninstall"
+                                                    "Condition" = "8:"
+                                                    "AlwaysCreate" = "11:FALSE"
+                                                    "DeleteAtUninstall" = "11:FALSE"
+                                                    "Transitive" = "11:FALSE"
+                                                        "Keys"
+                                                        {
+                                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_413DBF80544D440FB4FDF13972247ABD"
+                                                            {
+                                                            "Name" = "8:{3E691764-E677-4FA0-AFF8-F4300B65BC72}"
+                                                            "Condition" = "8:"
+                                                            "AlwaysCreate" = "11:FALSE"
+                                                            "DeleteAtUninstall" = "11:FALSE"
+                                                            "Transitive" = "11:FALSE"
+                                                                "Keys"
+                                                                {
+                                                                }
+                                                                "Values"
+                                                                {
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_54502CF3309C42EDB0BC9AA084AD93A1"
+                                                                    {
+                                                                    "Name" = "8:DisplayIcon"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:1"
+                                                                    "Value" = "8:[TARGETDIR]Notas.exe"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5AA7106B4D9A412986C34AF634CC5FF6"
+                                                                    {
+                                                                    "Name" = "8:DisplayName"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:1"
+                                                                    "Value" = "8:Notas"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5AFB6C1AACFB43DBBB2A274FA1BF5B49"
+                                                                    {
+                                                                    "Name" = "8:Publisher"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:1"
+                                                                    "Value" = "8:Ferreira"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_7DE02F2C401E46FB95D50D97D581DCA2"
+                                                                    {
+                                                                    "Name" = "8:NoRepair"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:3"
+                                                                    "Value" = "3:1"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_A281308A320A41CFA615B5B35172A543"
+                                                                    {
+                                                                    "Name" = "8:NoModify"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:3"
+                                                                    "Value" = "3:1"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        "Values"
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
                                 }
                                 "Values"
                                 {
@@ -636,13 +707,63 @@
                         {
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_A448274E0BCE4F5DAB8F0D8242DF44DF"
                             {
-                            "Name" = "8:[Manufacturer]"
+                            "Name" = "8:Microsoft"
                             "Condition" = "8:"
                             "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_2E7BA293293441B68B20A09E9384512F"
+                                    {
+                                    "Name" = "8:Windows"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_FBDDEC3C900941FF8FE377A4AECFC012"
+                                            {
+                                            "Name" = "8:CurrentVersion"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_330FF452C1FE4AF4B669DE10B128E6CA"
+                                                    {
+                                                    "Name" = "8:Run"
+                                                    "Condition" = "8:"
+                                                    "AlwaysCreate" = "11:FALSE"
+                                                    "DeleteAtUninstall" = "11:FALSE"
+                                                    "Transitive" = "11:FALSE"
+                                                        "Keys"
+                                                        {
+                                                        }
+                                                        "Values"
+                                                        {
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_3DE426E6F2F74832B3E53C156E59C48B"
+                                                            {
+                                                            "Name" = "8:Notas"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:1"
+                                                            "Value" = "8:[TARGETDIR]Notas.exe"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
                                 }
                                 "Values"
                                 {
