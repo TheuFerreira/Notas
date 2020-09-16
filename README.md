@@ -4,4 +4,4 @@
 
 | Branch | Status x32 |
 |---|---|
-| Installer | [![Instalador]()](https://github-private.visualstudio.com/microsoft/_build/latest?definitionId=61&branchName=master) | 
+| Instalador | [![V1.0.0]](https://drive.google.com/file/d/18-6CQtgzd6e5ygZAUrV14Mi4VRuZFUMQ/view?usp=sharing) | 
