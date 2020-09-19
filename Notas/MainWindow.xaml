@@ -11,16 +11,14 @@
         Title="Notas" Height="500" Width="300" ResizeMode="NoResize" WindowStyle="None">
     <Border Background="{StaticResource Background}" CornerRadius="15,15,0,0">
         <Grid Background="Transparent">
-
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="1">
-                <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0">
-
-                </StackPanel>
+                <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0"/>
             </ScrollViewer>
 
             <Border x:Name="topBar" CornerRadius="10,10,0,0" Grid.Row="0" Background="{StaticResource Foreground}" MouseDown="TopBar_MouseDown">
@@ -34,7 +32,7 @@
                     <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#59213;" VerticalAlignment="Center" Width="45"/>
                     <control:TopButton x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE74E;" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
 
-                    <TextBlock FontSize="18" Foreground="White" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="titleNotas" FontSize="18" Foreground="White" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 
                     <control:TopButton Click="BtnMinimize_Click" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" SelectionColor="{StaticResource Background}" Text="&#59192;" VerticalAlignment="Center" Width="45"/>
                     <control:TopButton Click="BtnClose_Click" Height="35" HorizontalAlignment="Right" Radius="0,10,0,0" SelectionColor="Red" Text="&#59540;" VerticalAlignment="Center" Width="45"/>

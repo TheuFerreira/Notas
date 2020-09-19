@@ -56,8 +56,7 @@ namespace Notas.UserControls
 
         private void BrSelect_Click(object sender, RoutedEventArgs e)
         {
-            IsSelected = !IsSelected;
-            Click?.Invoke(sender, e);
+            Click?.Invoke(this, e);
         }
 
         private void TextField_LostFocus(object sender, RoutedEventArgs e)
@@ -70,12 +69,8 @@ namespace Notas.UserControls
         private void TextField_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetValue(TextProperty, textField.Text);
-
-            int lineCount = textField.Text.Split(new char[] { '\n' }).Length;
-            textField.Height = lineCount * 30;
-            border.Height = textField.Height + 30;
-
             TextChanged?.Invoke(this, e);
+            UpdateSize();
         }
 
         private void TextField_GotFocus(object sender, RoutedEventArgs e)
@@ -85,5 +80,17 @@ namespace Notas.UserControls
 
             TextFocus?.Invoke(this, e);
         }
+
+        private void TextField_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateSize();
+        }
+
+        private void UpdateSize()
+        {
+            textField.Height = textField.LineCount >= 1 ? textField.LineCount * 30 : 30;
+            border.Height = textField.Height + 30;
+        }
+
     }
 }

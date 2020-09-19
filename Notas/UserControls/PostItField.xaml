@@ -80,7 +80,7 @@
                 </Button.Style>
             </Button>
             
-            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="White" Focusable="True" FontSize="20" Foreground="White" GotFocus="TextField_GotFocus" LostFocus="TextField_LostFocus" Margin="20,20,10,10" Text="{Binding ElementName=postIt, Path=Text}" TextChanged="TextField_TextChanged" TextWrapping="WrapWithOverflow"/>
+            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="White" Focusable="True" FontSize="20" Foreground="White" GotFocus="TextField_GotFocus" Loaded="TextField_Loaded" LostFocus="TextField_LostFocus" Margin="20,20,10,10" Text="{Binding ElementName=postIt, Path=Text}" TextChanged="TextField_TextChanged" TextWrapping="WrapWithOverflow"/>
         </Grid>
 
     </Border>

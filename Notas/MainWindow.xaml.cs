@@ -2,6 +2,7 @@
 using Notas.Database.Table;
 using Notas.UserControls;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,15 +14,15 @@ namespace Notas
     /// </summary>
     public partial class MainWindow : Window
     {
+        public int Count { get => groupPostIt.Children.Count; }
+
         public MainWindow()
         {
             InitializeComponent();
 
-            Loaded += MainWindow_Loaded;
-        }
+            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            titleNotas.ToolTip = $"Versão {version}";
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
             PostItSelect_Click(null, null);
 
             List<PostIt> postIts = PersistencePostIt.GetAll();
@@ -127,6 +128,15 @@ namespace Notas
 
         private void PostItSelect_Click(object sender, RoutedEventArgs e)
         {
+            if (btnSave.Visibility == Visibility.Visible)
+                return;
+
+            if (sender != null)
+            {
+                PostItField post = (PostItField)sender;
+                post.IsSelected = !post.IsSelected;
+            }
+
             bool showDelete = false;
             foreach (UIElement element in groupPostIt.Children)
             {
