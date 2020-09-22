@@ -1,6 +1,7 @@
 ﻿using Notas.Database.Persistence;
 using Notas.Database.Table;
 using Notas.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
@@ -14,8 +15,6 @@ namespace Notas
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int Count { get => groupPostIt.Children.Count; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -25,18 +24,30 @@ namespace Notas
 
             PostItSelect_Click(null, null);
 
-            List<PostIt> postIts = PersistencePostIt.GetAll();
-            foreach (PostIt temp in postIts)
+            IsVisibleChanged += MainWindow_IsVisibleChanged;
+        }
+
+        private void MainWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
             {
-                PostItField postIt = new PostItField();
-                postIt.Click += PostItSelect_Click;
-                postIt.TextFocus += PostIt_TextFocus;
-                postIt.TextChanged += PostIt_TextChanged;
-                postIt.LostFocus += PostIt_LostFocus;
-                postIt.Margin = new Thickness(0, 0, 0, 10);
-                postIt.Id = temp.Id;
-                postIt.Text = temp.Content;
-                groupPostIt.Children.Insert(0, postIt);
+                List<PostIt> postIts = PersistencePostIt.GetAll();
+                foreach (PostIt temp in postIts)
+                {
+                    PostItField postIt = new PostItField();
+                    postIt.Click += PostItSelect_Click;
+                    postIt.TextFocus += PostIt_TextFocus;
+                    postIt.TextChanged += PostIt_TextChanged;
+                    postIt.LostFocus += PostIt_LostFocus;
+                    postIt.Margin = new Thickness(0, 0, 0, 10);
+                    postIt.Id = temp.Id;
+                    postIt.Text = temp.Content;
+                    groupPostIt.Children.Insert(0, postIt);
+                }
+            }
+            else
+            {
+                groupPostIt.Children.Clear();
             }
         }
 
@@ -124,7 +135,15 @@ namespace Notas
             => this.WindowState = WindowState.Minimized;
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
-            => Close();
+        {
+            if (btnSave.Visibility == Visibility.Visible)
+                if (MessageBox.Show("Tem certeza de que deseja sair sem salvar?", "AVISO", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    return;
+
+            Close();
+        }
+
+
 
         private void PostItSelect_Click(object sender, RoutedEventArgs e)
         {
@@ -173,6 +192,7 @@ namespace Notas
                 PostItField temp = (PostItField)element;
                 if (temp.OldText != temp.Text)
                 {
+                    Console.WriteLine($"{temp.OldText}={temp.Text}");
                     show = true;
                     break;
                 }

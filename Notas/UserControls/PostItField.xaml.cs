@@ -43,6 +43,13 @@ namespace Notas.UserControls
         public PostItField()
         {
             InitializeComponent();
+
+            Loaded += PostItField_Loaded;
+        }
+
+        private void PostItField_Loaded(object sender, RoutedEventArgs e)
+        {
+            OldText = Text;
         }
 
         public void FocusTextField()
