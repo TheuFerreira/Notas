@@ -140,6 +140,9 @@ namespace Notas
                 if (MessageBox.Show("Tem certeza de que deseja sair sem salvar?", "AVISO", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                     return;
 
+            btnDel.Visibility = Visibility.Collapsed;
+            btnSave.Visibility = Visibility.Collapsed;
+
             Close();
         }
 
