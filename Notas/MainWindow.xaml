@@ -29,8 +29,9 @@
                 <Grid Background="Transparent">
 
                     <control:TopButton Click="BtnAdd_Click" Height="35" HorizontalAlignment="Left" Radius="10,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE710;" VerticalAlignment="Center" Width="45"/>
-                    <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#59213;" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#59213;" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
                     <control:TopButton x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE74E;" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnHelp" Click="BtnHelp_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{StaticResource Background}" Text="&#xE897;" VerticalAlignment="Center" Width="45"/>
 
                     <TextBlock x:Name="titleNotas" FontSize="18" Foreground="White" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 

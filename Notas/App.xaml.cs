@@ -32,7 +32,7 @@ namespace Notas
             icon = new NotifyIcon();
             Stream iconStream = GetResourceStream(new Uri("Resources/ic_notes.ico", UriKind.Relative)).Stream;
             icon.Icon = new Icon(iconStream);
-            icon.Click += (sender, ev) => main.Show();
+            icon.MouseClick += Icon_MouseClick;
 
             icon.ContextMenu = contextMenu;
             icon.Text = "Notas";
@@ -41,6 +41,12 @@ namespace Notas
             main.Show();
 
             base.OnStartup(e);
+        }
+
+        private void Icon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                main.Show();
         }
 
         private void ItemClose_Click(object sender, EventArgs e)

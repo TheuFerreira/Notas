@@ -103,6 +103,7 @@ namespace Notas
             }
 
             btnDel.Visibility = Visibility.Collapsed;
+            btnHelp.Visibility = Visibility.Visible;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -129,6 +130,12 @@ namespace Notas
             }
 
             btnSave.Visibility = Visibility.Collapsed;
+            btnHelp.Visibility = Visibility.Visible;
+        }
+
+        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -168,6 +175,7 @@ namespace Notas
             }
 
             btnDel.Visibility = showDelete ? Visibility.Visible : Visibility.Collapsed;
+            btnHelp.Visibility = showDelete ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostIt_TextFocus(object sender, RoutedEventArgs e)
@@ -180,6 +188,7 @@ namespace Notas
             }
 
             btnDel.Visibility = Visibility.Collapsed;
+            btnHelp.Visibility = btnSave.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostIt_TextChanged(object sender, TextChangedEventArgs e)
@@ -195,13 +204,13 @@ namespace Notas
                 PostItField temp = (PostItField)element;
                 if (temp.OldText != temp.Text)
                 {
-                    Console.WriteLine($"{temp.OldText}={temp.Text}");
                     show = true;
                     break;
                 }
             }
 
             btnSave.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            btnHelp.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostIt_LostFocus(object sender, RoutedEventArgs e)
