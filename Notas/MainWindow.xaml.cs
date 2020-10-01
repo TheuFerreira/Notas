@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Notas
 {
@@ -15,6 +16,8 @@ namespace Notas
     /// </summary>
     public partial class MainWindow : Window
     {
+        private PostItField tempPost;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,7 +27,25 @@ namespace Notas
 
             PostItSelect_Click(null, null);
 
+            PreviewMouseLeftButtonDown += MainWindow_PreviewMouseLeftButtonDown;
             IsVisibleChanged += MainWindow_IsVisibleChanged;
+        }
+
+        private void MainWindow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (tempPost == null)
+                return;
+
+            Point mousePosition = e.GetPosition(this);
+            Point panelPosition = panelColors.TransformToAncestor(Application.Current.MainWindow).Transform(new Point(0, 0));
+
+            if (mousePosition.Y < panelPosition.Y)
+            {
+                PersistencePostIt.UpdateColor(new PostIt(tempPost.Id, tempPost.BackgroundColor));
+                gridField.RowDefinitions[2].Height = new GridLength(0);
+                tempPost.ColorFocused = false;
+                tempPost = null;
+            }
         }
 
         private void MainWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -36,10 +57,12 @@ namespace Notas
                 {
                     PostItField postIt = new PostItField();
                     postIt.Click += PostItSelect_Click;
+                    postIt.ColorClick += PostItSelect_ColorClick;
                     postIt.TextFocus += PostIt_TextFocus;
                     postIt.TextChanged += PostIt_TextChanged;
                     postIt.LostFocus += PostIt_LostFocus;
                     postIt.Margin = new Thickness(0, 0, 0, 10);
+                    postIt.BackgroundColor = temp.Color;
                     postIt.Id = temp.Id;
                     postIt.Text = temp.Content;
                     groupPostIt.Children.Insert(0, postIt);
@@ -50,6 +73,8 @@ namespace Notas
                 groupPostIt.Children.Clear();
             }
         }
+
+
 
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -71,11 +96,13 @@ namespace Notas
 
             PostItField postIt = new PostItField();
             postIt.Click += PostItSelect_Click;
+            postIt.ColorClick += PostItSelect_ColorClick;
             postIt.TextFocus += PostIt_TextFocus;
             postIt.TextChanged += PostIt_TextChanged;
             postIt.LostFocus += PostIt_LostFocus;
             postIt.Margin = new Thickness(0, 0, 0, 10);
             postIt.Id = -1;
+            postIt.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B");
             groupPostIt.Children.Insert(0, postIt);
             postIt.FocusTextField();
         }
@@ -108,19 +135,19 @@ namespace Notas
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            foreach (UIElement element in groupPostIt.Children)
+            for (int i = groupPostIt.Children.Count - 1; i >= 0; i--)
             {
-                PostItField postIt = (PostItField)element;
+                PostItField postIt = (PostItField)groupPostIt.Children[i];
                 if (postIt.TextFocused)
                 {
                     if (postIt.Id == -1)
                     {
-                        PostIt temp = new PostIt(postIt.Text);
+                        PostIt temp = new PostIt(postIt.Text, postIt.BackgroundColor);
                         PersistencePostIt.Add(temp);
                     }
                     else
                     {
-                        PostIt temp = new PostIt(postIt.Id, postIt.Text);
+                        PostIt temp = new PostIt(postIt.Id, postIt.Text, postIt.BackgroundColor);
                         PersistencePostIt.Update(temp);
                     }
 
@@ -135,7 +162,7 @@ namespace Notas
 
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("Ainda não implementado!!!");
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -176,6 +203,30 @@ namespace Notas
 
             btnDel.Visibility = showDelete ? Visibility.Visible : Visibility.Collapsed;
             btnHelp.Visibility = showDelete ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void PostItSelect_ColorClick(object sender, RoutedEventArgs e)
+        {
+            PostItField post = (PostItField)sender;
+            tempPost = post;
+
+            foreach (UIElement element in groupPostIt.Children)
+            {
+                PostItField temp = (PostItField)element;
+                if (post.Id != temp.Id)
+                    temp.ColorFocused = false;
+            }
+
+            post.ColorFocused = !post.ColorFocused;
+
+            foreach (UIElement element in groupColors.Children)
+            {
+                ColorButton btnColor = (ColorButton)element;
+                btnColor.IsSelected = btnColor.BackgroundColor.Color == post.BackgroundColor.Color;
+            }
+
+            PostIt_TextFocus(null, null);
+            gridField.RowDefinitions[2].Height = post.ColorFocused ? new GridLength(35) : new GridLength(0);
         }
 
         private void PostIt_TextFocus(object sender, RoutedEventArgs e)
@@ -226,6 +277,23 @@ namespace Notas
 
                 groupPostIt.Children.Remove(postIt);
             }
+        }
+
+
+
+        private void SelectColor_Click(object sender, RoutedEventArgs e)
+        {
+            ColorButton btnColor = (ColorButton)sender;
+
+            foreach (UIElement element in groupColors.Children)
+            {
+                ColorButton temp = (ColorButton)element;
+                if (temp.BackgroundColor.Color != btnColor.BackgroundColor.Color)
+                    temp.IsSelected = false;
+            }
+
+            btnColor.IsSelected = true;
+            tempPost.BackgroundColor = btnColor.BackgroundColor;
         }
     }
 }

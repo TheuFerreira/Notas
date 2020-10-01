@@ -8,6 +8,25 @@ namespace Notas.Database
     {
         public static SQLiteConnection SQLiteConnection;
 
+        public static string ConnectionString
+        {
+            get
+            {
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Ferreira\Notas\";
+                Directory.CreateDirectory(folder);
+
+                string file = folder + "notas.db";
+                if (File.Exists(file) == false)
+                {
+                    string temp = Directory.GetCurrentDirectory() + @"\notas.db";
+                    File.Copy(temp, file, true);
+                }
+
+                string path = $"DataSource={file}";
+                return path;
+            }
+        }
+
         public static void Connect()
         {
             try

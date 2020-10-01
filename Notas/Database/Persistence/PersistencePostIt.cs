@@ -2,11 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Windows.Media;
 
 namespace Notas.Database.Persistence
 {
     public class PersistencePostIt : Connection
     {
+        public static void TestConnection()
+        {
+            try
+            {
+                Connect();
+                Disconnect();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static void Add(PostIt postIt)
         {
             Connect();
@@ -15,9 +29,10 @@ namespace Notas.Database.Persistence
             {
                 Connect();
 
-                string str = "INSERT INTO postit(content) VALUES (@content);";
+                string str = "INSERT INTO postit(content, color) VALUES (@content, @color);";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@content", postIt.Content);
+                command.Parameters.AddWithValue("@color", postIt.Color);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -58,10 +73,33 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "UPDATE postit SET content=@content WHERE id=@id;";
+                string str = "UPDATE postit SET content=@content, color=@color WHERE id=@id;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@id", postIt.Id);
                 command.Parameters.AddWithValue("@content", postIt.Content);
+                command.Parameters.AddWithValue("@color", postIt.Color.ToString());
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Disconnect();
+            }
+        }
+
+        public static void UpdateColor(PostIt postIt)
+        {
+            Connect();
+
+            try
+            {
+                string str = "UPDATE postit SET color=@color WHERE id=@id;";
+                SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
+                command.Parameters.AddWithValue("@id", postIt.Id);
+                command.Parameters.AddWithValue("@color", postIt.Color.ToString());
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -81,7 +119,7 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "SELECT id, content FROM postit;";
+                string str = "SELECT id, content, color FROM postit;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 
                 SQLiteDataReader dr = command.ExecuteReader();
@@ -89,8 +127,9 @@ namespace Notas.Database.Persistence
                 {
                     long id = dr.GetInt64(0);
                     string content = dr.GetString(1);
+                    SolidColorBrush color = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(2).ToString());
                     
-                    PostIt temp = new PostIt(id, content);
+                    PostIt temp = new PostIt(id, content, color);
                     postIts.Add(temp);
                 }
                 dr.Close();

@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="400">
-    <Border x:Name="border" Background="#1B1B1B" CornerRadius="10" Height="60">
+    <Border x:Name="border" Background="{Binding ElementName=postIt, Path=BackgroundColor}" CornerRadius="10" Height="60">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"/>
         </Border.Effect>
@@ -36,6 +36,23 @@
                                             </Button.Style>
                                         </Button>
 
+                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="1" VerticalAlignment="Top" Width="15">
+                                            <Button.Content>
+                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="White" HorizontalAlignment="Center" Text="&#xE7E6;" VerticalAlignment="Center"/>
+                                            </Button.Content>
+
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                     </Grid>
 
                                     <ControlTemplate.Triggers>
@@ -72,6 +89,25 @@
                                         <DataTrigger Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="False">
                                             <Setter TargetName="brSelect" Property="Background" Value="Transparent"/>
                                         </DataTrigger>
+                                        
+                                        
+                                        
+                                        <DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="False">
+                                            <Setter TargetName="btnColor" Property="Opacity" Value=".5"/>
+                                        </DataTrigger>
+                                        
+                                        <DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="True">
+                                            <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="False">
+                                            <Setter TargetName="btnColor" Property="Opacity" Value="0"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=ColorFocused}" Value="True">
+                                            <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
+                                        </DataTrigger>
+
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -79,7 +115,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
             <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="White" Focusable="True" FontSize="20" Foreground="White" GotFocus="TextField_GotFocus" Loaded="TextField_Loaded" LostFocus="TextField_LostFocus" Margin="20,20,10,10" Text="{Binding ElementName=postIt, Path=Text}" TextChanged="TextField_TextChanged" TextWrapping="WrapWithOverflow"/>
         </Grid>
 

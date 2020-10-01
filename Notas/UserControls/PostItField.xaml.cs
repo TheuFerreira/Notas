@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Notas.UserControls
 {
@@ -12,11 +13,25 @@ namespace Notas.UserControls
     {
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(PostItField), new PropertyMetadata(""));
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(SolidColorBrush), typeof(PostItField), new PropertyMetadata((SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B")));
+        public static readonly DependencyProperty ColorFocusedProperty = DependencyProperty.Register("ColorFocused", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
 
         public long Id
         {
             get;
             set;
+        }
+
+        public SolidColorBrush BackgroundColor
+        {
+            get => (SolidColorBrush)GetValue(BackgroundColorProperty);
+            set => SetValue(BackgroundColorProperty, value);
+        }
+
+        public bool ColorFocused 
+        {
+            get => (bool)GetValue(ColorFocusedProperty);
+            set => SetValue(ColorFocusedProperty, value);
         }
 
         public bool TextFocused { get; set; }
@@ -35,6 +50,7 @@ namespace Notas.UserControls
             set => textField.Text = value;
         }
 
+        public event RoutedEventHandler ColorClick;
         public event RoutedEventHandler Click;
         public event RoutedEventHandler TextFocus;
         public event TextChangedEventHandler TextChanged;
@@ -59,6 +75,12 @@ namespace Notas.UserControls
                 textField.Focus();
                 Keyboard.Focus(textField);
             }), System.Windows.Threading.DispatcherPriority.Render);
+        }
+
+
+        private void BtnColor_Click(object sender, RoutedEventArgs e)
+        {
+            ColorClick?.Invoke(this, e);
         }
 
         private void BrSelect_Click(object sender, RoutedEventArgs e)

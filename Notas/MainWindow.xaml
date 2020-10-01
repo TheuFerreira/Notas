@@ -10,11 +10,12 @@
         AllowsTransparency="True" Background="Transparent"
         Title="Notas" Height="500" Width="300" ResizeMode="NoResize" WindowStyle="None">
     <Border Background="{StaticResource Background}" CornerRadius="15,15,0,0">
-        <Grid Background="Transparent">
+        <Grid x:Name="gridField" Background="Transparent">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0"/>
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="1">
@@ -40,6 +41,22 @@
                 </Grid>
             </Border>
 
+            <Border x:Name="panelColors" Grid.Row="2" Background="{StaticResource Foreground}">
+                <Border.Effect>
+                    <DropShadowEffect Direction="90" BlurRadius="15"/>
+                </Border.Effect>
+
+                <StackPanel x:Name="groupColors" Orientation="Horizontal" VerticalAlignment="Center">
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#1B1B1B"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#ADD8E6"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#90EE90"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#D8BFD8"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#FFC0CB"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#Ffffcc"/>
+                    <control:ColorButton Click="SelectColor_Click" BackgroundColor="#Ccffff"/>
+                </StackPanel>
+                
+            </Border>
         </Grid>
     </Border>
     

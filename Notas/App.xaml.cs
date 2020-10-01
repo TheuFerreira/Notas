@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using Notas.Database.Migrations;
+using Notas.Database.Persistence;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -18,6 +22,9 @@ namespace Notas
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            PersistencePostIt.TestConnection();
+            UpdateDatabase();
+
             main = new MainWindow();
             main.Closing += Main_Closing;
 
@@ -62,6 +69,36 @@ namespace Notas
                 e.Cancel = true;
                 main.Hide();
             }
+        }
+    
+
+        private void UpdateDatabase()
+        {
+            var serviceProvider = CreateServices();
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                Update(scope.ServiceProvider);
+            }
+        }
+
+        private IServiceProvider CreateServices()
+        {
+            return new ServiceCollection()
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    .AddSQLite()
+                    .WithGlobalConnectionString(PersistencePostIt.ConnectionString)
+                    .ScanIn(typeof(AddColumnColor).Assembly).For.Migrations())
+                .AddLogging(lb => lb.AddFluentMigratorConsole())
+                .BuildServiceProvider(false);
+        }
+
+        private static void Update(IServiceProvider serviceProvider)
+        {
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+            runner.MigrateUp();
         }
     }
 }
