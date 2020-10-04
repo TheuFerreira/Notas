@@ -7,6 +7,19 @@
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style x:Key="CustomBtn" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Border x:Name="border" Background="{Binding ElementName=postIt, Path=BackgroundColor}" CornerRadius="10" Height="60">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"/>
@@ -20,38 +33,30 @@
                             <Setter.Value>
                                 <ControlTemplate>
                                     <Grid x:Name="grid" Background="Transparent">
-                                        <Button x:Name="brSelect" Click="BrSelect_Click" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate>
-                                                                <Grid Background="Transparent">
-                                                                    <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="45" Height="15" Width="15"/>
-                                                                </Grid>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Button.Style>
+                                        <Button x:Name="brSelect" Click="BrSelect_Click" HorizontalAlignment="Left" Margin="5,5,0,0" Style="{DynamicResource CustomBtn}" VerticalAlignment="Top">
+                                            <Button.Content>
+                                                <Grid Background="Transparent">
+                                                    <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="45" Height="15" Width="15"/>
+                                                </Grid>
+                                            </Button.Content>
                                         </Button>
 
-                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="1" VerticalAlignment="Top" Width="15">
+                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
                                             <Button.Content>
                                                 <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="White" HorizontalAlignment="Center" Text="&#xE7E6;" VerticalAlignment="Center"/>
                                             </Button.Content>
+                                        </Button>
 
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Button.Style>
+                                        <Button x:Name="btnDown" Click="BtnDown_Click" Height="15" HorizontalAlignment="Right" Margin="0,5,25,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
+                                            <Button.Content>
+                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="White" HorizontalAlignment="Center" Text="&#xE70D;" VerticalAlignment="Center"/>
+                                            </Button.Content>
+                                        </Button>
+                                        
+                                        <Button x:Name="btnUp" Click="BtnUp_Click" Height="15" HorizontalAlignment="Right" Margin="0,5,5,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
+                                            <Button.Content>
+                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="White" HorizontalAlignment="Center" Text="&#xE70E;" VerticalAlignment="Center"/>
+                                            </Button.Content>
                                         </Button>
                                     </Grid>
 
@@ -106,6 +111,26 @@
 
                                         <DataTrigger Binding="{Binding ElementName=postIt, Path=ColorFocused}" Value="True">
                                             <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
+                                        </DataTrigger>
+
+
+
+                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="True">
+                                            <Setter TargetName="btnDown" Property="Opacity" Value=".5"/>
+                                            <Setter TargetName="btnUp" Property="Opacity" Value=".5"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="False">
+                                            <Setter TargetName="btnDown" Property="Opacity" Value="0"/>
+                                            <Setter TargetName="btnUp" Property="Opacity" Value="0"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=btnDown, Path=IsMouseOver}" Value="True">
+                                            <Setter TargetName="btnDown" Property="Opacity" Value="1"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=btnUp, Path=IsMouseOver}" Value="True">
+                                            <Setter TargetName="btnUp" Property="Opacity" Value="1"/>
                                         </DataTrigger>
 
                                     </ControlTemplate.Triggers>

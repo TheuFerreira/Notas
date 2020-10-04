@@ -1,7 +1,7 @@
 ﻿using Notas.Database.Persistence;
 using Notas.Database.Table;
+using Notas.Extensions;
 using Notas.UserControls;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
@@ -17,10 +17,14 @@ namespace Notas
     public partial class MainWindow : Window
     {
         private PostItField tempPost;
+        private bool isSettings;
+
+
 
         public MainWindow()
         {
             InitializeComponent();
+
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
@@ -33,18 +37,24 @@ namespace Notas
 
         private void MainWindow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (tempPost == null)
-                return;
-
             Point mousePosition = e.GetPosition(this);
             Point panelPosition = panelColors.TransformToAncestor(Application.Current.MainWindow).Transform(new Point(0, 0));
 
             if (mousePosition.Y < panelPosition.Y)
             {
-                PersistencePostIt.UpdateColor(new PostIt(tempPost.Id, tempPost.BackgroundColor));
-                gridField.RowDefinitions[2].Height = new GridLength(0);
-                tempPost.ColorFocused = false;
-                tempPost = null;
+                if (tempPost != null)
+                {
+                    PersistencePostIt.UpdateColor(new PostIt(tempPost.Id, tempPost.BackgroundColor));
+                    gridField.RowDefinitions[2].Height = new GridLength(0);
+                    tempPost.ColorFocused = false;
+                    tempPost = null;
+                }
+                else if (isSettings)
+                {
+                    gridField.RowDefinitions[2].Height = new GridLength(0);
+                    isSettings = false;
+                }
+                groupColors.Children.Clear();
             }
         }
 
@@ -130,7 +140,7 @@ namespace Notas
             }
 
             btnDel.Visibility = Visibility.Collapsed;
-            btnHelp.Visibility = Visibility.Visible;
+            btnSettings.Visibility = Visibility.Visible;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -157,12 +167,17 @@ namespace Notas
             }
 
             btnSave.Visibility = Visibility.Collapsed;
-            btnHelp.Visibility = Visibility.Visible;
+            btnSettings.Visibility = Visibility.Visible;
         }
 
-        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Ainda não implementado!!!");
+            isSettings = !isSettings;
+
+            groupColors.Children.Clear();
+            GridSettings settings = new GridSettings();
+            groupColors.Children.Add(settings);
+            gridField.RowDefinitions[2].Height = isSettings ? new GridLength(35) : new GridLength(0);
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -202,7 +217,7 @@ namespace Notas
             }
 
             btnDel.Visibility = showDelete ? Visibility.Visible : Visibility.Collapsed;
-            btnHelp.Visibility = showDelete ? Visibility.Collapsed : Visibility.Visible;
+            btnSettings.Visibility = showDelete ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostItSelect_ColorClick(object sender, RoutedEventArgs e)
@@ -219,10 +234,15 @@ namespace Notas
 
             post.ColorFocused = !post.ColorFocused;
 
-            foreach (UIElement element in groupColors.Children)
+            groupColors.Children.Clear();
+            List<string> colors = EnumExtension.EnumColors();
+            foreach (string color in colors)
             {
-                ColorButton btnColor = (ColorButton)element;
-                btnColor.IsSelected = btnColor.BackgroundColor.Color == post.BackgroundColor.Color;
+                ColorButton btn = new ColorButton();
+                btn.Click += SelectColor_Click;
+                btn.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom(color);
+                btn.IsSelected = btn.BackgroundColor.Color == post.BackgroundColor.Color;
+                groupColors.Children.Add(btn);
             }
 
             PostIt_TextFocus(null, null);
@@ -239,7 +259,7 @@ namespace Notas
             }
 
             btnDel.Visibility = Visibility.Collapsed;
-            btnHelp.Visibility = btnSave.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            btnSettings.Visibility = btnSave.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostIt_TextChanged(object sender, TextChangedEventArgs e)
@@ -261,7 +281,7 @@ namespace Notas
             }
 
             btnSave.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-            btnHelp.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
+            btnSettings.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PostIt_LostFocus(object sender, RoutedEventArgs e)

@@ -56,6 +56,10 @@ namespace Notas.UserControls
         public event TextChangedEventHandler TextChanged;
         public new event RoutedEventHandler LostFocus;
 
+        public event RoutedEventHandler DownClick;
+        public event RoutedEventHandler UpClick;
+
+
         public PostItField()
         {
             InitializeComponent();
@@ -121,5 +125,15 @@ namespace Notas.UserControls
             border.Height = textField.Height + 30;
         }
 
+
+        private void BtnDown_Click(object sender, RoutedEventArgs e)
+        {
+            DownClick?.Invoke(sender, e);
+        }
+
+        private void BtnUp_Click(object sender, RoutedEventArgs e)
+        {
+            UpClick?.Invoke(sender, e);
+        }
     }
 }

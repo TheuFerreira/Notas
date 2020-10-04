@@ -1,0 +1,37 @@
+﻿<UserControl x:Name="btnBottom"
+             x:Class="Notas.UserControls.BottomButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Notas.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="45">
+    <Button Click="Button_Click" Height="30" Width="45">
+        <Button.Style>
+            <Style TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid x:Name="gd" Background="Transparent">
+                                <TextBlock x:Name="tbMarked" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="{Binding ElementName=btnBottom, Path=Text}" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="gd" Property="Background" Value="{Binding ElementName=btnBottom, Path=SelectionColor}"/>
+                                </Trigger>
+
+                                <DataTrigger Binding="{Binding ElementName=btnBottom, Path=IsSecondText}" Value="True">
+                                    <Setter TargetName="tbMarked" Property="Text" Value="{Binding ElementName=btnBottom, Path=SecondText}"/>
+                                </DataTrigger>
+                                
+                            </ControlTemplate.Triggers>
+                            
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Button.Style>
+    </Button>
+</UserControl>

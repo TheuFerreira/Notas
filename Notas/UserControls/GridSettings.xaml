@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="Notas.UserControls.GridSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Notas.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="400">
+    <StackPanel Orientation="Horizontal">
+        <local:BottomButton SelectionColor="{StaticResource Background}" Text="&#xE897;"/>
+        <local:BottomButton Click="BtnDark_Click" SelectionColor="{StaticResource Background}" SecondText="&#xE706;" Text="&#xE793;"/>
+    </StackPanel>
+</UserControl>

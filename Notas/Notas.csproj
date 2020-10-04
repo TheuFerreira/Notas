@@ -214,8 +214,16 @@
     <Compile Include="Database\Migrations\202010011118AddColumnColor.cs" />
     <Compile Include="Database\Persistence\PersistencePostIt.cs" />
     <Compile Include="Database\Table\PostIt.cs" />
+    <Compile Include="Enums\EnumColor.cs" />
+    <Compile Include="Extensions\EnumExtension.cs" />
+    <Compile Include="UserControls\BottomButton.xaml.cs">
+      <DependentUpon>BottomButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ColorButton.xaml.cs">
       <DependentUpon>ColorButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GridSettings.xaml.cs">
+      <DependentUpon>GridSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\PostItField.xaml.cs">
       <DependentUpon>PostItField.xaml</DependentUpon>
@@ -235,7 +243,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\BottomButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ColorButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GridSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
