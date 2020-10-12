@@ -28,6 +28,8 @@ namespace Notas.UserControls
             set => SetValue(BackgroundColorProperty, value);
         }
 
+        public int Position { get; set; } = 1;
+
         public bool ColorFocused 
         {
             get => (bool)GetValue(ColorFocusedProperty);
@@ -128,12 +130,12 @@ namespace Notas.UserControls
 
         private void BtnDown_Click(object sender, RoutedEventArgs e)
         {
-            DownClick?.Invoke(sender, e);
+            DownClick?.Invoke(this, e);
         }
 
         private void BtnUp_Click(object sender, RoutedEventArgs e)
         {
-            UpClick?.Invoke(sender, e);
+            UpClick?.Invoke(this, e);
         }
     }
 }

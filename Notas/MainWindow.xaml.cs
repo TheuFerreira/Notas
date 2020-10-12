@@ -20,7 +20,6 @@ namespace Notas
         private bool isSettings;
 
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -62,6 +61,7 @@ namespace Notas
         {
             if (Visibility == Visibility.Visible)
             {
+                int i = 1;
                 List<PostIt> postIts = PersistencePostIt.GetAll();
                 foreach (PostIt temp in postIts)
                 {
@@ -71,11 +71,16 @@ namespace Notas
                     postIt.TextFocus += PostIt_TextFocus;
                     postIt.TextChanged += PostIt_TextChanged;
                     postIt.LostFocus += PostIt_LostFocus;
+                    postIt.DownClick += PostIt_DownClick;
+                    postIt.UpClick += PostIt_UpClick;
                     postIt.Margin = new Thickness(0, 0, 0, 10);
                     postIt.BackgroundColor = temp.Color;
                     postIt.Id = temp.Id;
                     postIt.Text = temp.Content;
+                    postIt.Position = i;
                     groupPostIt.Children.Insert(0, postIt);
+
+                    i++;
                 }
             }
             else
@@ -110,11 +115,21 @@ namespace Notas
             postIt.TextFocus += PostIt_TextFocus;
             postIt.TextChanged += PostIt_TextChanged;
             postIt.LostFocus += PostIt_LostFocus;
+            postIt.DownClick += PostIt_DownClick;
+            postIt.UpClick += PostIt_UpClick;
             postIt.Margin = new Thickness(0, 0, 0, 10);
             postIt.Id = -1;
             postIt.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B");
             groupPostIt.Children.Insert(0, postIt);
             postIt.FocusTextField();
+
+            int pos = groupPostIt.Children.Count;
+            foreach (UIElement element in groupPostIt.Children)
+            {
+                PostItField temp = (PostItField)element;
+                temp.Position = pos;
+                pos--;
+            }
         }
 
         private void BtnDel_Click(object sender, RoutedEventArgs e)
@@ -139,6 +154,14 @@ namespace Notas
                 }
             }
 
+            int pos = 1;
+            foreach (UIElement element in groupPostIt.Children)
+            {
+                PostItField field = (PostItField)element;
+                field.Position = pos;
+                pos++;
+            }
+
             btnDel.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Visible;
         }
@@ -152,12 +175,12 @@ namespace Notas
                 {
                     if (postIt.Id == -1)
                     {
-                        PostIt temp = new PostIt(postIt.Text, postIt.BackgroundColor);
+                        PostIt temp = new PostIt(postIt.Text, postIt.BackgroundColor, postIt.Position);
                         PersistencePostIt.Add(temp);
                     }
                     else
                     {
-                        PostIt temp = new PostIt(postIt.Id, postIt.Text, postIt.BackgroundColor);
+                        PostIt temp = new PostIt(postIt.Id, postIt.Text, postIt.BackgroundColor, postIt.Position);
                         PersistencePostIt.Update(temp);
                     }
 
@@ -297,6 +320,49 @@ namespace Notas
 
                 groupPostIt.Children.Remove(postIt);
             }
+        }
+
+
+
+        private void PostIt_DownClick(object sender, RoutedEventArgs e)
+        {
+            PostItField field = (PostItField)sender;
+
+            if (field.Position == 1)
+                return;
+
+            int total = groupPostIt.Children.Count;
+
+            PostItField old = (PostItField)groupPostIt.Children[total - field.Position + 1];
+            old.Position++;
+
+            field.Position--;
+
+            groupPostIt.Children.Remove(field);
+            groupPostIt.Children.Insert(total - field.Position, field);
+
+            PersistencePostIt.UpdatePosition(new PostIt(old.Id, old.Position));
+            PersistencePostIt.UpdatePosition(new PostIt(field.Id, field.Position));
+        }
+
+        private void PostIt_UpClick(object sender, RoutedEventArgs e)
+        {
+            PostItField field = (PostItField)sender;
+            int total = groupPostIt.Children.Count;
+
+            if (field.Position == total)
+                return;
+
+            PostItField old = (PostItField)groupPostIt.Children[total - field.Position - 1];
+            old.Position--;
+
+            field.Position++;
+
+            groupPostIt.Children.Remove(field);
+            groupPostIt.Children.Insert(total - field.Position, field);
+
+            PersistencePostIt.UpdatePosition(new PostIt(old.Id, old.Position));
+            PersistencePostIt.UpdatePosition(new PostIt(field.Id, field.Position));
         }
 
 

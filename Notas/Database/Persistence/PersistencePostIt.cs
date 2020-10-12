@@ -29,10 +29,11 @@ namespace Notas.Database.Persistence
             {
                 Connect();
 
-                string str = "INSERT INTO postit(content, color) VALUES (@content, @color);";
+                string str = "INSERT INTO postit(content, color, position) VALUES (@content, @color, @position);";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@content", postIt.Content);
                 command.Parameters.AddWithValue("@color", postIt.Color);
+                command.Parameters.AddWithValue("@position", postIt.Position);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -73,11 +74,12 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "UPDATE postit SET content=@content, color=@color WHERE id=@id;";
+                string str = "UPDATE postit SET content=@content, color=@color, position=@position WHERE id=@id;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@id", postIt.Id);
                 command.Parameters.AddWithValue("@content", postIt.Content);
                 command.Parameters.AddWithValue("@color", postIt.Color.ToString());
+                command.Parameters.AddWithValue("@position", postIt.Position);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -112,6 +114,53 @@ namespace Notas.Database.Persistence
             }
         }
 
+        public static void UpdatePosition(PostIt postIt)
+        {
+            try
+            {
+                Connect();
+
+                string str = "UPDATE postit SET position = @position WHERE id = @id;";
+                SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
+                command.Parameters.AddWithValue("@id", postIt.Id);
+                command.Parameters.AddWithValue("@position", postIt.Position);
+
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Disconnect();
+            }
+        }
+
+        public static int CountPosition()
+        {
+            try
+            {
+                Connect();
+
+                string str = "SELECT COUNT(position) FROM postit WHERE position = 1;";
+                SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
+
+                if (int.TryParse(command.ExecuteScalar().ToString(), out int res))
+                    return res;
+                else
+                    return -1;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Disconnect();
+            }
+        }
+
         public static List<PostIt> GetAll()
         {
             Connect();
@@ -119,7 +168,7 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "SELECT id, content, color FROM postit;";
+                string str = "SELECT p.id, p.content, p.color, p.position FROM postit AS p ORDER BY p.position ASC;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 
                 SQLiteDataReader dr = command.ExecuteReader();
@@ -128,8 +177,9 @@ namespace Notas.Database.Persistence
                     long id = dr.GetInt64(0);
                     string content = dr.GetString(1);
                     SolidColorBrush color = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(2).ToString());
-                    
-                    PostIt temp = new PostIt(id, content, color);
+                    int position = dr.GetInt32(3);
+
+                    PostIt temp = new PostIt(id, content, color, position);
                     postIts.Add(temp);
                 }
                 dr.Close();

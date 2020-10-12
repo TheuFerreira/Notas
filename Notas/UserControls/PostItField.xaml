@@ -36,12 +36,12 @@
                                         <Button x:Name="brSelect" Click="BrSelect_Click" HorizontalAlignment="Left" Margin="5,5,0,0" Style="{DynamicResource CustomBtn}" VerticalAlignment="Top">
                                             <Button.Content>
                                                 <Grid Background="Transparent">
-                                                    <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="45" Height="15" Width="15"/>
+                                                    <Border x:Name="border" BorderBrush="White" BorderThickness="1" CornerRadius="45" Height="15" Width="15"/>
                                                 </Grid>
                                             </Button.Content>
                                         </Button>
 
-                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
+                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="0" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
                                             <Button.Content>
                                                 <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="White" HorizontalAlignment="Center" Text="&#xE7E6;" VerticalAlignment="Center"/>
                                             </Button.Content>
@@ -69,6 +69,7 @@
 
                                             <MultiDataTrigger.Setters>
                                                 <Setter TargetName="brSelect" Property="Opacity" Value=".5"/>
+                                                <Setter TargetName="border" Property="Background" Value="Transparent"/>
                                             </MultiDataTrigger.Setters>
                                         </MultiDataTrigger>
 
@@ -80,6 +81,7 @@
 
                                             <MultiDataTrigger.Setters>
                                                 <Setter TargetName="brSelect" Property="Opacity" Value="0"/>
+                                                <Setter TargetName="border" Property="Background" Value="Transparent"/>
                                             </MultiDataTrigger.Setters>
                                         </MultiDataTrigger>
 
@@ -88,16 +90,16 @@
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="True">
-                                            <Setter TargetName="brSelect" Property="Background" Value="White"/>
+                                            <Setter TargetName="border" Property="Background" Value="White"/>
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="False">
-                                            <Setter TargetName="brSelect" Property="Background" Value="Transparent"/>
+                                            <Setter TargetName="border" Property="Background" Value="Transparent"/>
                                         </DataTrigger>
                                         
                                         
                                         
-                                        <DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="False">
+                                        <!--<DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="False">
                                             <Setter TargetName="btnColor" Property="Opacity" Value=".5"/>
                                         </DataTrigger>
                                         
@@ -111,7 +113,7 @@
 
                                         <DataTrigger Binding="{Binding ElementName=postIt, Path=ColorFocused}" Value="True">
                                             <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
+                                        </DataTrigger>-->
 
 
 

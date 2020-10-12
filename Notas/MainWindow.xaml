@@ -18,7 +18,7 @@
                 <RowDefinition Height="0"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer x:Name="fieldViewer" Grid.Row="1">
                 <StackPanel x:Name="groupPostIt" Grid.Row="1" Margin="10,10,10,0"/>
             </ScrollViewer>
 

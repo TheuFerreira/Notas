@@ -4,9 +4,16 @@
              xmlns:local="clr-namespace:Notas">
     <Application.Resources>
 
+        <!-- COLORS DARK AND WHITE-->
+
         <SolidColorBrush x:Key="Background" Color="#2B2B2B"/>
         <SolidColorBrush x:Key="Foreground" Color="#1B1B1B"/>
 
+        <SolidColorBrush x:Key="WhiteBackground" Color="White"/>
+        <SolidColorBrush x:Key="WhiteForeground" Color="Black"/>
+
+        <!-- TEMPLATES -->
+        
         <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />

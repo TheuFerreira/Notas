@@ -89,7 +89,9 @@ namespace Notas
                 .ConfigureRunner(rb => rb
                     .AddSQLite()
                     .WithGlobalConnectionString(PersistencePostIt.ConnectionString)
-                    .ScanIn(typeof(AddColumnColor).Assembly).For.Migrations())
+                    .ScanIn(typeof(AddColumnColor).Assembly)
+                    .ScanIn(typeof(AddColumnPosition).Assembly)
+                    .For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }
