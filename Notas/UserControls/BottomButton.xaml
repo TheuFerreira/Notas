@@ -6,15 +6,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="45">
-    <Button Click="Button_Click" Height="30" Width="45">
+             d:DesignHeight="35" d:DesignWidth="45">
+    <Button Click="Button_Click" Height="35" Width="45">
         <Button.Style>
             <Style TargetType="Button">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Grid x:Name="gd" Background="Transparent">
-                                <TextBlock x:Name="tbMarked" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="{Binding ElementName=btnBottom, Path=Text}" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="tbMarked" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" Text="{Binding ElementName=btnBottom, Path=Text}" VerticalAlignment="Center"/>
                             </Grid>
 
                             <ControlTemplate.Triggers>

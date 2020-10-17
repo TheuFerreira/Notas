@@ -8,15 +8,18 @@ namespace Notas.UserControls
     /// </summary>
     public partial class GridSettings : UserControl
     {
-        public GridSettings()
+        public event RoutedEventHandler ClickSwitchMode;
+
+        public GridSettings(bool mode)
         {
             InitializeComponent();
+
+            btnMode.IsSecondText = mode;
         }
 
         private void BtnDark_Click(object sender, RoutedEventArgs e)
         {
-            BottomButton btn = (BottomButton)sender;
-            btn.IsSecondText = !btn.IsSecondText;
+            ClickSwitchMode?.Invoke(sender, e);
         }
     }
 }

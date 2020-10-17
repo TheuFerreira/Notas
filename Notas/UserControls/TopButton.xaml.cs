@@ -12,6 +12,7 @@ namespace Notas.UserControls
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(TopButton));
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(CornerRadius), typeof(TopButton));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(TopButton), new PropertyMetadata(""));
+        public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register("TextColor", typeof(SolidColorBrush), typeof(TopButton));
 
         public SolidColorBrush SelectionColor
         {
@@ -23,6 +24,12 @@ namespace Notas.UserControls
         {
             get => (string)GetValue(TextProperty);
             set => SetValue(TextProperty, value);
+        }
+
+        public SolidColorBrush TextColor
+        {
+            get => (SolidColorBrush)GetValue(TextColorProperty);
+            set => SetValue(TextColorProperty, value);
         }
 
         public CornerRadius Radius

@@ -18,12 +18,15 @@ namespace Notas
     {
         private PostItField tempPost;
         private bool isSettings;
+        private bool mode;
 
 
         public MainWindow()
         {
             InitializeComponent();
 
+            mode = true;
+            SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
@@ -74,7 +77,7 @@ namespace Notas
                     postIt.DownClick += PostIt_DownClick;
                     postIt.UpClick += PostIt_UpClick;
                     postIt.Margin = new Thickness(0, 0, 0, 10);
-                    postIt.BackgroundColor = temp.Color;
+                    postIt.BackgroundColor = Resources["BackgroundColor"] as SolidColorBrush;
                     postIt.Id = temp.Id;
                     postIt.Text = temp.Content;
                     postIt.Position = i;
@@ -119,7 +122,7 @@ namespace Notas
             postIt.UpClick += PostIt_UpClick;
             postIt.Margin = new Thickness(0, 0, 0, 10);
             postIt.Id = -1;
-            postIt.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B");
+            postIt.BackgroundColor = Resources["BackgroundColor"] as SolidColorBrush;
             groupPostIt.Children.Insert(0, postIt);
             postIt.FocusTextField();
 
@@ -198,7 +201,8 @@ namespace Notas
             isSettings = !isSettings;
 
             groupColors.Children.Clear();
-            GridSettings settings = new GridSettings();
+            GridSettings settings = new GridSettings(!mode);
+            settings.ClickSwitchMode += Settings_ClickSwitchMode;
             groupColors.Children.Add(settings);
             gridField.RowDefinitions[2].Height = isSettings ? new GridLength(35) : new GridLength(0);
         }
@@ -324,6 +328,18 @@ namespace Notas
 
 
 
+        private void Settings_ClickSwitchMode(object sender, RoutedEventArgs e)
+        {
+            mode = !mode;
+
+            BottomButton btn = (BottomButton)sender;
+            btn.IsSecondText = !mode;
+
+            SwitchColor();
+        }
+
+
+
         private void PostIt_DownClick(object sender, RoutedEventArgs e)
         {
             PostItField field = (PostItField)sender;
@@ -380,6 +396,24 @@ namespace Notas
 
             btnColor.IsSelected = true;
             tempPost.BackgroundColor = btnColor.BackgroundColor;
+        }
+    
+
+
+        private void SwitchColor()
+        {
+            if (mode)
+            {
+                Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFE8E8E8");
+                Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("Black");
+            }
+            else
+            {
+                Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1B1B1B");
+                Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#2B2B2B");
+                Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+            }
         }
     }
 }

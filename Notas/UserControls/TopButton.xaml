@@ -14,7 +14,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="gd" Background="Transparent" BorderBrush="{x:Null}" BorderThickness="0" CornerRadius="{Binding ElementName=topButton, Path=Radius}">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="White" HorizontalAlignment="Center" Text="{Binding ElementName=topButton, Path=Text}" VerticalAlignment="Center"/>
+                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{Binding ElementName=topButton, Path=TextColor}" HorizontalAlignment="Center" Text="{Binding ElementName=topButton, Path=Text}" VerticalAlignment="Center"/>
                             </Border>
 
                             <ControlTemplate.Triggers>

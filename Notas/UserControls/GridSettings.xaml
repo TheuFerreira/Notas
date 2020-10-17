@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="400">
     <StackPanel Orientation="Horizontal">
-        <local:BottomButton SelectionColor="{StaticResource Background}" Text="&#xE897;"/>
-        <local:BottomButton Click="BtnDark_Click" SelectionColor="{StaticResource Background}" SecondText="&#xE706;" Text="&#xE793;"/>
+        <local:BottomButton SelectionColor="{DynamicResource SelectionColor}" Text="&#xE897;"/>
+        <local:BottomButton x:Name="btnMode" Click="BtnDark_Click" SelectionColor="{DynamicResource SelectionColor}" SecondText="&#xE706;" Text="&#xE793;"/>
     </StackPanel>
 </UserControl>
