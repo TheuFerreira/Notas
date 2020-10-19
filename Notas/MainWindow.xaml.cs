@@ -1,4 +1,5 @@
-﻿using Notas.Database.Persistence;
+﻿using Microsoft.Win32;
+using Notas.Database.Persistence;
 using Notas.Database.Table;
 using Notas.Extensions;
 using Notas.UserControls;
@@ -25,7 +26,7 @@ namespace Notas
         {
             InitializeComponent();
 
-            mode = true;
+            LoadPreferences();
             SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -332,6 +333,10 @@ namespace Notas
         {
             mode = !mode;
 
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("Mode", mode);
+            key.Close();
+
             BottomButton btn = (BottomButton)sender;
             btn.IsSecondText = !mode;
 
@@ -400,6 +405,20 @@ namespace Notas
     
 
 
+        private void LoadPreferences()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Ferreira\Notas");
+            if (key != null)
+            {
+                mode = bool.Parse(key.GetValue("Mode").ToString());
+                key.Close();
+            }
+            else
+            {
+                mode = true;
+            }
+        }
+
         private void SwitchColor()
         {
             if (mode)
@@ -407,12 +426,14 @@ namespace Notas
                 Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
                 Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFE8E8E8");
                 Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("Black");
+                Resources["ScrollForegroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFB9B9B9");
             }
             else
             {
                 Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1B1B1B");
                 Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#2B2B2B");
                 Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ScrollForegroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1B1B1B");
             }
         }
     }

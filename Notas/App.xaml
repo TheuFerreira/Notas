@@ -9,6 +9,7 @@
         <SolidColorBrush x:Key="BackgroundColor" Color="White"/>
         <SolidColorBrush x:Key="SelectionColor" Color="#FFE8E8E8"/>
         <SolidColorBrush x:Key="TextColor" Color="Black"/>
+        <SolidColorBrush x:Key="ScrollForegroundColor" Color="#FFB9B9B9"/>
 
         <!-- TEMPLATES -->
         
@@ -34,7 +35,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border x:Name="border" CornerRadius="3" Background="{DynamicResource Foreground}" BorderBrush="{DynamicResource Foreground}" BorderThickness="1"/>
+                        <Border x:Name="border" CornerRadius="3" Background="{DynamicResource ScrollForegroundColor}" BorderBrush="{DynamicResource ScrollForegroundColor}" BorderThickness="1"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
