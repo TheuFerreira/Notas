@@ -57,7 +57,7 @@ namespace Notas
                     gridField.RowDefinitions[2].Height = new GridLength(0);
                     isSettings = false;
                 }
-                groupColors.Children.Clear();
+                groupBottom.Children.Clear();
             }
         }
 
@@ -201,10 +201,10 @@ namespace Notas
         {
             isSettings = !isSettings;
 
-            groupColors.Children.Clear();
+            groupBottom.Children.Clear();
             GridSettings settings = new GridSettings(!mode);
             settings.ClickSwitchMode += Settings_ClickSwitchMode;
-            groupColors.Children.Add(settings);
+            groupBottom.Children.Add(settings);
             gridField.RowDefinitions[2].Height = isSettings ? new GridLength(35) : new GridLength(0);
         }
 
@@ -262,7 +262,7 @@ namespace Notas
 
             post.ColorFocused = !post.ColorFocused;
 
-            groupColors.Children.Clear();
+            groupBottom.Children.Clear();
             List<string> colors = EnumExtension.EnumColors();
             foreach (string color in colors)
             {
@@ -270,7 +270,7 @@ namespace Notas
                 btn.Click += SelectColor_Click;
                 btn.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom(color);
                 btn.IsSelected = btn.BackgroundColor.Color == post.BackgroundColor.Color;
-                groupColors.Children.Add(btn);
+                groupBottom.Children.Add(btn);
             }
 
             PostIt_TextFocus(null, null);
@@ -392,7 +392,7 @@ namespace Notas
         {
             ColorButton btnColor = (ColorButton)sender;
 
-            foreach (UIElement element in groupColors.Children)
+            foreach (UIElement element in groupBottom.Children)
             {
                 ColorButton temp = (ColorButton)element;
                 if (temp.BackgroundColor.Color != btnColor.BackgroundColor.Color)

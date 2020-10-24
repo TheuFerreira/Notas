@@ -29,15 +29,16 @@
                 
                 <Grid Background="Transparent">
 
-                    <control:TopButton x:Name="btnAdd" Click="BtnAdd_Click" Height="35" HorizontalAlignment="Left" Radius="10,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE710;" TextColor="{DynamicResource TextColor}" VerticalAlignment="Center" Width="45"/>
-                    <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#59213;" TextColor="{DynamicResource TextColor}" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
-                    <control:TopButton x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE74E;" TextColor="{DynamicResource TextColor}" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
-                    <control:TopButton x:Name="btnSettings" Click="BtnSettings_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE713;" TextColor="{DynamicResource TextColor}" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnAdd" Click="BtnAdd_Click" Height="35" HorizontalAlignment="Left" Radius="10,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE710;" TextColor="{DynamicResource TextColor}" ToolTip="Adicionar" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton Height="35" HorizontalAlignment="Left" Radius="10,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE72B;" TextColor="{DynamicResource TextColor}" ToolTip="Voltar" VerticalAlignment="Center" Visibility="Collapsed" Width="45"/>
+                    <control:TopButton x:Name="btnDel" Click="BtnDel_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#59213;" TextColor="{DynamicResource TextColor}" ToolTip="Excluir" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnSave" Click="BtnSave_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE74E;" TextColor="{DynamicResource TextColor}" ToolTip="Salvar" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnSettings" Click="BtnSettings_Click" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#xE713;" TextColor="{DynamicResource TextColor}" ToolTip="Configurações" VerticalAlignment="Center" Width="45"/>
 
                     <TextBlock x:Name="titleNotas" FontSize="18" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 
-                    <control:TopButton x:Name="btnMinimize" Click="BtnMinimize_Click" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#59192;" TextColor="{DynamicResource TextColor}" VerticalAlignment="Center" Width="45"/>
-                    <control:TopButton x:Name="btnClose" Click="BtnClose_Click" Height="35" HorizontalAlignment="Right" Radius="0,10,0,0" SelectionColor="Red" Text="&#59540;" TextColor="{DynamicResource TextColor}" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnMinimize" Click="BtnMinimize_Click" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" SelectionColor="{DynamicResource SelectionColor}" Text="&#59192;" TextColor="{DynamicResource TextColor}" ToolTip="Minimizar" VerticalAlignment="Center" Width="45"/>
+                    <control:TopButton x:Name="btnClose" Click="BtnClose_Click" Height="35" HorizontalAlignment="Right" Radius="0,10,0,0" SelectionColor="Red" Text="&#59540;" TextColor="{DynamicResource TextColor}" ToolTip="Fechar" VerticalAlignment="Center" Width="45"/>
                 </Grid>
             </Border>
 
@@ -46,7 +47,7 @@
                     <DropShadowEffect Direction="90" BlurRadius="15"/>
                 </Border.Effect>
 
-                <StackPanel x:Name="groupColors" Orientation="Horizontal" VerticalAlignment="Center"/>
+                <StackPanel x:Name="groupBottom" Orientation="Horizontal" VerticalAlignment="Center"/>
             </Border>
         </Grid>
     </Border>

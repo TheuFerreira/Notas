@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Notas.UserControls
@@ -15,6 +16,11 @@ namespace Notas.UserControls
             InitializeComponent();
 
             btnMode.IsSecondText = mode;
+        }
+
+        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/TheuFerreira/Notas");
         }
 
         private void BtnDark_Click(object sender, RoutedEventArgs e)
