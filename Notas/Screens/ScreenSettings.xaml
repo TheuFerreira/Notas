@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Notas.Screens.ScreenSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Notas.Screens"
+             xmlns:controls="clr-namespace:Notas.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <ScrollViewer Background="{x:Null}">
+        <StackPanel Background="{x:Null}" Margin="10,10,10,0">
+
+            <Grid Margin="0,10">
+                <TextBlock Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Left" Text="Modo Claro/Escuro"/>
+                <CheckBox x:Name="cbMode" Height="20" HorizontalAlignment="Right" Style="{StaticResource CheckBoxStyle}"/>
+            </Grid>
+
+            <Grid Margin="0,10">
+                <TextBlock Foreground="{DynamicResource TextColor}" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Left" Text="Fonte Padrão"/>
+                <ComboBox x:Name="cbFonts" HorizontalAlignment="Right" Width="100"/>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

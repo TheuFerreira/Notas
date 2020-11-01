@@ -217,6 +217,12 @@
     <Compile Include="Database\Table\PostIt.cs" />
     <Compile Include="Enums\EnumColor.cs" />
     <Compile Include="Extensions\EnumExtension.cs" />
+    <Compile Include="Screens\ScreenPostIt.xaml.cs">
+      <DependentUpon>ScreenPostIt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ScreenSettings.xaml.cs">
+      <DependentUpon>ScreenSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\BottomButton.xaml.cs">
       <DependentUpon>BottomButton.xaml</DependentUpon>
     </Compile>
@@ -244,6 +250,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Screens\ScreenPostIt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\ScreenSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\BottomButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -15,6 +15,7 @@ namespace Notas.UserControls
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(PostItField), new PropertyMetadata(""));
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(SolidColorBrush), typeof(PostItField), new PropertyMetadata((SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B")));
         public static readonly DependencyProperty ColorFocusedProperty = DependencyProperty.Register("ColorFocused", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
+        public new static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(PostItField), new PropertyMetadata(new FontFamily("Segoe UI")));
 
         public long Id
         {
@@ -50,6 +51,12 @@ namespace Notas.UserControls
         {
             get => (string)GetValue(TextProperty);
             set => textField.Text = value;
+        }
+
+        public new FontFamily FontFamily
+        {
+            get => (FontFamily)GetValue(FontFamilyProperty);
+            set => textField.FontFamily = value;
         }
 
         public event RoutedEventHandler ColorClick;
