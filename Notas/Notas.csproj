@@ -223,20 +223,11 @@
     <Compile Include="Screens\ScreenSettings.xaml.cs">
       <DependentUpon>ScreenSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BottomButton.xaml.cs">
-      <DependentUpon>BottomButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ColorButton.xaml.cs">
-      <DependentUpon>ColorButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\GridSettings.xaml.cs">
-      <DependentUpon>GridSettings.xaml</DependentUpon>
+    <Compile Include="UserControls\MenuButton.xaml.cs">
+      <DependentUpon>MenuButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\PostItField.xaml.cs">
       <DependentUpon>PostItField.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\TopButton.xaml.cs">
-      <DependentUpon>TopButton.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -258,23 +249,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\BottomButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\ColorButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\GridSettings.xaml">
+    <Page Include="UserControls\MenuButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PostItField.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\TopButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Notas.UserControls
 {
@@ -11,74 +10,51 @@ namespace Notas.UserControls
     /// </summary>
     public partial class PostItField : UserControl
     {
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(PostItField), new PropertyMetadata(""));
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(SolidColorBrush), typeof(PostItField), new PropertyMetadata((SolidColorBrush)new BrushConverter().ConvertFrom("#1B1B1B")));
-        public static readonly DependencyProperty ColorFocusedProperty = DependencyProperty.Register("ColorFocused", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
-        public new static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(PostItField), new PropertyMetadata(new FontFamily("Segoe UI")));
+        public new static readonly DependencyProperty IsFocusedProperty = DependencyProperty.Register("IsFocused", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(PostItField), new PropertyMetadata(string.Empty));
 
-        public long Id
+
+
+        public long Id { get; set; }
+
+        public bool IsChanged { get; set; }
+
+        public bool IsFixed
         {
-            get;
-            set;
+            get => (bool)GetValue(IsFixedProperty);
+            set => SetValue(IsFixedProperty, value);
         }
 
-        public SolidColorBrush BackgroundColor
+        public new bool IsFocused
         {
-            get => (SolidColorBrush)GetValue(BackgroundColorProperty);
-            set => SetValue(BackgroundColorProperty, value);
+            get => (bool)GetValue(IsFocusedProperty);
+            set => SetValue(IsFocusedProperty, value);
         }
-
-        public int Position { get; set; } = 1;
-
-        public bool ColorFocused 
-        {
-            get => (bool)GetValue(ColorFocusedProperty);
-            set => SetValue(ColorFocusedProperty, value);
-        }
-
-        public bool TextFocused { get; set; }
-
-        public bool IsSelected
-        {
-            get => (bool)GetValue(IsSelectedProperty);
-            set => SetValue(IsSelectedProperty, value);
-        }
-
-        public string OldText { get; set; }
 
         public string Text
         {
             get => (string)GetValue(TextProperty);
-            set => textField.Text = value;
+            set => SetValue(TextProperty, value);
         }
 
-        public new FontFamily FontFamily
-        {
-            get => (FontFamily)GetValue(FontFamilyProperty);
-            set => textField.FontFamily = value;
-        }
-
-        public event RoutedEventHandler ColorClick;
-        public event RoutedEventHandler Click;
-        public event RoutedEventHandler TextFocus;
-        public event TextChangedEventHandler TextChanged;
-        public new event RoutedEventHandler LostFocus;
-
-        public event RoutedEventHandler DownClick;
-        public event RoutedEventHandler UpClick;
 
 
-        public PostItField()
+        public PostItField(string text)
         {
             InitializeComponent();
 
-            Loaded += PostItField_Loaded;
-        }
+            Margin = new Thickness(0, 5, 0, 5);
+            Text = text;
+            bd.Height = textField.Height + 30;
 
-        private void PostItField_Loaded(object sender, RoutedEventArgs e)
-        {
-            OldText = Text;
+            bdSelect.MouseLeftButtonDown += BdSelect_MouseLeftButtonDown;
+            tbFixed.MouseLeftButtonDown += TbFixed_MouseLeftButtonDown;
+            tbDown.MouseLeftButtonDown += TbDown_MouseLeftButtonDown;
+            tbUp.MouseLeftButtonDown += TbUp_MouseLeftButtonDown;
+
+            textField.LostFocus += TextField_LostFocus;
+            textField.TextChanged += TextField_TextChanged;
         }
 
         public void FocusTextField()
@@ -91,58 +67,49 @@ namespace Notas.UserControls
         }
 
 
-        private void BtnColor_Click(object sender, RoutedEventArgs e)
+
+        private void BdSelect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ColorClick?.Invoke(this, e);
+            IsFocused = !IsFocused;
+            SelectClick?.Invoke(this, e);
         }
 
-        private void BrSelect_Click(object sender, RoutedEventArgs e)
+        private void TbFixed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Click?.Invoke(this, e);
+            IsFixed = !IsFixed;
         }
+
+        private void TbDown_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DownClick?.Invoke(this, e);
+        }
+
+        private void TbUp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            UpClick?.Invoke(this, e);
+        }
+
+
 
         private void TextField_LostFocus(object sender, RoutedEventArgs e)
         {
-            OldText = "";
-
             LostFocus?.Invoke(this, e);
         }
 
         private void TextField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetValue(TextProperty, textField.Text);
+            IsChanged = true;
+            bd.Height = textField.Height + 30;
+        
             TextChanged?.Invoke(this, e);
-            UpdateSize();
-        }
-
-        private void TextField_GotFocus(object sender, RoutedEventArgs e)
-        {
-            OldText = Text;
-            TextFocused = true;
-
-            TextFocus?.Invoke(this, e);
-        }
-
-        private void TextField_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateSize();
-        }
-
-        private void UpdateSize()
-        {
-            textField.Height = textField.LineCount >= 1 ? textField.LineCount * 30 : 30;
-            border.Height = textField.Height + 30;
         }
 
 
-        private void BtnDown_Click(object sender, RoutedEventArgs e)
-        {
-            DownClick?.Invoke(this, e);
-        }
 
-        private void BtnUp_Click(object sender, RoutedEventArgs e)
-        {
-            UpClick?.Invoke(this, e);
-        }
+        public event RoutedEventHandler SelectClick;
+        public event RoutedEventHandler DownClick;
+        public event RoutedEventHandler UpClick;
+        public new event RoutedEventHandler LostFocus;
+        public event TextChangedEventHandler TextChanged;
     }
 }

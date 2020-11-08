@@ -2,6 +2,7 @@
 using Notas.Database.Table;
 using Notas.UserControls;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,240 +14,152 @@ namespace Notas.Screens
     /// </summary>
     public partial class ScreenPostIt : UserControl
     {
-        private readonly FontFamily fontFamily;
+        public List<PostItField> PostItFields { get; set; }
 
-        public event RoutedEventHandler Select;
-        public event RoutedEventHandler TextFocus;
-        public event RoutedEventHandler TextChanged;
+        public bool IsSelected { get; set; }
 
-        public ScreenPostIt(FontFamily fontFamily)
+
+
+        public ScreenPostIt()
         {
             InitializeComponent();
 
-            this.fontFamily = fontFamily;
-
-            int i = 1;
-            List<PostIt> postIts = PersistencePostIt.GetAll();
-            foreach (PostIt temp in postIts)
-            {
-                PostItField postIt = new PostItField();
-                postIt.Click += PostItSelect_Click;
-                /*postIt.ColorClick += PostItSelect_ColorClick;*/
-                postIt.TextFocus += PostIt_TextFocus;
-                postIt.TextChanged += PostIt_TextChanged;
-                postIt.LostFocus += PostIt_LostFocus;
-                postIt.DownClick += PostIt_DownClick;
-                postIt.UpClick += PostIt_UpClick;
-                postIt.FontFamily = fontFamily;
-                postIt.Margin = new Thickness(0, 0, 0, 10);
-                postIt.BackgroundColor = Resources["BackgroundColor"] as SolidColorBrush;
-                postIt.Id = temp.Id;
-                postIt.Text = temp.Content;
-                postIt.Position = i;
-                group.Children.Insert(0, postIt);
-
-                i++;
-            }
+            Loaded += ScreenPostIt_Loaded;
         }
 
         public void AddPostIt()
         {
-            for (int i = 0; i < group.Children.Count; i++)
-            {
-                PostItField temp = (PostItField)group.Children[i];
-                if (string.IsNullOrWhiteSpace(temp.Text))
-                {
-                    group.Children.Remove(temp);
-                    i--;
-                }
-            }
+            NewPostItField(new PostIt());
+        }
 
-            PostItField postIt = new PostItField();
-            postIt.Click += PostItSelect_Click;
-            //postIt.ColorClick += PostItSelect_ColorClick;
-            postIt.TextFocus += PostIt_TextFocus;
-            postIt.TextChanged += PostIt_TextChanged;
-            postIt.LostFocus += PostIt_LostFocus;
-            postIt.DownClick += PostIt_DownClick;
-            postIt.UpClick += PostIt_UpClick;
-            postIt.FontFamily = fontFamily;
-            postIt.Margin = new Thickness(0, 0, 0, 10);
-            postIt.Id = -1;
-            postIt.BackgroundColor = Resources["BackgroundColor"] as SolidColorBrush;
-            group.Children.Insert(0, postIt);
-            postIt.FocusTextField();
-
-            int pos = group.Children.Count;
-            foreach (UIElement element in group.Children)
+        public void SavePostIt()
+        {
+            int i = 1;
+            foreach (PostItField pf in PostItFields)
             {
-                PostItField temp = (PostItField)element;
-                temp.Position = pos;
-                pos--;
+                PostIt postIt = new PostIt(pf.Id, pf.textField.Text, (SolidColorBrush)new BrushConverter().ConvertFrom("#1b1b1b"), i);
+                if (pf.Id == -1)
+                    PersistencePostIt.Add(postIt);
+                else
+                    PersistencePostIt.Update(postIt);
+                i++;
             }
         }
 
         public void DelPostIt()
         {
-            for (int i = 0; i < group.Children.Count; i++)
+            IsSelected = false;
+
+            List<PostItField> toDelete = PostItFields.Where(x => x.IsFocused).Cast<PostItField>().ToList();
+            foreach (PostItField pf in toDelete)
             {
-                PostItField postIt = (PostItField)group.Children[i];
-                if (postIt.IsSelected == true)
-                {
-                    bool del = true;
-                    if (postIt.Id != -1)
-                    {
-                        PostIt temp = new PostIt(postIt.Id);
-                        del = PersistencePostIt.Delete(temp);
-                    }
+                PostItFields.Remove(pf);
+                group.Children.Remove(pf);
 
-                    if (del)
-                    {
-                        group.Children.Remove(postIt);
-                        i--;
-                    }
-                }
+                PostIt postIt = new PostIt(pf.Id);
+                PersistencePostIt.Delete(postIt);
             }
-
-            int pos = 1;
-            foreach (UIElement element in group.Children)
-            {
-                PostItField field = (PostItField)element;
-                field.Position = pos;
-                pos++;
-            }
-
+            PostItFields.ForEach(x => x.textField.IsEnabled = true);
+            SavePostIt();
         }
 
-        public void SavePostIt()
+
+
+        private void ScreenPostIt_Loaded(object sender, RoutedEventArgs e)
         {
-            for (int i = group.Children.Count - 1; i >= 0; i--)
+            PostItFields = new List<PostItField>();
+            List<PostIt> postIts = PersistencePostIt.GetAll();
+            foreach (PostIt post in postIts)
             {
-                PostItField postIt = (PostItField)group.Children[i];
-                if (postIt.TextFocused)
-                {
-                    if (postIt.Id == -1)
-                    {
-                        PostIt temp = new PostIt(postIt.Text, postIt.BackgroundColor, postIt.Position);
-                        PersistencePostIt.Add(temp);
-                    }
-                    else
-                    {
-                        PostIt temp = new PostIt(postIt.Id, postIt.Text, postIt.BackgroundColor, postIt.Position);
-                        PersistencePostIt.Update(temp);
-                    }
-
-                    postIt.TextFocused = false;
-                    postIt.OldText = postIt.Text;
-                }
+                NewPostItField(post);
             }
         }
 
-        private void PostItSelect_Click(object sender, RoutedEventArgs e)
+        private void NewPostItField(PostIt post)
         {
-            if (sender != null)
-            {
-                PostItField post = (PostItField)sender;
-                post.IsSelected = !post.IsSelected;
-            }
+            PostItField pf = new PostItField(post.Content);
 
-            bool showDelete = false;
-            foreach (UIElement element in group.Children)
-            {
-                PostItField postIt = (PostItField)element;
-                if (postIt.IsSelected == true)
-                    showDelete = true;
-            }
+            pf.SelectClick += Pf_SelectClick;
+            pf.LostFocus += Pf_LostFocus;
+            pf.TextChanged += Pf_TextChanged;
+            pf.DownClick += Pf_DownClick;
+            pf.UpClick += Pf_UpClick;
 
-            Select?.Invoke(showDelete, e);
+            pf.Id = post.Id;
+
+            group.Children.Insert(0, pf);
+            PostItFields.Insert(0, pf);
+
+            if (post.Id == -1)
+                pf.FocusTextField();
         }
 
-        private void PostIt_TextFocus(object sender, RoutedEventArgs e)
+
+
+        private void Pf_SelectClick(object sender, RoutedEventArgs e)
         {
-            foreach (UIElement element in group.Children)
-            {
-                PostItField temp = (PostItField)element;
-                if (temp.IsSelected == true)
-                    temp.IsSelected = false;
-            }
+            int id = PostItFields.Where(x => x.IsFocused).Count();
+            IsSelected = id > 0;
 
-            TextFocus?.Invoke(sender, e);
+            PostItFields.ForEach(x => x.textField.IsEnabled = id == 0);
+            ToDelete?.Invoke(this, e);
         }
 
-        private void PostIt_TextChanged(object sender, TextChangedEventArgs e)
+        private void Pf_LostFocus(object sender, RoutedEventArgs e)
+        {
+            PostItField pf = (PostItField)sender;
+
+            if (pf.Id == -1 && string.IsNullOrWhiteSpace(pf.Text))
+            {
+                PostItFields.Remove(pf);
+                group.Children.Remove(pf);
+
+                TextChanged?.Invoke(this, e);
+            }
+        }
+
+        private void Pf_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextChanged?.Invoke(this, e);
+        }
+
+        private void Pf_DownClick(object sender, RoutedEventArgs e)
         {
             PostItField postIt = (PostItField)sender;
+            int index = PostItFields.IndexOf(postIt);
 
-            if (postIt.TextFocused == false)
+            if (index == PostItFields.Count - 1)
                 return;
 
-            bool show = false;
-            foreach (UIElement element in group.Children)
-            {
-                PostItField temp = (PostItField)element;
-                if (temp.OldText != temp.Text)
-                {
-                    show = true;
-                    break;
-                }
-            }
+            PostItFields.RemoveAt(index);
+            PostItFields.Insert(index + 1, postIt);
 
-            TextChanged?.Invoke(show, e);
+            group.Children.RemoveAt(index);
+            group.Children.Insert(index + 1, postIt);
+
+            SavePostIt();
         }
 
-        private void PostIt_LostFocus(object sender, RoutedEventArgs e)
+        private void Pf_UpClick(object sender, RoutedEventArgs e)
         {
             PostItField postIt = (PostItField)sender;
-            if (string.IsNullOrWhiteSpace(postIt.Text))
-            {
-                if (postIt.Id != -1)
-                {
-                    PostIt temp = new PostIt(postIt.Id);
-                    PersistencePostIt.Delete(temp);
-                }
+            int index = PostItFields.IndexOf(postIt);
 
-                group.Children.Remove(postIt);
-            }
-        }
-
-        private void PostIt_DownClick(object sender, RoutedEventArgs e)
-        {
-            PostItField field = (PostItField)sender;
-
-            if (field.Position == 1)
+            if (index == 0)
                 return;
 
-            int total = group.Children.Count;
+            PostItFields.RemoveAt(index);
+            PostItFields.Insert(index - 1, postIt);
 
-            PostItField old = (PostItField)group.Children[total - field.Position + 1];
-            old.Position++;
+            group.Children.RemoveAt(index);
+            group.Children.Insert(index - 1, postIt);
 
-            field.Position--;
-
-            group.Children.Remove(field);
-            group.Children.Insert(total - field.Position, field);
-
-            PersistencePostIt.UpdatePosition(new PostIt(old.Id, old.Position));
-            PersistencePostIt.UpdatePosition(new PostIt(field.Id, field.Position));
+            SavePostIt();
         }
 
-        private void PostIt_UpClick(object sender, RoutedEventArgs e)
-        {
-            PostItField field = (PostItField)sender;
-            int total = group.Children.Count;
 
-            if (field.Position == total)
-                return;
 
-            PostItField old = (PostItField)group.Children[total - field.Position - 1];
-            old.Position--;
-
-            field.Position++;
-
-            group.Children.Remove(field);
-            group.Children.Insert(total - field.Position, field);
-
-            PersistencePostIt.UpdatePosition(new PostIt(old.Id, old.Position));
-            PersistencePostIt.UpdatePosition(new PostIt(field.Id, field.Position));
-        }
+        public event RoutedEventHandler TextChanged;
+        public event RoutedEventHandler ToDelete;
     }
 }

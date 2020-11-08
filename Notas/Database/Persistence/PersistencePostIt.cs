@@ -92,51 +92,6 @@ namespace Notas.Database.Persistence
             }
         }
 
-        public static void UpdateColor(PostIt postIt)
-        {
-            Connect();
-
-            try
-            {
-                string str = "UPDATE postit SET color=@color WHERE id=@id;";
-                SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
-                command.Parameters.AddWithValue("@id", postIt.Id);
-                command.Parameters.AddWithValue("@color", postIt.Color.ToString());
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                Disconnect();
-            }
-        }
-
-        public static void UpdatePosition(PostIt postIt)
-        {
-            try
-            {
-                Connect();
-
-                string str = "UPDATE postit SET position = @position WHERE id = @id;";
-                SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
-                command.Parameters.AddWithValue("@id", postIt.Id);
-                command.Parameters.AddWithValue("@position", postIt.Position);
-
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                Disconnect();
-            }
-        }
-
         public static int CountPosition()
         {
             try
@@ -168,14 +123,14 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "SELECT p.id, p.content, p.color, p.position FROM postit AS p ORDER BY p.position ASC;";
+                string str = "SELECT p.id, p.content, p.color, p.position FROM postit AS p ORDER BY p.position DESC;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 
                 SQLiteDataReader dr = command.ExecuteReader();
                 while (dr.Read())
                 {
                     long id = dr.GetInt64(0);
-                    string content = dr.GetString(1);
+                    string content = dr[1].ToString();
                     SolidColorBrush color = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(2).ToString());
                     int position = dr.GetInt32(3);
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Name="postIt"
+﻿<UserControl x:Name="postItField"
              x:Class="Notas.UserControls.PostItField"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,144 +7,83 @@
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="400">
-
-    <UserControl.Resources>
-        <Style x:Key="CustomBtn" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
-    
-    <Border x:Name="border" Background="{DynamicResource BackgroundColor}" CornerRadius="10" Height="60">
+    <Border x:Name="bd" Background="{DynamicResource PostItBackground}" CornerRadius="10" Height="60">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"/>
         </Border.Effect>
 
         <Grid>
-            <Button>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <Grid x:Name="grid" Background="Transparent">
-                                        <Button x:Name="brSelect" Click="BrSelect_Click" HorizontalAlignment="Left" Margin="5,5,0,0" Style="{DynamicResource CustomBtn}" VerticalAlignment="Top">
-                                            <Button.Content>
-                                                <Grid Background="Transparent">
-                                                    <Border x:Name="border" BorderBrush="{DynamicResource TextColor}" BorderThickness="1" CornerRadius="45" Height="15" Width="15"/>
-                                                </Grid>
-                                            </Button.Content>
-                                        </Button>
+            <Grid x:Name="gdButtons" Focusable="False" Height="20" VerticalAlignment="Top">
 
-                                        <Button x:Name="btnColor" Click="BtnColor_Click" Height="15" HorizontalAlignment="Left" Margin="25,5,0,0" Opacity="0" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
-                                            <Button.Content>
-                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" Text="&#xE7E6;" VerticalAlignment="Center"/>
-                                            </Button.Content>
-                                        </Button>
+                <WrapPanel Focusable="False" Height="15" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Border x:Name="bdSelect" CornerRadius="25" Focusable="False" Height="15" Margin="3,0" Width="15">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource Text}"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Opacity" Value=".5"/>
 
-                                        <Button x:Name="btnDown" Click="BtnDown_Click" Height="15" HorizontalAlignment="Right" Margin="0,5,25,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
-                                            <Button.Content>
-                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" Text="&#xE70D;" VerticalAlignment="Center"/>
-                                            </Button.Content>
-                                        </Button>
-                                        
-                                        <Button x:Name="btnUp" Click="BtnUp_Click" Height="15" HorizontalAlignment="Right" Margin="0,5,5,0" Opacity="1" VerticalAlignment="Top" Width="15" Style="{DynamicResource CustomBtn}">
-                                            <Button.Content>
-                                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Center" Text="&#xE70E;" VerticalAlignment="Center"/>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </Trigger>
 
-                                    <ControlTemplate.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="True"/>
-                                                <Condition Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource Text}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                    <TextBlock x:Name="tbColor" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE7E6;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
+                    <TextBlock x:Name="tbFixed" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" TextAlignment="Center" VerticalAlignment="Center" Width="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value=".5"/>
+                                <Setter Property="Text" Value="&#xE718;"/>
 
-                                            <MultiDataTrigger.Setters>
-                                                <Setter TargetName="brSelect" Property="Opacity" Value=".5"/>
-                                                <Setter TargetName="border" Property="Background" Value="Transparent"/>
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
+                                <Style.Triggers>
 
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="False"/>
-                                                <Condition Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="True">
+                                        <Setter Property="Text" Value="&#xE840;"/>
+                                    </DataTrigger>
+                                    
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=tbFixed, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
 
-                                            <MultiDataTrigger.Setters>
-                                                <Setter TargetName="brSelect" Property="Opacity" Value="0"/>
-                                                <Setter TargetName="border" Property="Background" Value="Transparent"/>
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Text" Value="&#xE840;"/>
+                                            <Setter Property="Opacity" Value="1"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
 
-                                        <DataTrigger Binding="{Binding ElementName=brSelect, Path=IsMouseOver}" Value="True">
-                                            <Setter TargetName="brSelect" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=tbFixed, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
 
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="{DynamicResource TextColor}"/>
-                                        </DataTrigger>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Text" Value="&#xE77A;"/>
+                                            <Setter Property="Opacity" Value="1"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock x:Name="tbDown" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE70D;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
+                    <TextBlock x:Name="tbUp" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE70E;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
+                </WrapPanel>
 
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsSelected}" Value="False">
-                                            <Setter TargetName="border" Property="Background" Value="Transparent"/>
-                                        </DataTrigger>
-                                        
-                                        
-                                        
-                                        <DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="False">
-                                            <Setter TargetName="btnColor" Property="Opacity" Value=".5"/>
-                                        </DataTrigger>
-                                        
-                                        <DataTrigger Binding="{Binding ElementName=btnColor, Path=IsMouseOver}" Value="True">
-                                            <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
+            </Grid>
 
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="False">
-                                            <Setter TargetName="btnColor" Property="Opacity" Value="0"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=ColorFocused}" Value="True">
-                                            <Setter TargetName="btnColor" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
-
-
-
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="True">
-                                            <Setter TargetName="btnDown" Property="Opacity" Value=".5"/>
-                                            <Setter TargetName="btnUp" Property="Opacity" Value=".5"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding ElementName=postIt, Path=IsMouseOver}" Value="False">
-                                            <Setter TargetName="btnDown" Property="Opacity" Value="0"/>
-                                            <Setter TargetName="btnUp" Property="Opacity" Value="0"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding ElementName=btnDown, Path=IsMouseOver}" Value="True">
-                                            <Setter TargetName="btnDown" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding ElementName=btnUp, Path=IsMouseOver}" Value="True">
-                                            <Setter TargetName="btnUp" Property="Opacity" Value="1"/>
-                                        </DataTrigger>
-
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource TextColor}" Focusable="True" FontFamily="{Binding ElementName=postIt, Path=FontFamily}" FontSize="20" Foreground="{DynamicResource TextColor}" GotFocus="TextField_GotFocus" Loaded="TextField_Loaded" LostFocus="TextField_LostFocus" Margin="20,20,10,10" Text="{Binding ElementName=postIt, Path=Text}" TextChanged="TextField_TextChanged" TextWrapping="WrapWithOverflow"/>
+            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource Text}" Focusable="True" FontSize="20" Foreground="{DynamicResource Text}" Height="Auto" Margin="20,20,10,10" Text="{Binding ElementName=postItField, Path=Text}" TextWrapping="WrapWithOverflow"/>
         </Grid>
-
+        
     </Border>
 </UserControl>

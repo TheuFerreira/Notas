@@ -10,35 +10,20 @@ namespace Notas.Database.Table
         public int Position { get; set; }
 
 
-        public PostIt() { }
+        public PostIt() 
+        {
+            Id = -1;
+            Content = string.Empty;
+        }
 
         public PostIt(long id)
         {
             Id = id;
         }
 
-        public PostIt(long id, SolidColorBrush color)
-        {
-            Id = id;
-            Color = color;
-        }
-
-        public PostIt(long id, int position)
-        {
-            Id = id;
-            Position = position;
-        }
-
         public PostIt(long id, string content, SolidColorBrush color, int position)
         {
             Id = id;
-            Content = content;
-            Color = color;
-            Position = position;
-        }
-
-        public PostIt(string content, SolidColorBrush color, int position)
-        {
             Content = content;
             Color = color;
             Position = position;

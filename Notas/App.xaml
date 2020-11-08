@@ -6,12 +6,18 @@
 
         <!-- COLORS DARK AND WHITE-->
 
-        <SolidColorBrush x:Key="BackgroundColor" Color="White"/>
-        <SolidColorBrush x:Key="SelectionColor" Color="#FFE8E8E8"/>
-        <SolidColorBrush x:Key="TextColor" Color="Black"/>
-        <SolidColorBrush x:Key="ScrollForegroundColor" Color="#FFB9B9B9"/>
-        <SolidColorBrush x:Key="CheckBoxBackground" Color="#2B2B2B"/>
-        <SolidColorBrush x:Key="CheckBoxForeground" Color="White"/>
+        <SolidColorBrush x:Key="TopBackground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="Text" Color="#000"/>
+        <SolidColorBrush x:Key="FieldBackground" Color="#F2F2F2"/>
+        <SolidColorBrush x:Key="Selection" Color="#e3e3e3"/>
+        <SolidColorBrush x:Key="PostItBackground" Color="#FFF"/>
+        <SolidColorBrush x:Key="ScrollColor" Color="#595959"/>
+        <SolidColorBrush x:Key="CheckboxBackground" Color="#ACACAC"/>
+        <SolidColorBrush x:Key="CheckboxForeground" Color="#FFF"/>
+        <SolidColorBrush x:Key="ComboboxBackground" Color="#ACACAC"/>
+        <SolidColorBrush x:Key="ComboboxForeground" Color="#FFF"/>
+        <SolidColorBrush x:Key="ComboboxSelection" Color="#808080"/>
+
 
         <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
         
@@ -39,7 +45,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border x:Name="border" CornerRadius="3" Background="{DynamicResource ScrollForegroundColor}" BorderBrush="{DynamicResource ScrollForegroundColor}" BorderThickness="1"/>
+                        <Border x:Name="border" CornerRadius="3" Background="{DynamicResource ScrollColor}" BorderBrush="{DynamicResource ScrollColor}" BorderThickness="1"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -100,9 +106,9 @@
 
                         <DockPanel x:Name="dockPanel">
                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
-                            <Border Background="{DynamicResource CheckBoxBackground}" CornerRadius="9" Margin="0" Width="40">
+                            <Border Background="{DynamicResource CheckboxBackground}" CornerRadius="10" Margin="0" Width="38">
                                 <Grid Background="Transparent">
-                                    <Border HorizontalAlignment="Left" Background="{DynamicResource CheckBoxForeground}" x:Name="slider" Width="18" Height="16" CornerRadius="8" RenderTransformOrigin="0.5,0.5" Margin="2,0">
+                                    <Border HorizontalAlignment="Left" Background="{DynamicResource CheckboxForeground}" x:Name="slider" Width="18" Height="18" CornerRadius="10" RenderTransformOrigin="0.5,0.5" Margin="1,0">
                                         <Border.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -134,5 +140,15 @@
             </Setter>
         </Style>
 
+
+
+        <Style x:Key="TextBlockNormalStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Opacity" Value=".5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

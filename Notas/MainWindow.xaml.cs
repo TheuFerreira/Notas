@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Notas.Screens;
+using Notas.UserControls;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -27,43 +28,32 @@ namespace Notas
         {
             InitializeComponent();
 
+            IsVisibleChanged += MainWindow_IsVisibleChanged;
+            
             LoadPreferences();
             SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
 
-            IsVisibleChanged += MainWindow_IsVisibleChanged;
-
             topBar.MouseDown += TopBar_MouseDown;
             btnAdd.Click += BtnAdd_Click;
-            btnBack.Click += BtnBack_Click;
+            btnDel.Click += BtnDel_Click;
+            btnSave.Click += BtnSave_Click;
             btnSettings.Click += BtnSettings_Click;
+            btnBack.Click += BtnBack_Click;
             btnMinimize.Click += BtnMinimize_Click;
             btnClose.Click += BtnClose_Click;
         }
-
-
 
         private void MainWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (Visibility == Visibility.Visible)
             {
-                if (btnBack.Visibility == Visibility.Visible)
-                {
-                    screenSettings = new ScreenSettings(mode);
-                    screenSettings.SwitchMode += Settings_SwitchMode;
-                    screenSettings.SwitchFont += Settings_SwitchFont;
-                    gridField.Children.Add(screenSettings);
-                }
-                else
-                {
-                    screenPostIt = new ScreenPostIt(defaultFont);
-                    screenPostIt.Select += PostItSelect_Click;
-                    screenPostIt.TextFocus += PostIt_TextFocus;
-                    screenPostIt.TextChanged += PostIt_TextChanged;
-                    gridField.Children.Add(screenPostIt);
-                }
+                screenPostIt = new ScreenPostIt();
+                screenPostIt.TextChanged += ScreenPostIt_TextChanged;
+                screenPostIt.ToDelete += ScreenPostIt_ToDelete;
+                gridField.Children.Add(screenPostIt);
             }
             else
             {
@@ -82,51 +72,28 @@ namespace Notas
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             screenPostIt.AddPostIt();
+
+            if (btnSave.Visibility == Visibility.Visible)
+                screenPostIt.PostItFields[0].gdButtons.Visibility = Visibility.Collapsed;
         }
 
         private void BtnDel_Click(object sender, RoutedEventArgs e)
         {
             screenPostIt.DelPostIt();
-
             btnDel.Visibility = Visibility.Collapsed;
+            btnSave.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Visible;
+            btnAdd.Visibility = Visibility.Visible;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             screenPostIt.SavePostIt();
 
+            screenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Visible);
             btnSave.Visibility = Visibility.Collapsed;
+            btnDel.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Visible;
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            btnBack.Visibility = Visibility.Collapsed;
-
-            screenPostIt = new ScreenPostIt(defaultFont);
-            screenPostIt.Select += PostItSelect_Click;
-            screenPostIt.TextFocus += PostIt_TextFocus;
-            screenPostIt.TextChanged += PostIt_TextChanged;
-            screenPostIt.RenderTransform = new TranslateTransform(300, 0);
-            gridField.Children.Add(screenPostIt);
-
-            ScreenSettings screenSettings = gridField.Children[0] as ScreenSettings;
-            screenSettings.RenderTransform = new TranslateTransform();
-
-            DoubleAnimation animHide = new DoubleAnimation(0d, -300, TimeSpan.FromMilliseconds(500));
-            animHide.Completed += (se, ev) => gridField.Children.RemoveAt(0);
-            DoubleAnimation animShow = new DoubleAnimation(300d, 0, TimeSpan.FromMilliseconds(500));
-            animShow.Completed += (se, ev) =>
-            {
-                btnAdd.Visibility = Visibility.Visible;
-                btnSettings.Visibility = Visibility.Visible;
-
-                btnBack.Visibility = Visibility.Collapsed;
-            };
-
-            ((TranslateTransform)screenSettings.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animHide);
-            ((TranslateTransform)screenPostIt.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animShow);
         }
 
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
@@ -135,29 +102,52 @@ namespace Notas
             btnSettings.Visibility = Visibility.Collapsed;
 
             ScreenSettings screenSettings = new ScreenSettings(mode);
-            screenSettings.SwitchMode += Settings_SwitchMode;
-            screenSettings.SwitchFont += Settings_SwitchFont;
             screenSettings.RenderTransform = new TranslateTransform(300, 0);
             gridField.Children.Add(screenSettings);
 
             screenPostIt = gridField.Children[0] as ScreenPostIt;
             screenPostIt.RenderTransform = new TranslateTransform();
 
-            DoubleAnimation animHide = new DoubleAnimation(0d, -300, TimeSpan.FromMilliseconds(500));
+            DoubleAnimation animHide = new DoubleAnimation(0d, -300, TimeSpan.FromMilliseconds(250));
             animHide.Completed += (se, ev) => gridField.Children.RemoveAt(0);
-            DoubleAnimation animShow = new DoubleAnimation(300d, 0, TimeSpan.FromMilliseconds(500));
+            DoubleAnimation animShow = new DoubleAnimation(300d, 0, TimeSpan.FromMilliseconds(250));
             animShow.Completed += (se, ev) =>
             {
                 screenPostIt = null;
 
-                btnAdd.Visibility = Visibility.Collapsed;
-                btnSettings.Visibility = Visibility.Collapsed;
-
+                btnHelp.Visibility = Visibility.Visible;
                 btnBack.Visibility = Visibility.Visible;
             };
 
             ((TranslateTransform)screenPostIt.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animHide);
             ((TranslateTransform)screenSettings.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animShow);
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            btnBack.Visibility = Visibility.Collapsed;
+            btnHelp.Visibility = Visibility.Collapsed;
+
+            screenPostIt = new ScreenPostIt();
+            screenPostIt.TextChanged += ScreenPostIt_TextChanged;
+            screenPostIt.ToDelete += ScreenPostIt_ToDelete;
+            screenPostIt.RenderTransform = new TranslateTransform(300, 0);
+            gridField.Children.Add(screenPostIt);
+
+            ScreenSettings screenSettings = gridField.Children[0] as ScreenSettings;
+            screenSettings.RenderTransform = new TranslateTransform();
+
+            DoubleAnimation animHide = new DoubleAnimation(0d, -300, TimeSpan.FromMilliseconds(250));
+            animHide.Completed += (se, ev) => gridField.Children.RemoveAt(0);
+            DoubleAnimation animShow = new DoubleAnimation(300d, 0, TimeSpan.FromMilliseconds(250));
+            animShow.Completed += (se, ev) =>
+            {
+                btnAdd.Visibility = Visibility.Visible;
+                btnSettings.Visibility = Visibility.Visible;
+            };
+
+            ((TranslateTransform)screenSettings.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animHide);
+            ((TranslateTransform)screenPostIt.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animShow);
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -171,105 +161,50 @@ namespace Notas
 
             btnDel.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
+            btnSettings.Visibility = Visibility.Visible;
 
             Close();
         }
 
 
 
-        private void PostItSelect_Click(object sender, RoutedEventArgs e)
+        private void ScreenPostIt_TextChanged(object sender, RoutedEventArgs e)
         {
-            if (btnSave.Visibility == Visibility.Visible)
-                return;
-
-            bool showDelete = (bool)sender;
-            btnDel.Visibility = showDelete ? Visibility.Visible : Visibility.Collapsed;
-            btnSettings.Visibility = showDelete ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        private void PostItSelect_ColorClick(object sender, RoutedEventArgs e)
-        {
-            /*
-            PostItField post = (PostItField)sender;
-            tempPost = post;
-
-            foreach (UIElement element in groupPostIt.Children)
+            foreach (PostItField pf in screenPostIt.PostItFields)
             {
-                PostItField temp = (PostItField)element;
-                if (post.Id != temp.Id)
-                    temp.ColorFocused = false;
+                if (pf.IsChanged)
+                {
+                    screenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Collapsed);
+
+                    btnSave.Visibility = Visibility.Visible;
+                    btnDel.Visibility = Visibility.Collapsed;
+                    btnSettings.Visibility = Visibility.Collapsed;
+                    return;
+                }
             }
 
-            post.ColorFocused = !post.ColorFocused;
-
-            groupBottom.Children.Clear();
-            List<string> colors = EnumExtension.EnumColors();
-            foreach (string color in colors)
-            {
-                ColorButton btn = new ColorButton();
-                btn.Click += SelectColor_Click;
-                btn.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom(color);
-                btn.IsSelected = btn.BackgroundColor.Color == post.BackgroundColor.Color;
-                groupBottom.Children.Add(btn);
-            }
-
-            PostIt_TextFocus(null, null);
-            gridField.RowDefinitions[2].Height = post.ColorFocused ? new GridLength(35) : new GridLength(0);
-            */
-        }
-
-        private void PostIt_TextFocus(object sender, RoutedEventArgs e)
-        {
+            screenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Visible);
+            btnSave.Visibility = Visibility.Collapsed;
             btnDel.Visibility = Visibility.Collapsed;
-            btnSettings.Visibility = btnSave.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            btnSettings.Visibility = Visibility.Visible;
         }
 
-        private void PostIt_TextChanged(object sender, RoutedEventArgs e)
+        private void ScreenPostIt_ToDelete(object sender, RoutedEventArgs e)
         {
-            bool show = (bool)sender;
-            btnSave.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-            btnSettings.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-
-
-        private void Settings_SwitchMode(object sender, RoutedEventArgs e)
-        {
-            mode = (bool)sender;
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("Mode", mode);
-            key.Close();
-
-            SwitchColor();
-        }
-
-        private void Settings_SwitchFont(object sender, RoutedEventArgs e)
-        {
-            defaultFont = new FontFamily(sender.ToString());
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("DefaultFont", defaultFont.ToString());
-            key.Close();
-        }
-
-
-
-        private void SelectColor_Click(object sender, RoutedEventArgs e)
-        {
-            /*
-            ColorButton btnColor = (ColorButton)sender;
-
-            foreach (UIElement element in groupBottom.Children)
+            if (screenPostIt.IsSelected)
             {
-                ColorButton temp = (ColorButton)element;
-                if (temp.BackgroundColor.Color != btnColor.BackgroundColor.Color)
-                    temp.IsSelected = false;
+                btnDel.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Collapsed;
+                btnSettings.Visibility = Visibility.Collapsed;
+                btnAdd.Visibility = Visibility.Collapsed;
             }
-
-            btnColor.IsSelected = true;
-            tempPost.BackgroundColor = btnColor.BackgroundColor;
-            */
+            else
+            {
+                btnDel.Visibility = Visibility.Collapsed;
+                btnSave.Visibility = Visibility.Collapsed;
+                btnSettings.Visibility = Visibility.Visible;
+                btnAdd.Visibility = Visibility.Visible;
+            }
         }
 
 
@@ -298,22 +233,64 @@ namespace Notas
 
             if (mode)
             {
-                Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFE8E8E8");
-                Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("Black");
-                Resources["ScrollForegroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFB9B9B9");
-                Resources["CheckBoxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#2B2B2B");
-                Resources["CheckBoxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
+                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#F2F2F2");
+                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#e3e3e3");
+                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#595959");
+                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
+                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
+                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#808080");
             }
             else
             {
-                Resources["BackgroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1B1B1B");
-                Resources["SelectionColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#2B2B2B");
-                Resources["TextColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["ScrollForegroundColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1B1B1B");
-                Resources["CheckBoxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["CheckBoxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#2B2B2B");
+                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#171717");
+                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#303030");
+                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#3A3A3A");
+                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1A1A1A");
+                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#494949");
+                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#272727");
+                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
+                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCCCCC");
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        private void Settings_SwitchMode(object sender, RoutedEventArgs e)
+        {
+            mode = (bool)sender;
+
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("Mode", mode);
+            key.Close();
+
+            SwitchColor();
+        }
+
+        private void Settings_SwitchFont(object sender, RoutedEventArgs e)
+        {
+            defaultFont = new FontFamily(sender.ToString());
+
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("DefaultFont", defaultFont.ToString());
+            key.Close();
+        }
+        */
     }
 }

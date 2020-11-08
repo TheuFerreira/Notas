@@ -46,6 +46,7 @@ namespace Notas.Screens
 
         private void CbFonts_Loaded(object sender, RoutedEventArgs e)
         {
+            cbFonts.Items.Clear();
             InstalledFontCollection fontCollection = new InstalledFontCollection();
             foreach (System.Drawing.FontFamily font in fontCollection.Families)
                 cbFonts.Items.Add(font.Name);
@@ -67,10 +68,10 @@ namespace Notas.Screens
 
         private void CbFonts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            defaultFont = new FontFamily(cbFonts.SelectedItem.ToString());
+            /*defaultFont = new FontFamily(cbFonts.SelectedItem.ToString());
             Resources["DefaultFont"] = new FontFamily(defaultFont.ToString());
 
-            SwitchFont?.Invoke(defaultFont.ToString(), e);
+            SwitchFont?.Invoke(defaultFont.ToString(), e);*/
         }
     }
 }
