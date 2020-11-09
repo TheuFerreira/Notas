@@ -80,9 +80,24 @@
                     <TextBlock x:Name="tbUp" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE70E;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
                 </WrapPanel>
 
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="True">
+                                <Setter Property="Opacity" Value=".5"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
+                                <Setter Property="Opacity" Value=".5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                
             </Grid>
 
-            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource Text}" Focusable="True" FontSize="20" Foreground="{DynamicResource Text}" Height="Auto" Margin="20,20,10,10" Text="{Binding ElementName=postItField, Path=Text}" TextWrapping="WrapWithOverflow"/>
+            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource Text}" Focusable="True" FontFamily="{DynamicResource DefaultFont}" FontSize="20" Foreground="{DynamicResource Text}" Height="Auto" Margin="20,20,10,10" Text="{Binding ElementName=postItField, Path=Text}" TextWrapping="WrapWithOverflow"/>
         </Grid>
         
     </Border>

@@ -17,9 +17,8 @@ namespace Notas
     [SuppressMessage("Style", "IDE0017:Simplificar a inicialização de objeto", Justification = "<Pendente>")]
     public partial class MainWindow : Window
     {
-        private bool mode;
+        private bool isLight;
         private ScreenPostIt screenPostIt;
-        private ScreenSettings screenSettings;
         private FontFamily defaultFont;
 
 
@@ -101,7 +100,9 @@ namespace Notas
             btnAdd.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Collapsed;
 
-            ScreenSettings screenSettings = new ScreenSettings(mode);
+            ScreenSettings screenSettings = new ScreenSettings(isLight, defaultFont);
+            screenSettings.SwitchMode += Settings_SwitchMode;
+            screenSettings.SwitchFont += Settings_SwitchFont;
             screenSettings.RenderTransform = new TranslateTransform(300, 0);
             gridField.Children.Add(screenSettings);
 
@@ -209,12 +210,35 @@ namespace Notas
 
 
 
+        private void Settings_SwitchMode(object sender, RoutedEventArgs e)
+        {
+            isLight = (bool)sender;
+
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("Mode", isLight);
+            key.Close();
+
+            SwitchColor();
+        }
+
+        private void Settings_SwitchFont(object sender, RoutedEventArgs e)
+        {
+            defaultFont = new FontFamily(sender.ToString());
+            Resources["DefaultFont"] = new FontFamily(defaultFont.ToString());
+
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("DefaultFont", defaultFont.ToString());
+            key.Close();
+        }
+
+
+
         private void LoadPreferences()
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Ferreira\Notas");
             if (key != null)
             {
-                mode = bool.Parse(key.GetValue("Mode").ToString());
+                isLight = bool.Parse(key.GetValue("Mode").ToString());
 
                 object keyFont = key.GetValue("DefaultFont");
                 defaultFont = new FontFamily(keyFont != null ? keyFont.ToString() : "Segoe UI");
@@ -222,7 +246,7 @@ namespace Notas
             }
             else
             {
-                mode = true;
+                isLight = true;
                 defaultFont = new FontFamily("Segoe UI");
             }
         }
@@ -231,7 +255,7 @@ namespace Notas
         {
             Resources["DefaultFont"] = defaultFont;
 
-            if (mode)
+            if (isLight)
             {
                 Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
                 Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
@@ -260,37 +284,5 @@ namespace Notas
                 Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCCCCC");
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        private void Settings_SwitchMode(object sender, RoutedEventArgs e)
-        {
-            mode = (bool)sender;
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("Mode", mode);
-            key.Close();
-
-            SwitchColor();
-        }
-
-        private void Settings_SwitchFont(object sender, RoutedEventArgs e)
-        {
-            defaultFont = new FontFamily(sender.ToString());
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("DefaultFont", defaultFont.ToString());
-            key.Close();
-        }
-        */
     }
 }

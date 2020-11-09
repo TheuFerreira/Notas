@@ -215,8 +215,6 @@
     <Compile Include="Database\Migrations\202010062213AddColumnPosition.cs" />
     <Compile Include="Database\Persistence\PersistencePostIt.cs" />
     <Compile Include="Database\Table\PostIt.cs" />
-    <Compile Include="Enums\EnumColor.cs" />
-    <Compile Include="Extensions\EnumExtension.cs" />
     <Compile Include="Screens\ScreenPostIt.xaml.cs">
       <DependentUpon>ScreenPostIt.xaml</DependentUpon>
     </Compile>
