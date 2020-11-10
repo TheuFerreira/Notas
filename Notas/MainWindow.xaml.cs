@@ -2,6 +2,7 @@
 using Notas.Screens;
 using Notas.UserControls;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows;
@@ -41,6 +42,7 @@ namespace Notas
             btnSave.Click += BtnSave_Click;
             btnSettings.Click += BtnSettings_Click;
             btnBack.Click += BtnBack_Click;
+            btnHelp.Click += BtnHelp_Click;
             btnMinimize.Click += BtnMinimize_Click;
             btnClose.Click += BtnClose_Click;
         }
@@ -149,6 +151,11 @@ namespace Notas
 
             ((TranslateTransform)screenSettings.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animHide);
             ((TranslateTransform)screenPostIt.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animShow);
+        }
+
+        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/TheuFerreira/Notas");
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)

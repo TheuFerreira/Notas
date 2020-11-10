@@ -114,6 +114,10 @@
                 </ComboBox>
             </Grid>
 
+            <Grid Height="338"/>
+
+            <TextBlock FontSize="15" Foreground="{DynamicResource Text}" Text="Desenvolvido por Ferreira" TextAlignment="Center" VerticalAlignment="Bottom"/>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

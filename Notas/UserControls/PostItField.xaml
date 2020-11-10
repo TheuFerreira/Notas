@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="400">
-    <Border x:Name="bd" Background="{DynamicResource PostItBackground}" CornerRadius="10" Height="60">
+    <Border x:Name="bd" Background="{Binding ElementName=postItField, Path=BackgroundColor}" CornerRadius="10" Height="60">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"/>
         </Border.Effect>
@@ -22,42 +22,98 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource Text}"/>
                                 <Setter Property="BorderThickness" Value="1"/>
-                                <Setter Property="Opacity" Value=".5"/>
+                                <Setter Property="Opacity" Value="0"/>
 
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Opacity" Value="1"/>
-                                    </Trigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Opacity" Value=".5"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=bdSelect, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Opacity" Value="1"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
 
                                     <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource Text}"/>
+                                        <Setter Property="Opacity" Value="1"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
                     </Border>
-                    <TextBlock x:Name="tbColor" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE7E6;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
+                    <TextBlock x:Name="tbColor" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Text="&#xE7E6;" TextAlignment="Center" VerticalAlignment="Center" Width="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value=".5"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=tbColor, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock x:Name="tbFontColor" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Text="&#xE8D3;" TextAlignment="Center" VerticalAlignment="Center" Width="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value=".5"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=tbFontColor, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                     <TextBlock x:Name="tbFixed" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" TextAlignment="Center" VerticalAlignment="Center" Width="15">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Opacity" Value=".5"/>
+                                <Setter Property="Opacity" Value="0"/>
                                 <Setter Property="Text" Value="&#xE718;"/>
 
                                 <Style.Triggers>
 
                                     <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
                                         <Setter Property="Text" Value="&#xE840;"/>
                                     </DataTrigger>
-                                    
+
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=tbFixed, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True"/>
                                             <Condition Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="False"/>
                                         </MultiDataTrigger.Conditions>
 
                                         <MultiDataTrigger.Setters>
-                                            <Setter Property="Text" Value="&#xE840;"/>
-                                            <Setter Property="Opacity" Value="1"/>
+                                            <Setter Property="Opacity" Value=".5"/>
+                                            <Setter Property="Text" Value="&#xE718;"/>
                                         </MultiDataTrigger.Setters>
                                     </MultiDataTrigger>
 
@@ -68,32 +124,63 @@
                                         </MultiDataTrigger.Conditions>
 
                                         <MultiDataTrigger.Setters>
-                                            <Setter Property="Text" Value="&#xE77A;"/>
                                             <Setter Property="Opacity" Value="1"/>
+                                            <Setter Property="Text" Value="&#xE77A;"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=tbFixed, Path=IsMouseOver}" Value="True"/>
+                                            <Condition Binding="{Binding ElementName=postItField, Path=IsFixed}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Opacity" Value="1"/>
+                                            <Setter Property="Text" Value="&#xE840;"/>
                                         </MultiDataTrigger.Setters>
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBlock x:Name="tbDown" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE70D;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
-                    <TextBlock x:Name="tbUp" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Style="{StaticResource TextBlockNormalStyle}" Text="&#xE70E;" TextAlignment="Center" VerticalAlignment="Center" Width="15"/>
+                    <TextBlock x:Name="tbDown" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Text="&#xE70D;" TextAlignment="Center" VerticalAlignment="Center" Width="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value=".5"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=tbDown, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock x:Name="tbUp" Focusable="False" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Margin="3,0" Text="&#xE70E;" TextAlignment="Center" VerticalAlignment="Center" Width="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value=".5"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=tbUp, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </WrapPanel>
-
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Opacity" Value="0"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=postItField, Path=IsFocused}" Value="True">
-                                <Setter Property="Opacity" Value=".5"/>
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding ElementName=postItField, Path=IsMouseOver}" Value="True">
-                                <Setter Property="Opacity" Value=".5"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
                 
             </Grid>
 

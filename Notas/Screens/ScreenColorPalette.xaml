@@ -1,0 +1,40 @@
+﻿<Window Name="colorPalette"
+        x:Class="Notas.Screens.ScreenColorPalette"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notas.Screens"
+        xmlns:controls="clr-namespace:Notas.UserControls"
+        mc:Ignorable="d"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        Title="Paleta De Cores" Height="200" Width="350" ResizeMode="NoResize" WindowStyle="None">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="topBar" Grid.Row="0">
+            <Image HorizontalAlignment="Left" Margin="10,7,0,7" Source="/Notas;component/Resources/ic_color.png"/>
+            <TextBlock FontSize="14" Foreground="{DynamicResource Text}" HorizontalAlignment="Left" Margin="35,0,0,0" Text="{Binding ElementName=colorPalette, Path=Title}" VerticalAlignment="Center"/>
+            <controls:MenuButton x:Name="btnClose" FontSize="17" HorizontalAlignment="Right" SelectionColor="Red" Text="&#59540;" ToolTip="Fechar" Width="45"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="1">
+
+            <Slider x:Name="slRed" Minimum="0" Margin="5,10" Maximum="255" Value="50"/>
+            <Slider x:Name="slGreen" Minimum="0" Margin="5,10" Maximum="255" Value="80"/>
+            <Slider x:Name="slBlue" Minimum="0" Margin="5,10" Maximum="255" Value="125"/>
+
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Button x:Name="btnConfirm" Content="Confirmar" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="10,3" VerticalAlignment="Center"/>
+        </Grid>
+        
+    </Grid>
+</Window>

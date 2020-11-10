@@ -91,6 +91,7 @@ namespace Notas
                     .WithGlobalConnectionString(PersistencePostIt.ConnectionString)
                     .ScanIn(typeof(AddColumnColor).Assembly)
                     .ScanIn(typeof(AddColumnPosition).Assembly)
+                    .ScanIn(typeof(DropColumnColor).Assembly)
                     .For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);

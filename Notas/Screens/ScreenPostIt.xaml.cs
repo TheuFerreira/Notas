@@ -37,11 +37,15 @@ namespace Notas.Screens
             int i = 1;
             foreach (PostItField pf in PostItFields)
             {
-                PostIt postIt = new PostIt(pf.Id, pf.textField.Text, (SolidColorBrush)new BrushConverter().ConvertFrom("#1b1b1b"), i);
+                int position = pf.IsFixed ? -1 : i;
+
+                PostIt postIt = new PostIt(pf.Id, pf.textField.Text, (SolidColorBrush)new BrushConverter().ConvertFrom("#1b1b1b"), position);
+
                 if (pf.Id == -1)
                     PersistencePostIt.Add(postIt);
                 else
                     PersistencePostIt.Update(postIt);
+
                 i++;
             }
         }
@@ -80,21 +84,52 @@ namespace Notas.Screens
             PostItField pf = new PostItField(post.Content);
 
             pf.SelectClick += Pf_SelectClick;
+            pf.ColorClick += Pf_ColorClick;
+            pf.FixedClick += Pf_FixedClick;
             pf.LostFocus += Pf_LostFocus;
             pf.TextChanged += Pf_TextChanged;
             pf.DownClick += Pf_DownClick;
             pf.UpClick += Pf_UpClick;
 
-            pf.Id = post.Id;
+            SolidColorBrush defaultColor = (SolidColorBrush)new BrushConverter().ConvertFrom(FindResource("PostItBackground").ToString());
 
-            group.Children.Insert(0, pf);
-            PostItFields.Insert(0, pf);
+            pf.Id = post.Id;
+            pf.BackgroundColor = post.Color == null ? defaultColor : post.Color;
+            pf.IsFixed = post.Position == -1;
+
+            int pos = PostItFields.Count > 0 && PostItFields[0].IsFixed ? 1 : 0;
+
+            group.Children.Insert(pos, pf);
+            PostItFields.Insert(pos, pf);
 
             if (post.Id == -1)
                 pf.FocusTextField();
         }
 
 
+
+        private void Pf_FixedClick(object sender, RoutedEventArgs e)
+        {
+            PostItField pf = (PostItField)sender;
+            if (pf.IsFixed && PostItFields.IndexOf(pf) != 0)
+            {
+                PostItFields[0].IsFixed = false;
+
+                PostItFields.Remove(pf);
+                PostItFields.Insert(0, pf);
+
+                group.Children.Remove(pf);
+                group.Children.Insert(0, pf);
+            }
+
+            SavePostIt();
+        }
+
+        private void Pf_ColorClick(object sender, RoutedEventArgs e)
+        {
+            ScreenColorPalette colorPalette = new ScreenColorPalette((PostItField)sender);
+            colorPalette.ShowDialog();
+        }
 
         private void Pf_SelectClick(object sender, RoutedEventArgs e)
         {
@@ -128,7 +163,7 @@ namespace Notas.Screens
             PostItField postIt = (PostItField)sender;
             int index = PostItFields.IndexOf(postIt);
 
-            if (index == PostItFields.Count - 1)
+            if (index == PostItFields.Count - 1 || PostItFields[index].IsFixed)
                 return;
 
             PostItFields.RemoveAt(index);
@@ -144,8 +179,9 @@ namespace Notas.Screens
         {
             PostItField postIt = (PostItField)sender;
             int index = PostItFields.IndexOf(postIt);
+            int minPosition = PostItFields.Count > 0 && PostItFields[0].IsFixed ? 1 : 0;
 
-            if (index == 0)
+            if (index == minPosition || index == 0)
                 return;
 
             PostItFields.RemoveAt(index);

@@ -92,19 +92,17 @@ namespace Notas.Database.Persistence
             }
         }
 
-        public static int CountPosition()
+        public static void UpdateColor(long id, string color)
         {
             try
             {
                 Connect();
 
-                string str = "SELECT COUNT(position) FROM postit WHERE position = 1;";
+                string str = "UPDATE postit SET color = @color WHERE id = @id;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
-
-                if (int.TryParse(command.ExecuteScalar().ToString(), out int res))
-                    return res;
-                else
-                    return -1;
+                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@color", color);
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -131,7 +129,7 @@ namespace Notas.Database.Persistence
                 {
                     long id = dr.GetInt64(0);
                     string content = dr[1].ToString();
-                    SolidColorBrush color = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(2).ToString());
+                    SolidColorBrush color = dr.IsDBNull(2) ? null : (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(2).ToString());
                     int position = dr.GetInt32(3);
 
                     PostIt temp = new PostIt(id, content, color, position);

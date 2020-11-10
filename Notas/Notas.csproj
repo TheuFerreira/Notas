@@ -213,8 +213,12 @@
     <Compile Include="Database\Connection.cs" />
     <Compile Include="Database\Migrations\202010011118AddColumnColor.cs" />
     <Compile Include="Database\Migrations\202010062213AddColumnPosition.cs" />
+    <Compile Include="Database\Migrations\202011101834DropColumnColor.cs" />
     <Compile Include="Database\Persistence\PersistencePostIt.cs" />
     <Compile Include="Database\Table\PostIt.cs" />
+    <Compile Include="Screens\ScreenColorPalette.xaml.cs">
+      <DependentUpon>ScreenColorPalette.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\ScreenPostIt.xaml.cs">
       <DependentUpon>ScreenPostIt.xaml</DependentUpon>
     </Compile>
@@ -239,6 +243,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Screens\ScreenColorPalette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screens\ScreenPostIt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -287,6 +295,7 @@
     <Content Include="notas.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\ic_color.png" />
     <Resource Include="Resources\ic_notes.ico" />
   </ItemGroup>
   <ItemGroup />

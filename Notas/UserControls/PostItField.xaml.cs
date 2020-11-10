@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Notas.UserControls
 {
@@ -10,11 +11,18 @@ namespace Notas.UserControls
     /// </summary>
     public partial class PostItField : UserControl
     {
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(SolidColorBrush), typeof(PostItField), new PropertyMetadata((SolidColorBrush)new BrushConverter().ConvertFrom("#FFF")));
         public new static readonly DependencyProperty IsFocusedProperty = DependencyProperty.Register("IsFocused", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
         public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(PostItField), new PropertyMetadata(false));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(PostItField), new PropertyMetadata(string.Empty));
 
 
+
+        public SolidColorBrush BackgroundColor
+        {
+            get => (SolidColorBrush)GetValue(BackgroundColorProperty);
+            set => SetValue(BackgroundColorProperty, value);
+        }
 
         public long Id { get; set; }
 
@@ -49,6 +57,7 @@ namespace Notas.UserControls
             bd.Height = textField.Height + 30;
 
             bdSelect.MouseLeftButtonDown += BdSelect_MouseLeftButtonDown;
+            tbColor.MouseLeftButtonDown += TbColor_MouseLeftButtonDown;
             tbFixed.MouseLeftButtonDown += TbFixed_MouseLeftButtonDown;
             tbDown.MouseLeftButtonDown += TbDown_MouseLeftButtonDown;
             tbUp.MouseLeftButtonDown += TbUp_MouseLeftButtonDown;
@@ -74,9 +83,15 @@ namespace Notas.UserControls
             SelectClick?.Invoke(this, e);
         }
 
+        private void TbColor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ColorClick?.Invoke(this, e);
+        }
+
         private void TbFixed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             IsFixed = !IsFixed;
+            FixedClick?.Invoke(this, e);
         }
 
         private void TbDown_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -107,6 +122,8 @@ namespace Notas.UserControls
 
 
         public event RoutedEventHandler SelectClick;
+        public event RoutedEventHandler ColorClick;
+        public event RoutedEventHandler FixedClick;
         public event RoutedEventHandler DownClick;
         public event RoutedEventHandler UpClick;
         public new event RoutedEventHandler LostFocus;
