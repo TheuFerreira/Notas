@@ -9,31 +9,55 @@
         mc:Ignorable="d"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
-        Title="Paleta De Cores" Height="200" Width="350" ResizeMode="NoResize" WindowStyle="None">
-    <Grid>
+        Title="Paleta De Cores" Height="210" Width="350" ResizeMode="NoResize" WindowStyle="None">
+    <Grid Background="{DynamicResource FieldBackground}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="topBar" Grid.Row="0">
+        <Grid x:Name="topBar" Grid.Row="0" Background="{DynamicResource TopBackground}">
+            <Grid.Effect>
+                <DropShadowEffect Direction="270" BlurRadius="15"/>
+            </Grid.Effect>
+            
             <Image HorizontalAlignment="Left" Margin="10,7,0,7" Source="/Notas;component/Resources/ic_color.png"/>
-            <TextBlock FontSize="14" Foreground="{DynamicResource Text}" HorizontalAlignment="Left" Margin="35,0,0,0" Text="{Binding ElementName=colorPalette, Path=Title}" VerticalAlignment="Center"/>
+            <TextBlock FontFamily="{DynamicResource DefaultFont}" FontSize="14" Foreground="{DynamicResource Text}" HorizontalAlignment="Left" Margin="35,0,0,0" Text="{Binding ElementName=colorPalette, Path=Title}" VerticalAlignment="Center"/>
             <controls:MenuButton x:Name="btnClose" FontSize="17" HorizontalAlignment="Right" SelectionColor="Red" Text="&#59540;" ToolTip="Fechar" Width="45"/>
         </Grid>
         
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Margin="0,5,0,0">
 
-            <Slider x:Name="slRed" Minimum="0" Margin="5,10" Maximum="255" Value="50"/>
-            <Slider x:Name="slGreen" Minimum="0" Margin="5,10" Maximum="255" Value="80"/>
-            <Slider x:Name="slBlue" Minimum="0" Margin="5,10" Maximum="255" Value="125"/>
+            <Slider x:Name="slRed" Background="Red" Minimum="0" Margin="5,5" Maximum="255" Value="50"/>
+            <Slider x:Name="slGreen" Background="Green" Minimum="0" Margin="5,5" Maximum="255" Value="80"/>
+            <Slider x:Name="slBlue" Background="Blue" Minimum="0" Margin="5,5" Maximum="255" Value="125"/>
 
         </StackPanel>
 
         <Grid Grid.Row="2">
-            <Button x:Name="btnConfirm" Content="Confirmar" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="10,3" VerticalAlignment="Center"/>
+            <Button x:Name="btnConfirm" Content="Confirmar" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,4" VerticalAlignment="Center">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+
+                                    <Border Background="{DynamicResource TopBackground}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
+                                        </Border.Effect>
+                                        
+                                        <TextBlock Foreground="{DynamicResource Text}" Text="Confirmar"/>
+                                    </Border>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
         
     </Grid>

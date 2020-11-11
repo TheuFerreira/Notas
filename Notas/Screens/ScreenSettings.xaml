@@ -109,8 +109,6 @@
             <Grid Margin="0,10">
                 <TextBlock Foreground="{DynamicResource Text}" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Left" Text="Fonte Padrão"/>
                 <ComboBox x:Name="cbFonts" Foreground="{DynamicResource ComboboxForeground}" HorizontalAlignment="Right" SelectedIndex="0" Width="100">
-                    <ComboBoxItem Content="Teste1"/>
-                    <ComboBoxItem Content="Teste2"/>
                 </ComboBox>
             </Grid>
 

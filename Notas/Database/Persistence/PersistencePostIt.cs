@@ -29,10 +29,9 @@ namespace Notas.Database.Persistence
             {
                 Connect();
 
-                string str = "INSERT INTO postit(content, color, position) VALUES (@content, @color, @position);";
+                string str = "INSERT INTO postit(content, position) VALUES (@content, @position);";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@content", postIt.Content);
-                command.Parameters.AddWithValue("@color", postIt.Color);
                 command.Parameters.AddWithValue("@position", postIt.Position);
                 command.ExecuteNonQuery();
             }
@@ -74,11 +73,10 @@ namespace Notas.Database.Persistence
 
             try
             {
-                string str = "UPDATE postit SET content=@content, color=@color, position=@position WHERE id=@id;";
+                string str = "UPDATE postit SET content=@content, position=@position WHERE id=@id;";
                 SQLiteCommand command = new SQLiteCommand(str, SQLiteConnection);
                 command.Parameters.AddWithValue("@id", postIt.Id);
                 command.Parameters.AddWithValue("@content", postIt.Content);
-                command.Parameters.AddWithValue("@color", postIt.Color.ToString());
                 command.Parameters.AddWithValue("@position", postIt.Position);
                 command.ExecuteNonQuery();
             }

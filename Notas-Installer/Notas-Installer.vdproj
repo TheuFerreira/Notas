@@ -3322,15 +3322,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Notas"
-        "ProductCode" = "8:{B73926DF-E31F-447E-AD41-EBBCD148590F}"
-        "PackageCode" = "8:{824F6935-BC85-447C-9CCE-FF79B4852D81}"
+        "ProductCode" = "8:{F7B2E4EF-4912-4EEB-ACE1-3BE1C4D983DD}"
+        "PackageCode" = "8:{C2289A4C-5CE1-4AF9-BEED-2D4D21BBCEB3}"
         "UpgradeCode" = "8:{CF066A05-24AF-4DB9-99B2-88042B5605D5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.4"
+        "ProductVersion" = "8:1.0.5"
         "Manufacturer" = "8:Ferreira"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -3402,7 +3402,7 @@
                                                         {
                                                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_413DBF80544D440FB4FDF13972247ABD"
                                                             {
-                                                            "Name" = "8:{B73926DF-E31F-447E-AD41-EBBCD148590F}"
+                                                            "Name" = "8:{CF066A05-24AF-4DB9-99B2-88042B5605D5}"
                                                             "Condition" = "8:"
                                                             "AlwaysCreate" = "11:FALSE"
                                                             "DeleteAtUninstall" = "11:FALSE"

@@ -17,6 +17,7 @@
         <SolidColorBrush x:Key="ComboboxBackground" Color="#ACACAC"/>
         <SolidColorBrush x:Key="ComboboxForeground" Color="#FFF"/>
         <SolidColorBrush x:Key="ComboboxSelection" Color="#808080"/>
+        <SolidColorBrush x:Key="SliderBackground" Color="#ACACAC"/>
 
 
         <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
@@ -138,6 +139,93 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+
+        
+        <Style x:Key="LeftRepeatButtonSlider" TargetType="RepeatButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5,0,0,5" Margin="0,0,-3,0"/>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Height" Value="14" />
+            <Setter Property="Width" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Ellipse Fill="White" StrokeThickness="1">
+                            <Ellipse.Effect>
+                                <DropShadowEffect BlurRadius="5" ShadowDepth="0"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--Template when the orientation of the Slider is Horizontal.-->
+        <ControlTemplate x:Key="HorizontalSlider" TargetType="{x:Type Slider}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Track Grid.Row="1" x:Name="PART_Track">
+
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Background="{TemplateBinding Background}" Command="Slider.DecreaseLarge" Height="10" Style="{StaticResource LeftRepeatButtonSlider}"/>
+                    </Track.DecreaseRepeatButton>
+
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Command="Slider.IncreaseLarge" Height="10">
+                            <RepeatButton.Style>
+                                <Style TargetType="RepeatButton">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RepeatButton">
+
+                                                <Border Background="{DynamicResource SliderBackground}" CornerRadius="0,5,5,0" Margin="-3,0,0,0"/>
+
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RepeatButton.Style>
+                        </RepeatButton>
+                    </Track.IncreaseRepeatButton>
+
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumbStyle}" />
+                    </Track.Thumb>
+                </Track>
+
+                <TextBlock FontSize="12" Foreground="{DynamicResource Text}" Grid.Row="2" HorizontalAlignment="Left" Margin="0,-5,0,0" Text="0" VerticalAlignment="Top"/>
+                <TextBlock FontSize="12" Foreground="{DynamicResource Text}" Grid.Row="2" HorizontalAlignment="Right" Margin="0,-5,0,0" Text="255" VerticalAlignment="Top"/>
+            </Grid>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Application.Resources>
 </Application>

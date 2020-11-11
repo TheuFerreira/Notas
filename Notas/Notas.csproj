@@ -214,6 +214,7 @@
     <Compile Include="Database\Migrations\202010011118AddColumnColor.cs" />
     <Compile Include="Database\Migrations\202010062213AddColumnPosition.cs" />
     <Compile Include="Database\Migrations\202011101834DropColumnColor.cs" />
+    <Compile Include="Database\Migrations\202011111017DropTableTempPostIt.cs" />
     <Compile Include="Database\Persistence\PersistencePostIt.cs" />
     <Compile Include="Database\Table\PostIt.cs" />
     <Compile Include="Screens\ScreenColorPalette.xaml.cs">
