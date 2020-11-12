@@ -184,7 +184,7 @@
                 
             </Grid>
 
-            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource Text}" Focusable="True" FontFamily="{DynamicResource DefaultFont}" FontSize="20" Foreground="{DynamicResource Text}" Height="Auto" Margin="20,20,10,10" Text="{Binding ElementName=postItField, Path=Text}" TextWrapping="WrapWithOverflow"/>
+            <TextBox x:Name="textField" AcceptsReturn="True" Background="Transparent" BorderThickness="0" CaretBrush="{DynamicResource Text}" Focusable="True" FontFamily="{DynamicResource DefaultFont}" FontSize="20" Foreground="{Binding ElementName=postItField, Path=TextColor}" Height="Auto" Margin="20,20,10,10" Text="{Binding ElementName=postItField, Path=Text}" TextWrapping="WrapWithOverflow"/>
         </Grid>
         
     </Border>

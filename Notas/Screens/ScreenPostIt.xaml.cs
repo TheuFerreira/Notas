@@ -39,7 +39,7 @@ namespace Notas.Screens
             {
                 int position = pf.IsFixed ? -1 : i;
 
-                PostIt postIt = new PostIt(pf.Id, pf.textField.Text, (SolidColorBrush)new BrushConverter().ConvertFrom("#1b1b1b"), position);
+                PostIt postIt = new PostIt(pf.Id, pf.textField.Text, position);
 
                 if (pf.Id == -1)
                     PersistencePostIt.Add(postIt);
@@ -85,6 +85,7 @@ namespace Notas.Screens
 
             pf.SelectClick += Pf_SelectClick;
             pf.ColorClick += Pf_ColorClick;
+            pf.FontColorClick += Pf_FontColorClick;
             pf.FixedClick += Pf_FixedClick;
             pf.LostFocus += Pf_LostFocus;
             pf.TextChanged += Pf_TextChanged;
@@ -92,9 +93,11 @@ namespace Notas.Screens
             pf.UpClick += Pf_UpClick;
 
             SolidColorBrush defaultColor = (SolidColorBrush)new BrushConverter().ConvertFrom(FindResource("PostItBackground").ToString());
+            SolidColorBrush textColor = (SolidColorBrush)new BrushConverter().ConvertFrom(FindResource("Text").ToString());
 
             pf.Id = post.Id;
             pf.BackgroundColor = post.Color == null ? defaultColor : post.Color;
+            pf.TextColor = post.FontColor == null ? textColor : post.FontColor;
             pf.IsFixed = post.Position == -1;
 
             int pos = PostItFields.Count > 0 && PostItFields[0].IsFixed ? 1 : 0;
@@ -128,6 +131,12 @@ namespace Notas.Screens
         private void Pf_ColorClick(object sender, RoutedEventArgs e)
         {
             ScreenColorPalette colorPalette = new ScreenColorPalette((PostItField)sender);
+            colorPalette.ShowDialog();
+        }
+
+        private void Pf_FontColorClick(object sender, RoutedEventArgs e)
+        {
+            ScreenColorPalette colorPalette = new ScreenColorPalette((PostItField)sender, true);
             colorPalette.ShowDialog();
         }
 

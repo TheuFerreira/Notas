@@ -93,6 +93,7 @@ namespace Notas
                     .ScanIn(typeof(AddColumnPosition).Assembly)
                     .ScanIn(typeof(DropColumnColor).Assembly)
                     .ScanIn(typeof(DropTableTempPostIt).Assembly)
+                    .ScanIn(typeof(AddColumnFontColor).Assembly)
                     .For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);

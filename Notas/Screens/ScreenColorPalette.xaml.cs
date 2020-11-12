@@ -19,22 +19,27 @@ namespace Notas.Screens
         
         
         private readonly System.Windows.Media.SolidColorBrush oldBackgroundColor;
+        private readonly System.Windows.Media.SolidColorBrush oldTextColor;
         private bool isLight;
+        private readonly bool isFont;
         private System.Windows.Media.FontFamily defaultFont;
 
 
 
-        public ScreenColorPalette(PostItField postItField)
+        public ScreenColorPalette(PostItField postItField, bool isFont = false)
         {
             InitializeComponent();
 
             LoadPreferences();
             SwitchColor();
 
+            this.isFont = isFont;
+
             PostItField = postItField;
             oldBackgroundColor = PostItField.BackgroundColor;
+            oldTextColor = PostItField.TextColor;
 
-            Color color = ColorTranslator.FromHtml(oldBackgroundColor.ToString());
+            Color color = isFont ? ColorTranslator.FromHtml(oldTextColor.ToString()) : ColorTranslator.FromHtml(oldBackgroundColor.ToString());
             slRed.Value = color.R;
             slGreen.Value = color.G;
             slBlue.Value = color.B;
@@ -62,6 +67,7 @@ namespace Notas.Screens
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             PostItField.BackgroundColor = oldBackgroundColor;
+            PostItField.TextColor = oldTextColor;
             Close();
         }
 
@@ -74,12 +80,18 @@ namespace Notas.Screens
             Color color = Color.FromArgb(red, green, blue);
             HexColor = ColorTranslator.ToHtml(color);
 
-            PostItField.BackgroundColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
+            if (isFont)
+                PostItField.TextColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
+            else
+                PostItField.BackgroundColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
         }
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            PersistencePostIt.UpdateColor(PostItField.Id, HexColor);
+            if (isFont)
+                PersistencePostIt.UpdateFontColor(PostItField.Id, HexColor);
+            else
+                PersistencePostIt.UpdateColor(PostItField.Id, HexColor);
 
             Close();
         }
