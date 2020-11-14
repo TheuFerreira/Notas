@@ -233,6 +233,9 @@
     <Compile Include="UserControls\PostItField.xaml.cs">
       <DependentUpon>PostItField.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SliderColor.xaml.cs">
+      <DependentUpon>SliderColor.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -262,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PostItField.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SliderColor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

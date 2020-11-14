@@ -30,9 +30,9 @@
         
         <StackPanel Grid.Row="1" Margin="0,5,0,0">
 
-            <Slider x:Name="slRed" Background="Red" Minimum="0" Margin="5,5" Maximum="255" Value="50"/>
-            <Slider x:Name="slGreen" Background="Green" Minimum="0" Margin="5,5" Maximum="255" Value="80"/>
-            <Slider x:Name="slBlue" Background="Blue" Minimum="0" Margin="5,5" Maximum="255" Value="125"/>
+            <controls:SliderColor x:Name="slRed" Background="Red" Margin="5,5" Maximum="255" Minimum="0" Value="50"/>
+            <controls:SliderColor x:Name="slGreen" Background="Green" Margin="5,5" Maximum="255" Minimum="0" Value="80"/>
+            <controls:SliderColor x:Name="slBlue" Background="Blue" Margin="5,5" Maximum="255" Minimum="0" Value="125"/>
 
         </StackPanel>
 
