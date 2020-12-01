@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
-        Title="Paleta De Cores" Height="210" Width="350" ResizeMode="NoResize" WindowStyle="None">
+        Title="Paleta De Cores" Height="240" Width="350" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="{DynamicResource FieldBackground}">
 
         <Grid.RowDefinitions>
@@ -34,6 +34,11 @@
             <controls:SliderColor x:Name="slGreen" Background="Green" Margin="5,5" Maximum="255" Minimum="0" Value="80"/>
             <controls:SliderColor x:Name="slBlue" Background="Blue" Margin="5,5" Maximum="255" Minimum="0" Value="125"/>
 
+            <Grid HorizontalAlignment="Right" Margin="5,5">
+                <TextBlock Foreground="{DynamicResource Text}" HorizontalAlignment="Right" Margin="0,0,73,0" Text="Hexadecimal:"/>
+                <TextBox x:Name="tbHex" Background="{DynamicResource ComboboxBackground}" BorderBrush="{DynamicResource TopBackground}" Foreground="{DynamicResource ComboboxForeground}" HorizontalAlignment="Right" Text="#FFF000" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="70"/>
+            </Grid>
+            
         </StackPanel>
 
         <Grid Grid.Row="2">
@@ -52,6 +57,12 @@
                                         <TextBlock Foreground="{DynamicResource Text}" Text="Confirmar"/>
                                     </Border>
 
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                    
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>

@@ -15,7 +15,7 @@ namespace Notas.Screens
 
 
 
-        public ScreenSettings(bool isLight, FontFamily defaultFont)
+        public ScreenSettings(bool isLight, FontFamily defaultFont, bool autoAdd)
         {
             InitializeComponent();
 
@@ -24,6 +24,9 @@ namespace Notas.Screens
 
             this.defaultFont = defaultFont;
             cbFonts.Loaded += CbFonts_Loaded;
+
+            cbAutoAdd.IsChecked = !autoAdd;
+            cbAutoAdd.Click += CbAutoAdd_Click;
         }
 
 
@@ -55,7 +58,15 @@ namespace Notas.Screens
 
 
 
+        private void CbAutoAdd_Click(object sender, RoutedEventArgs e)
+        {
+            SwitchAutoAdd?.Invoke(!cbAutoAdd.IsChecked.Value, e);
+        }
+
+
+
         public event RoutedEventHandler SwitchMode;
         public event RoutedEventHandler SwitchFont;
+        public event RoutedEventHandler SwitchAutoAdd;
     }
 }

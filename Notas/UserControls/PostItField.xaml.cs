@@ -53,6 +53,8 @@ namespace Notas.UserControls
             set => SetValue(TextProperty, value);
         }
 
+        public bool IsTextFocused { get; set; }
+
 
 
         public PostItField(string text)
@@ -70,6 +72,7 @@ namespace Notas.UserControls
             tbDown.MouseLeftButtonDown += TbDown_MouseLeftButtonDown;
             tbUp.MouseLeftButtonDown += TbUp_MouseLeftButtonDown;
 
+            textField.GotFocus += TextField_GotFocus;
             textField.LostFocus += TextField_LostFocus;
             textField.TextChanged += TextField_TextChanged;
         }
@@ -119,8 +122,14 @@ namespace Notas.UserControls
 
 
 
+        private void TextField_GotFocus(object sender, RoutedEventArgs e)
+        {
+            IsTextFocused = true;
+        }
+
         private void TextField_LostFocus(object sender, RoutedEventArgs e)
         {
+            IsTextFocused = false;
             LostFocus?.Invoke(this, e);
         }
 

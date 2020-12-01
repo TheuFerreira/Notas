@@ -4,6 +4,7 @@ using Notas.UserControls;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
+using System;
 
 namespace Notas.Screens
 {
@@ -21,6 +22,7 @@ namespace Notas.Screens
         private readonly System.Windows.Media.SolidColorBrush oldBackgroundColor;
         private readonly System.Windows.Media.SolidColorBrush oldTextColor;
         private bool isLight;
+        private bool isTextHex = false;
         private readonly bool isFont;
         private System.Windows.Media.FontFamily defaultFont;
 
@@ -53,10 +55,12 @@ namespace Notas.Screens
             slGreen.ValueChanged += Slider_ValueChanged;
             slBlue.ValueChanged += Slider_ValueChanged;
 
+            tbHex.GotFocus += TbHex_GotFocus;
+            tbHex.TextChanged += TbHex_TextChanged;
+            tbHex.LostFocus += TbHex_LostFocus;
+
             btnConfirm.Click += BtnConfirm_Click;
         }
-
-
 
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -73,12 +77,17 @@ namespace Notas.Screens
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int red = (int)slRed.Value;
-            int green = (int)slGreen.Value;
-            int blue = (int)slBlue.Value;
+            if (!isTextHex)
+            {
+                int red = (int)slRed.Value;
+                int green = (int)slGreen.Value;
+                int blue = (int)slBlue.Value;
 
-            Color color = Color.FromArgb(red, green, blue);
-            HexColor = ColorTranslator.ToHtml(color);
+                Color color = Color.FromArgb(red, green, blue);
+                HexColor = ColorTranslator.ToHtml(color);
+
+                tbHex.Text = HexColor;
+            }
 
             if (isFont)
                 PostItField.TextColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
@@ -94,6 +103,39 @@ namespace Notas.Screens
                 PersistencePostIt.UpdateColor(PostItField.Id, HexColor);
 
             Close();
+        }
+
+
+
+        private void TbHex_GotFocus(object sender, RoutedEventArgs e)
+        {
+            isTextHex = true;
+        }
+
+        private void TbHex_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (isTextHex)
+            {
+                try
+                {
+                    Color color = ColorTranslator.FromHtml(tbHex.Text);
+
+                    HexColor = tbHex.Text;
+
+                    slRed.Value = color.R;
+                    slGreen.Value = color.G;
+                    slBlue.Value = color.B;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        private void TbHex_LostFocus(object sender, RoutedEventArgs e)
+        {
+            isTextHex = false;
         }
 
 

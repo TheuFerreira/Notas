@@ -53,7 +53,14 @@ namespace Notas
         private void Icon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                main.Show();
+            {
+                if (main.Visibility == Visibility.Visible)
+                {
+                    main.Activate();
+                }
+                else
+                    main.Show();
+            }
         }
 
         private void ItemClose_Click(object sender, EventArgs e)

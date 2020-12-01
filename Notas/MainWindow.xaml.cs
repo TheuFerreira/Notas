@@ -2,6 +2,7 @@
 using Notas.Screens;
 using Notas.UserControls;
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -19,6 +20,7 @@ namespace Notas
     public partial class MainWindow : Window
     {
         private bool isLight;
+        private bool autoAdd;
         private ScreenPostIt screenPostIt;
         private FontFamily defaultFont;
 
@@ -47,6 +49,18 @@ namespace Notas
             btnClose.Click += BtnClose_Click;
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.Key >= Key.A && e.Key <= Key.Z && !autoAdd && screenPostIt != null)
+            {
+                bool isTextFocused = screenPostIt.PostItFields.Where(x => x.IsTextFocused).Count() > 0;
+                if (isTextFocused == false)
+                    BtnAdd_Click(e.Key.ToString(), null);
+            }
+
+            base.OnPreviewKeyDown(e);
+        }
+
         private void MainWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (Visibility == Visibility.Visible)
@@ -72,7 +86,7 @@ namespace Notas
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            screenPostIt.AddPostIt();
+            screenPostIt.AddPostIt(sender.ToString());
 
             if (btnSave.Visibility == Visibility.Visible)
                 screenPostIt.PostItFields[0].gdButtons.Visibility = Visibility.Collapsed;
@@ -92,6 +106,13 @@ namespace Notas
             screenPostIt.SavePostIt();
 
             screenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Visible);
+            
+            gridField.Children.RemoveAt(0);
+            screenPostIt = new ScreenPostIt();
+            screenPostIt.TextChanged += ScreenPostIt_TextChanged;
+            screenPostIt.ToDelete += ScreenPostIt_ToDelete;
+            gridField.Children.Add(screenPostIt);
+
             btnSave.Visibility = Visibility.Collapsed;
             btnDel.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Visible;
@@ -102,9 +123,10 @@ namespace Notas
             btnAdd.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Collapsed;
 
-            ScreenSettings screenSettings = new ScreenSettings(isLight, defaultFont);
+            ScreenSettings screenSettings = new ScreenSettings(isLight, defaultFont, autoAdd);
             screenSettings.SwitchMode += Settings_SwitchMode;
             screenSettings.SwitchFont += Settings_SwitchFont;
+            screenSettings.SwitchAutoAdd += Settings_AutoAdd;
             screenSettings.RenderTransform = new TranslateTransform(300, 0);
             gridField.Children.Add(screenSettings);
 
@@ -178,6 +200,9 @@ namespace Notas
 
         private void ScreenPostIt_TextChanged(object sender, RoutedEventArgs e)
         {
+            if (screenPostIt == null)
+                return;
+
             foreach (PostItField pf in screenPostIt.PostItFields)
             {
                 if (pf.IsChanged)
@@ -238,6 +263,15 @@ namespace Notas
             key.Close();
         }
 
+        private void Settings_AutoAdd(object sender, RoutedEventArgs e)
+        {
+            autoAdd = (bool)sender;
+
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
+            key.SetValue("AutoMode", autoAdd.ToString());
+            key.Close();
+        }
+
 
 
         private void LoadPreferences()
@@ -249,12 +283,17 @@ namespace Notas
 
                 object keyFont = key.GetValue("DefaultFont");
                 defaultFont = new FontFamily(keyFont != null ? keyFont.ToString() : "Segoe UI");
+
+                object keyAutoAdd = key.GetValue("autoAdd");
+                autoAdd = keyAutoAdd != null && bool.Parse(keyAutoAdd.ToString()); 
+
                 key.Close();
             }
             else
             {
                 isLight = true;
                 defaultFont = new FontFamily("Segoe UI");
+                autoAdd = false;
             }
         }
 

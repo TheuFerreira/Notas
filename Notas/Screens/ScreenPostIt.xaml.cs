@@ -27,9 +27,9 @@ namespace Notas.Screens
             Loaded += ScreenPostIt_Loaded;
         }
 
-        public void AddPostIt()
+        public void AddPostIt(string key = "")
         {
-            NewPostItField(new PostIt());
+            NewPostItField(new PostIt(), key);
         }
 
         public void SavePostIt()
@@ -79,7 +79,7 @@ namespace Notas.Screens
             }
         }
 
-        private void NewPostItField(PostIt post)
+        private void NewPostItField(PostIt post, string key = "")
         {
             PostItField pf = new PostItField(post.Content);
 
@@ -104,6 +104,12 @@ namespace Notas.Screens
 
             group.Children.Insert(pos, pf);
             PostItFields.Insert(pos, pf);
+
+            if (key != "" && key.Length == 1)
+            {
+                pf.Text += key;
+                pf.textField.SelectionStart = 1;
+            }
 
             if (post.Id == -1)
                 pf.FocusTextField();
