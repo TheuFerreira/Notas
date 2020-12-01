@@ -24,6 +24,7 @@ Notas é um Software para ajudar no lembrete de tarefas diárias, ele faz o que 
 | Instalador | [V1.0.3](https://drive.google.com/file/d/1KLg9pGKLBRhS1VrEzozRSpIIzdv7KDV1/view?usp=sharing) |
 | Instalador | [V1.0.4](https://drive.google.com/file/d/1y2ZxMVAV27M6vi11hBW6af-TtjuBE15x/view?usp=sharing) |
 | Instalador | [V1.0.5](https://drive.google.com/file/d/1m8qETQjQPNXP6WITOlol6dWmgjwAd47S/view?usp=sharing) |
+| Instalador | [V1.1.0](https://drive.google.com/file/d/1Iw_gUugG9o2DNGuHIIf2tQnTBXG8Kv2z/view?usp=sharing) |
 
 ## Agradecimentos
 
