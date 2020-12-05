@@ -6,6 +6,11 @@ Notas é um Software para ajudar no lembrete de tarefas diárias, ele faz o que 
 
 ## Notas de Versão
 
+### Versão 1.1.0:
+ #### Versão final do Sistema, poderão ser feitas correções de bugs caso sejam descobertas.
+ - Fixed Bug: bug quando é salvo post'it novos.
+ - É possível adicionar post'it ao começar a digitar, bastanto habilitar a opção nas configurações.
+
 ### Versão 1.0.5:
  #### É possível que suas Notas no momento da atualização do Sistema Fiquem ao contrário, pois houve uma mudança na lógica para que suportasse o modo de Fixar Post'It.
  - Agora é Possível fixar um Post'It no topo.
