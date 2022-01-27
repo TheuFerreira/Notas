@@ -1,10 +1,11 @@
 ﻿using Microsoft.Win32;
-using Notas.Database.Persistence;
+using Notas.Database.Interfaces;
+using Notas.Database.Repositories;
 using Notas.UserControls;
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
-using System;
 
 namespace Notas.Screens
 {
@@ -16,15 +17,16 @@ namespace Notas.Screens
         public string HexColor { get; set; }
 
         public PostItField PostItField { get; set; }
-        
-        
-        
+
+
+
         private readonly System.Windows.Media.SolidColorBrush oldBackgroundColor;
         private readonly System.Windows.Media.SolidColorBrush oldTextColor;
         private bool isLight;
         private bool isTextHex = false;
         private readonly bool isFont;
         private System.Windows.Media.FontFamily defaultFont;
+        private readonly IPostItRepository postItRepository;
 
 
 
@@ -60,6 +62,9 @@ namespace Notas.Screens
             tbHex.LostFocus += TbHex_LostFocus;
 
             btnConfirm.Click += BtnConfirm_Click;
+
+            IDbRepository dbRepository = new DbRepository();
+            postItRepository = new PostItRepository(dbRepository);
         }
 
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -98,9 +103,9 @@ namespace Notas.Screens
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
             if (isFont)
-                PersistencePostIt.UpdateFontColor(PostItField.Id, HexColor);
+                postItRepository.UpdateFontColor(PostItField.Id, HexColor);
             else
-                PersistencePostIt.UpdateColor(PostItField.Id, HexColor);
+                postItRepository.UpdateColor(PostItField.Id, HexColor);
 
             Close();
         }

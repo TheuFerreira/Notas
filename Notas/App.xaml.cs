@@ -1,7 +1,8 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
+using Notas.Database.Interfaces;
 using Notas.Database.Migrations;
-using Notas.Database.Persistence;
+using Notas.Database.Repositories;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -22,7 +23,6 @@ namespace Notas
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            PersistencePostIt.TestConnection();
             UpdateDatabase();
 
             main = new MainWindow();
@@ -77,7 +77,7 @@ namespace Notas
                 main.Hide();
             }
         }
-    
+
 
         private void UpdateDatabase()
         {
@@ -91,11 +91,13 @@ namespace Notas
 
         private IServiceProvider CreateServices()
         {
+            IDbRepository dbRepository = new DbRepository();
+
             return new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSQLite()
-                    .WithGlobalConnectionString(PersistencePostIt.ConnectionString)
+                    .WithGlobalConnectionString(dbRepository.ConnectionString)
                     .ScanIn(typeof(AddColumnColor).Assembly)
                     .ScanIn(typeof(AddColumnPosition).Assembly)
                     .ScanIn(typeof(DropColumnColor).Assembly)

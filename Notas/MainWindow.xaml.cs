@@ -1,10 +1,12 @@
 ﻿using Microsoft.Win32;
+using Notas.Database;
 using Notas.Screens;
+using Notas.Services;
 using Notas.UserControls;
 using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
@@ -31,14 +33,14 @@ namespace Notas
             InitializeComponent();
 
             IsVisibleChanged += MainWindow_IsVisibleChanged;
-            
+
             LoadPreferences();
             SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
 
-            topBar.MouseDown += TopBar_MouseDown;
+            topBar.MouseLeftButtonDown += TopBar_MouseLeftButtonDown;
             btnAdd.Click += BtnAdd_Click;
             btnDel.Click += BtnDel_Click;
             btnSave.Click += BtnSave_Click;
@@ -78,10 +80,9 @@ namespace Notas
 
 
 
-        private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
+        private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+            this.DragMove();
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -106,7 +107,7 @@ namespace Notas
             screenPostIt.SavePostIt();
 
             screenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Visible);
-            
+
             gridField.Children.RemoveAt(0);
             screenPostIt = new ScreenPostIt();
             screenPostIt.TextChanged += ScreenPostIt_TextChanged;
@@ -186,7 +187,7 @@ namespace Notas
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             if (btnSave.Visibility == Visibility.Visible)
-                if (MessageBox.Show("Tem certeza de que deseja sair sem salvar?", "AVISO", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                if (!DialogService.ShowQuestion("Tem certeza de que deseja sair sem salvar?"))
                     return;
 
             btnDel.Visibility = Visibility.Collapsed;
@@ -285,7 +286,7 @@ namespace Notas
                 defaultFont = new FontFamily(keyFont != null ? keyFont.ToString() : "Segoe UI");
 
                 object keyAutoAdd = key.GetValue("autoAdd");
-                autoAdd = keyAutoAdd != null && bool.Parse(keyAutoAdd.ToString()); 
+                autoAdd = keyAutoAdd != null && bool.Parse(keyAutoAdd.ToString());
 
                 key.Close();
             }

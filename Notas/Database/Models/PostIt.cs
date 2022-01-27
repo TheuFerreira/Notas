@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Notas.Database.Table
+namespace Notas.Database.Models
 {
     public class PostIt
     {

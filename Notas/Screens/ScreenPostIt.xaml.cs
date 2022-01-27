@@ -1,5 +1,6 @@
-﻿using Notas.Database.Persistence;
-using Notas.Database.Table;
+﻿using Notas.Database.Interfaces;
+using Notas.Database.Models;
+using Notas.Database.Repositories;
 using Notas.UserControls;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,18 @@ namespace Notas.Screens
     public partial class ScreenPostIt : UserControl
     {
         public List<PostItField> PostItFields { get; set; }
-
         public bool IsSelected { get; set; }
 
-
+        private readonly IPostItRepository postItRepository;
 
         public ScreenPostIt()
         {
             InitializeComponent();
 
             Loaded += ScreenPostIt_Loaded;
+
+            IDbRepository dbRepository = new DbRepository();
+            postItRepository = new PostItRepository(dbRepository);
         }
 
         public void AddPostIt(string key = "")
@@ -42,9 +45,9 @@ namespace Notas.Screens
                 PostIt postIt = new PostIt(pf.Id, pf.textField.Text, position);
 
                 if (pf.Id == -1)
-                    PersistencePostIt.Add(postIt);
+                    postItRepository.Insert(postIt);
                 else
-                    PersistencePostIt.Update(postIt);
+                    postItRepository.Update(postIt);
 
                 i++;
             }
@@ -61,7 +64,7 @@ namespace Notas.Screens
                 group.Children.Remove(pf);
 
                 PostIt postIt = new PostIt(pf.Id);
-                PersistencePostIt.Delete(postIt);
+                postItRepository.Delete(postIt);
             }
             PostItFields.ForEach(x => x.textField.IsEnabled = true);
             SavePostIt();
@@ -72,7 +75,7 @@ namespace Notas.Screens
         private void ScreenPostIt_Loaded(object sender, RoutedEventArgs e)
         {
             PostItFields = new List<PostItField>();
-            List<PostIt> postIts = PersistencePostIt.GetAll();
+            List<PostIt> postIts = postItRepository.GetAll();
             foreach (PostIt post in postIts)
             {
                 NewPostItField(post);
