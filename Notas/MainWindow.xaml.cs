@@ -187,7 +187,7 @@ namespace Notas
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             if (btnSave.Visibility == Visibility.Visible)
-                if (!DialogService.ShowQuestion("Tem certeza de que deseja sair sem salvar?"))
+                if (!DialogService.ShowWarning("Tem certeza de que deseja sair sem salvar?"))
                     return;
 
             btnDel.Visibility = Visibility.Collapsed;

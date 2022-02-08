@@ -1,14 +1,13 @@
-﻿using System.Windows;
+﻿using Notas.Screens;
 
 namespace Notas.Services
 {
     public static class DialogService
     {
-        public static bool ShowQuestion(string message)
+        public static bool ShowWarning(string message)
         {
-            MessageBoxResult result = MessageBox.Show(message, "AVISO", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            return result != MessageBoxResult.No;
+            bool result = ScreenDialog.ShowDialog("Aviso", message);
+            return result;
         }
     }
 }

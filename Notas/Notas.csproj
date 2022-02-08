@@ -329,6 +329,9 @@
     <Compile Include="Screens\ScreenColorPalette.xaml.cs">
       <DependentUpon>ScreenColorPalette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\ScreenDialog.xaml.cs">
+      <DependentUpon>ScreenDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\ScreenPostIt.xaml.cs">
       <DependentUpon>ScreenPostIt.xaml</DependentUpon>
     </Compile>
@@ -358,6 +361,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Screens\ScreenColorPalette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\ScreenDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -413,6 +420,7 @@
     <Content Include="notas.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\warning.png" />
     <Resource Include="Resources\ic_color.png" />
     <Resource Include="Resources\ic_notes.ico" />
   </ItemGroup>
