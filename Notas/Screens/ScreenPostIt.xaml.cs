@@ -24,6 +24,7 @@ namespace Notas.Screens
         {
             InitializeComponent();
 
+            PostItFields = new List<PostItField>();
             Loaded += ScreenPostIt_Loaded;
 
             IDbRepository dbRepository = new DbRepository();
