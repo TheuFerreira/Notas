@@ -1,5 +1,6 @@
-﻿using Microsoft.Win32;
-using Notas.Database;
+﻿using Notas.Entities;
+using Notas.Interfaces;
+using Notas.Repositories;
 using Notas.Screens;
 using Notas.Services;
 using Notas.UserControls;
@@ -21,10 +22,9 @@ namespace Notas
     [SuppressMessage("Style", "IDE0017:Simplificar a inicialização de objeto", Justification = "<Pendente>")]
     public partial class MainWindow : Window
     {
-        private bool isLight;
-        private bool autoAdd;
         private ScreenPostIt screenPostIt;
-        private FontFamily defaultFont;
+        private readonly Settings settings;
+        private readonly ISettingsRepository settingsRepository;
 
 
 
@@ -34,7 +34,9 @@ namespace Notas
 
             IsVisibleChanged += MainWindow_IsVisibleChanged;
 
-            LoadPreferences();
+            settingsRepository = new SettingsRepository();
+            settings = settingsRepository.Load();
+
             SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -53,7 +55,7 @@ namespace Notas
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if (e.Key >= Key.A && e.Key <= Key.Z && !autoAdd && screenPostIt != null)
+            if (e.Key >= Key.A && e.Key <= Key.Z && !settings.AutoAdd && screenPostIt != null)
             {
                 bool isTextFocused = screenPostIt.PostItFields.Where(x => x.IsTextFocused).Count() > 0;
                 if (isTextFocused == false)
@@ -124,7 +126,7 @@ namespace Notas
             btnAdd.Visibility = Visibility.Collapsed;
             btnSettings.Visibility = Visibility.Collapsed;
 
-            ScreenSettings screenSettings = new ScreenSettings(isLight, defaultFont, autoAdd);
+            ScreenSettings screenSettings = new ScreenSettings(settings.IsLight, settings.DefaultFont, settings.AutoAdd);
             screenSettings.SwitchMode += Settings_SwitchMode;
             screenSettings.SwitchFont += Settings_SwitchFont;
             screenSettings.SwitchAutoAdd += Settings_AutoAdd;
@@ -245,64 +247,33 @@ namespace Notas
 
         private void Settings_SwitchMode(object sender, RoutedEventArgs e)
         {
-            isLight = (bool)sender;
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("Mode", isLight);
-            key.Close();
+            settings.IsLight = (bool)sender;
+            settingsRepository.Save(settings);
 
             SwitchColor();
         }
 
         private void Settings_SwitchFont(object sender, RoutedEventArgs e)
         {
-            defaultFont = new FontFamily(sender.ToString());
-            Resources["DefaultFont"] = new FontFamily(defaultFont.ToString());
+            settings.DefaultFont = new FontFamily(sender.ToString());
+            Resources["DefaultFont"] = new FontFamily(settings.DefaultFont.ToString());
 
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("DefaultFont", defaultFont.ToString());
-            key.Close();
+            settingsRepository.Save(settings);
         }
 
         private void Settings_AutoAdd(object sender, RoutedEventArgs e)
         {
-            autoAdd = (bool)sender;
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Ferreira\Notas");
-            key.SetValue("AutoMode", autoAdd.ToString());
-            key.Close();
+            settings.AutoAdd = (bool)sender;
+            settingsRepository.Save(settings);
         }
 
 
-
-        private void LoadPreferences()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Ferreira\Notas");
-            if (key != null)
-            {
-                isLight = bool.Parse(key.GetValue("Mode").ToString());
-
-                object keyFont = key.GetValue("DefaultFont");
-                defaultFont = new FontFamily(keyFont != null ? keyFont.ToString() : "Segoe UI");
-
-                object keyAutoAdd = key.GetValue("autoAdd");
-                autoAdd = keyAutoAdd != null && bool.Parse(keyAutoAdd.ToString());
-
-                key.Close();
-            }
-            else
-            {
-                isLight = true;
-                defaultFont = new FontFamily("Segoe UI");
-                autoAdd = false;
-            }
-        }
 
         private void SwitchColor()
         {
-            Resources["DefaultFont"] = defaultFont;
+            Resources["DefaultFont"] = settings.DefaultFont;
 
-            if (isLight)
+            if (settings.IsLight)
             {
                 Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
                 Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");

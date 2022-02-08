@@ -326,6 +326,9 @@
     <Compile Include="Database\Models\PostIt.cs" />
     <Compile Include="Database\Repositories\DbRepository.cs" />
     <Compile Include="Database\Repositories\PostItRepository.cs" />
+    <Compile Include="Entities\Settings.cs" />
+    <Compile Include="Interfaces\ISettingsRepository.cs" />
+    <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Screens\ScreenColorPalette.xaml.cs">
       <DependentUpon>ScreenColorPalette.xaml</DependentUpon>
     </Compile>

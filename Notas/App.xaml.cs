@@ -17,9 +17,9 @@ namespace Notas
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        MainWindow main;
-        NotifyIcon icon;
-        bool exiting = false;
+        private MainWindow main;
+        private NotifyIcon icon;
+        private bool exiting = false;
 
         protected override void OnStartup(StartupEventArgs e)
         {
