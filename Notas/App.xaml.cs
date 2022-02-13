@@ -1,5 +1,5 @@
-﻿using Notas.Database.Interfaces;
-using Notas.Database.Repositories;
+﻿using Notas.Interfaces;
+using Notas.Repositories;
 using System;
 using System.ComponentModel;
 using System.Drawing;

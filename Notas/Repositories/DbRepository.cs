@@ -1,11 +1,11 @@
-﻿using Notas.Database.Interfaces;
+﻿using Notas.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
-namespace Notas.Database.Repositories
+namespace Notas.Repositories
 {
     public class DbRepository : IDbRepository
     {

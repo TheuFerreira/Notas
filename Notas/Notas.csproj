@@ -316,7 +316,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database\Interfaces\IDbRepository.cs" />
+    <Compile Include="Interfaces\IDbRepository.cs" />
     <Compile Include="Database\Interfaces\IPostItRepository.cs" />
     <Compile Include="Database\Migrations\202010011118AddColumnColor.cs" />
     <Compile Include="Database\Migrations\202010062213AddColumnPosition.cs" />
@@ -324,7 +324,7 @@
     <Compile Include="Database\Migrations\202011111017DropTableTempPostIt.cs" />
     <Compile Include="Database\Migrations\202011121256AddColumnFontColor.cs" />
     <Compile Include="Database\Models\PostIt.cs" />
-    <Compile Include="Database\Repositories\DbRepository.cs" />
+    <Compile Include="Repositories\DbRepository.cs" />
     <Compile Include="Database\Repositories\PostItRepository.cs" />
     <Compile Include="Entities\Settings.cs" />
     <Compile Include="Interfaces\ISettingsRepository.cs" />

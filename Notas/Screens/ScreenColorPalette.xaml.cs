@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using Notas.Database.Interfaces;
 using Notas.Database.Repositories;
+using Notas.Interfaces;
+using Notas.Repositories;
 using Notas.UserControls;
 using System;
 using System.Drawing;

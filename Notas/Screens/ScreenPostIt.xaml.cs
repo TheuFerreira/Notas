@@ -1,6 +1,8 @@
 ﻿using Notas.Database.Interfaces;
 using Notas.Database.Models;
 using Notas.Database.Repositories;
+using Notas.Interfaces;
+using Notas.Repositories;
 using Notas.UserControls;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
 
-namespace Notas.Database.Interfaces
+namespace Notas.Interfaces
 {
     public interface IDbRepository
     {

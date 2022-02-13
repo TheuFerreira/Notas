@@ -1,5 +1,6 @@
 ﻿using Notas.Database.Interfaces;
 using Notas.Database.Models;
+using Notas.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

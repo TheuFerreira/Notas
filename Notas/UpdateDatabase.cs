@@ -1,6 +1,6 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using Notas.Database.Interfaces;
+using Notas.Interfaces;
 using Notas.Database.Migrations;
 using System;
 
