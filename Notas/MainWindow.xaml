@@ -21,26 +21,126 @@
 
             <Grid x:Name="gridField" Background="{x:Null}" Grid.Row="1"/>
 
-            <Border x:Name="topBar" CornerRadius="10,10,0,0" Grid.Row="0" Background="{DynamicResource TopBackground}">
+            <Border 
+                x:Name="topBar" 
+                CornerRadius="10,10,0,0" 
+                Grid.Row="0" 
+                Background="{DynamicResource TopBackground}"
+                MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
                 <Border.Effect>
                     <DropShadowEffect Direction="270" BlurRadius="15"/>
                 </Border.Effect>
 
                 <Grid Background="Transparent">
 
-                    <control:MenuButton x:Name="btnAdd" CornerRadius="10,0,0,0" FontSize="17" Height="35" HorizontalAlignment="Left" SelectionColor="{DynamicResource Selection}" Text="&#xE710;" ToolTip="Adicionar" VerticalAlignment="Center" Width="45"/>
-                    <control:MenuButton x:Name="btnDel" CornerRadius="10,0,0,0" FontSize="17" Height="35" HorizontalAlignment="Left" SelectionColor="{DynamicResource Selection}" Text="&#59213;" ToolTip="Excluir" VerticalAlignment="Center" Visibility="Collapsed" Width="45"/>
-                    <control:MenuButton x:Name="btnSave" FontSize="17" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource Selection}" Text="&#xE74E;" ToolTip="Salvar" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
-                    <control:MenuButton x:Name="btnSettings" FontSize="17" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource Selection}" Text="&#xE713;" ToolTip="Configurações" VerticalAlignment="Center" Width="45"/>
+                    <control:MenuButton 
+                        x:Name="btnAdd" 
+                        Click="BtnAdd_Click"
+                        CornerRadius="10,0,0,0" 
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#xE710;" 
+                        ToolTip="Adicionar" 
+                        VerticalAlignment="Center" 
+                        Width="45"/>
+                    
+                    <control:MenuButton 
+                        x:Name="btnDel" 
+                        Click="BtnDel_Click"
+                        CornerRadius="10,0,0,0" 
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#59213;" 
+                        ToolTip="Excluir" 
+                        VerticalAlignment="Center" 
+                        Visibility="Collapsed" 
+                        Width="45"/>
+                    
+                    <control:MenuButton 
+                        x:Name="btnSave" 
+                        Click="BtnSave_Click"
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        Margin="45,0,0,0" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#xE74E;" 
+                        ToolTip="Salvar" 
+                        Visibility="Collapsed" 
+                        VerticalAlignment="Center" Width="45"/>
+                    
+                    <control:MenuButton 
+                        x:Name="btnSettings" 
+                        Click="BtnSettings_Click"
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        Margin="45,0,0,0" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#xE713;" 
+                        ToolTip="Configurações" 
+                        VerticalAlignment="Center" 
+                        Width="45"/>
 
-                    <control:MenuButton x:Name="btnBack" CornerRadius="10,0,0,0" FontSize="17" Height="35" HorizontalAlignment="Left" SelectionColor="{DynamicResource Selection}" Text="&#xE72B;" ToolTip="Voltar" VerticalAlignment="Center" Visibility="Collapsed" Width="45"/>
-                    <control:MenuButton x:Name="btnHelp" FontSize="17" Height="35" HorizontalAlignment="Left" Margin="45,0,0,0" SelectionColor="{DynamicResource Selection}" Text="&#xE897;" ToolTip="Salvar" Visibility="Collapsed" VerticalAlignment="Center" Width="45"/>
+                    <control:MenuButton 
+                        x:Name="btnBack" 
+                        Click="BtnBack_Click"
+                        CornerRadius="10,0,0,0" 
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#xE72B;" 
+                        ToolTip="Voltar" 
+                        VerticalAlignment="Center" 
+                        Visibility="Collapsed" 
+                        Width="45"/>
+                    
+                    <control:MenuButton 
+                        x:Name="btnHelp" 
+                        Click="BtnHelp_Click"
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Left" 
+                        Margin="45,0,0,0" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#xE897;" 
+                        ToolTip="Salvar" 
+                        Visibility="Collapsed" 
+                        VerticalAlignment="Center" 
+                        Width="45"/>
 
 
                     <TextBlock x:Name="titleNotas" FontFamily="Comic Sans MS" FontSize="18" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 
-                    <control:MenuButton x:Name="btnMinimize" FontSize="17" Height="35" HorizontalAlignment="Right" Margin="0,0,45,0" SelectionColor="{DynamicResource Selection}" Text="&#59192;" ToolTip="Minimizar" VerticalAlignment="Center" Width="45"/>
-                    <control:MenuButton x:Name="btnClose" CornerRadius="0,10,0,0" FontSize="17" Height="35" HorizontalAlignment="Right" SelectionColor="Red" Text="&#59540;" ToolTip="Fechar" VerticalAlignment="Center" Width="45"/>
+                    <control:MenuButton 
+                        x:Name="btnMinimize" 
+                        Click="BtnMinimize_Click"
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,0,45,0" 
+                        SelectionColor="{DynamicResource Selection}" 
+                        Text="&#59192;" 
+                        ToolTip="Minimizar" 
+                        VerticalAlignment="Center" Width="45"/>
+                    
+                    <control:MenuButton 
+                        x:Name="btnClose" 
+                        Click="BtnClose_Click"
+                        CornerRadius="0,10,0,0" 
+                        FontSize="17" 
+                        Height="35" 
+                        HorizontalAlignment="Right" 
+                        SelectionColor="Red" 
+                        Text="&#59540;" 
+                        ToolTip="Fechar" 
+                        VerticalAlignment="Center" 
+                        Width="45"/>
                 </Grid>
             </Border>
 

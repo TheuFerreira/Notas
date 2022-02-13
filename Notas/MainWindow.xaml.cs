@@ -6,7 +6,6 @@ using Notas.Services;
 using Notas.UserControls;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -19,14 +18,11 @@ namespace Notas
     /// <summary>
     /// Interação lógica para MainWindow.xam
     /// </summary>
-    [SuppressMessage("Style", "IDE0017:Simplificar a inicialização de objeto", Justification = "<Pendente>")]
     public partial class MainWindow : Window
     {
         private ScreenPostIt screenPostIt;
         private readonly Settings settings;
         private readonly ISettingsRepository settingsRepository;
-
-
 
         public MainWindow()
         {
@@ -41,16 +37,6 @@ namespace Notas
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
-
-            topBar.MouseLeftButtonDown += TopBar_MouseLeftButtonDown;
-            btnAdd.Click += BtnAdd_Click;
-            btnDel.Click += BtnDel_Click;
-            btnSave.Click += BtnSave_Click;
-            btnSettings.Click += BtnSettings_Click;
-            btnBack.Click += BtnBack_Click;
-            btnHelp.Click += BtnHelp_Click;
-            btnMinimize.Click += BtnMinimize_Click;
-            btnClose.Click += BtnClose_Click;
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -79,8 +65,6 @@ namespace Notas
                 gridField.Children.RemoveAt(0);
             }
         }
-
-
 
         private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -199,8 +183,6 @@ namespace Notas
             Close();
         }
 
-
-
         private void ScreenPostIt_TextChanged(object sender, RoutedEventArgs e)
         {
             if (screenPostIt == null)
@@ -243,8 +225,6 @@ namespace Notas
             }
         }
 
-
-
         private void Settings_SwitchMode(object sender, RoutedEventArgs e)
         {
             settings.IsLight = (bool)sender;
@@ -266,8 +246,6 @@ namespace Notas
             settings.AutoAdd = (bool)sender;
             settingsRepository.Save(settings);
         }
-
-
 
         private void SwitchColor()
         {

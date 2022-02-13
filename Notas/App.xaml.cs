@@ -1,7 +1,4 @@
-﻿using FluentMigrator.Runner;
-using Microsoft.Extensions.DependencyInjection;
-using Notas.Database.Interfaces;
-using Notas.Database.Migrations;
+﻿using Notas.Database.Interfaces;
 using Notas.Database.Repositories;
 using System;
 using System.ComponentModel;
@@ -23,7 +20,8 @@ namespace Notas
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            UpdateDatabase();
+            IDbRepository dbRepository = new DbRepository();
+            new UpdateDatabase(dbRepository).Execute();
 
             main = new MainWindow();
             main.Closing += Main_Closing;
@@ -52,15 +50,13 @@ namespace Notas
 
         private void Icon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (main.Visibility == Visibility.Visible)
-                {
-                    main.Activate();
-                }
-                else
-                    main.Show();
-            }
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            if (main.Visibility == Visibility.Visible)
+                main.Activate();
+            else
+                main.Show();
         }
 
         private void ItemClose_Click(object sender, EventArgs e)
@@ -71,48 +67,11 @@ namespace Notas
 
         private void Main_Closing(object sender, CancelEventArgs e)
         {
-            if (!exiting)
-            {
-                e.Cancel = true;
-                main.Hide();
-            }
-        }
+            if (exiting)
+                return;
 
-
-        private void UpdateDatabase()
-        {
-            var serviceProvider = CreateServices();
-
-            using (var scope = serviceProvider.CreateScope())
-            {
-                Update(scope.ServiceProvider);
-            }
-        }
-
-        private IServiceProvider CreateServices()
-        {
-            IDbRepository dbRepository = new DbRepository();
-
-            return new ServiceCollection()
-                .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb
-                    .AddSQLite()
-                    .WithGlobalConnectionString(dbRepository.ConnectionString)
-                    .ScanIn(typeof(AddColumnColor).Assembly)
-                    .ScanIn(typeof(AddColumnPosition).Assembly)
-                    .ScanIn(typeof(DropColumnColor).Assembly)
-                    .ScanIn(typeof(DropTableTempPostIt).Assembly)
-                    .ScanIn(typeof(AddColumnFontColor).Assembly)
-                    .For.Migrations())
-                .AddLogging(lb => lb.AddFluentMigratorConsole())
-                .BuildServiceProvider(false);
-        }
-
-        private static void Update(IServiceProvider serviceProvider)
-        {
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-
-            runner.MigrateUp();
+            e.Cancel = true;
+            main.Hide();
         }
     }
 }

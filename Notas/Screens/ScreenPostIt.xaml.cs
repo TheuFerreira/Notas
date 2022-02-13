@@ -100,8 +100,8 @@ namespace Notas.Screens
             SolidColorBrush textColor = (SolidColorBrush)new BrushConverter().ConvertFrom(FindResource("Text").ToString());
 
             pf.Id = post.Id;
-            pf.BackgroundColor = post.Color == null ? defaultColor : post.Color;
-            pf.TextColor = post.FontColor == null ? textColor : post.FontColor;
+            pf.BackgroundColor = post.Color ?? defaultColor;
+            pf.TextColor = post.FontColor ?? textColor;
             pf.IsFixed = post.Position == -1;
 
             int pos = PostItFields.Count > 0 && PostItFields[0].IsFixed ? 1 : 0;
@@ -211,8 +211,6 @@ namespace Notas.Screens
 
             SavePostIt();
         }
-
-
 
         public event RoutedEventHandler TextChanged;
         public event RoutedEventHandler ToDelete;
