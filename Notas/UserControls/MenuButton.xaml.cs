@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Notas.UserControls
@@ -9,6 +10,7 @@ namespace Notas.UserControls
     /// </summary>
     public partial class MenuButton : UserControl
     {
+        public static readonly DependencyProperty CommandPropery = DependencyProperty.Register("Command", typeof(ICommand), typeof(MenuButton));
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(MenuButton), new PropertyMetadata(new CornerRadius(0)));
 
         public new static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register("FontSize", typeof(double), typeof(MenuButton), new PropertyMetadata(12d));
@@ -17,7 +19,13 @@ namespace Notas.UserControls
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MenuButton), new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visible", typeof(bool), typeof(MenuButton), new PropertyMetadata(true));
 
+        public ICommand Command 
+        {
+            get => (ICommand)GetValue(CommandPropery);
+            set => SetValue(CommandPropery, value);
+        }
 
         public CornerRadius CornerRadius
         {
@@ -43,6 +51,11 @@ namespace Notas.UserControls
             set => SetValue(TextProperty, value);
         }
 
+        public bool Visible 
+        {
+            get => (bool)GetValue(VisibleProperty);
+            set => SetValue(VisibleProperty, value); 
+        }
 
 
         public MenuButton()

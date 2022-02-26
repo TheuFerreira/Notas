@@ -324,6 +324,7 @@
     <Compile Include="Database\Migrations\202011111017DropTableTempPostIt.cs" />
     <Compile Include="Database\Migrations\202011121256AddColumnFontColor.cs" />
     <Compile Include="Database\Models\PostIt.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
     <Compile Include="Database\Repositories\PostItRepository.cs" />
     <Compile Include="Entities\Settings.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="UserControls\SliderColor.xaml.cs">
       <DependentUpon>SliderColor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

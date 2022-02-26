@@ -34,8 +34,8 @@
                 <Grid Background="Transparent">
 
                     <control:MenuButton 
-                        x:Name="btnAdd" 
-                        Click="BtnAdd_Click"
+                        Command="{Binding Path=AddButton}"
+                        Visible="{Binding Path=AddVisible}"
                         CornerRadius="10,0,0,0" 
                         FontSize="17" 
                         Height="35" 
@@ -47,8 +47,8 @@
                         Width="45"/>
                     
                     <control:MenuButton 
-                        x:Name="btnDel" 
-                        Click="BtnDel_Click"
+                        Command="{Binding Path=DeleteButton}"
+                        Visible="{Binding Path=DelVisible}"
                         CornerRadius="10,0,0,0" 
                         FontSize="17" 
                         Height="35" 
@@ -61,8 +61,8 @@
                         Width="45"/>
                     
                     <control:MenuButton 
-                        x:Name="btnSave" 
-                        Click="BtnSave_Click"
+                        Command="{Binding Path=SaveButton}"
+                        Visible="{Binding Path=SaveVisible}"
                         FontSize="17" 
                         Height="35" 
                         HorizontalAlignment="Left" 
@@ -74,8 +74,8 @@
                         VerticalAlignment="Center" Width="45"/>
                     
                     <control:MenuButton 
-                        x:Name="btnSettings" 
-                        Click="BtnSettings_Click"
+                        Command="{Binding Path=SettingsButton}"
+                        Visible="{Binding Path=SettingsVisible}"
                         FontSize="17" 
                         Height="35" 
                         HorizontalAlignment="Left" 
@@ -87,8 +87,8 @@
                         Width="45"/>
 
                     <control:MenuButton 
-                        x:Name="btnBack" 
-                        Click="BtnBack_Click"
+                        Command="{Binding Path=BackButton}"
+                        Visible="{Binding Path=BackVisible}"
                         CornerRadius="10,0,0,0" 
                         FontSize="17" 
                         Height="35" 
@@ -97,12 +97,11 @@
                         Text="&#xE72B;" 
                         ToolTip="Voltar" 
                         VerticalAlignment="Center" 
-                        Visibility="Collapsed" 
                         Width="45"/>
                     
                     <control:MenuButton 
-                        x:Name="btnHelp" 
-                        Click="BtnHelp_Click"
+                        Command="{Binding Path=HelpButton}"
+                        Visible="{Binding Path=HelpVisible}"
                         FontSize="17" 
                         Height="35" 
                         HorizontalAlignment="Left" 
@@ -110,16 +109,14 @@
                         SelectionColor="{DynamicResource Selection}" 
                         Text="&#xE897;" 
                         ToolTip="Salvar" 
-                        Visibility="Collapsed" 
                         VerticalAlignment="Center" 
                         Width="45"/>
-
 
                     <TextBlock x:Name="titleNotas" FontFamily="Comic Sans MS" FontSize="18" Foreground="{DynamicResource Text}" HorizontalAlignment="Center" Text="Notas" VerticalAlignment="Center"/>
 
                     <control:MenuButton 
                         x:Name="btnMinimize" 
-                        Click="BtnMinimize_Click"
+                        Click="MinimizeWindow_Click"
                         FontSize="17" 
                         Height="35" 
                         HorizontalAlignment="Right" 
@@ -131,7 +128,7 @@
                     
                     <control:MenuButton 
                         x:Name="btnClose" 
-                        Click="BtnClose_Click"
+                        Click="CloseWindow_Click"
                         CornerRadius="0,10,0,0" 
                         FontSize="17" 
                         Height="35" 

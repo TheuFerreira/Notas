@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Notas.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Button Click="Button_Click" Focusable="False">
+    <Button Click="Button_Click" Command="{Binding ElementName=menuBtn, Path=Command}" Focusable="False">
         <Button.Content>
             <TextBlock x:Name="tbText" FontFamily="Segoe MDL2 Assets" FontSize="{Binding ElementName=menuBtn, Path=FontSize}" Foreground="{DynamicResource Text}" Text="{Binding ElementName=menuBtn, Path=Text}"/>
         </Button.Content>
@@ -30,6 +30,16 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=menuBtn, Path=Visible}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding ElementName=menuBtn, Path=Visible}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
         </Button.Style>
     </Button>
