@@ -1,7 +1,4 @@
-﻿using Notas.Entities;
-using Notas.Interfaces;
-using Notas.Repositories;
-using Notas.Screens;
+﻿using Notas.Screens;
 using Notas.UserControls;
 using System;
 using System.ComponentModel;
@@ -127,11 +124,9 @@ namespace Notas.ViewModels
             ScreenPostIt.PostItFields.ForEach(x => x.gdButtons.Visibility = Visibility.Visible);
 
             GridField.Children.RemoveAt(0);
-            ScreenPostIt = new ScreenPostIt();
-            ScreenPostIt.TextChanged += ScreenPostIt_TextChanged;
-            ScreenPostIt.ToDelete += ScreenPostIt_ToDelete;
+            ScreenPostIt = GenerateNewScreenPostIt();
             GridField.Children.Add(ScreenPostIt);
-            
+
             SaveVisible = false;
             DelVisible = false;
             SettingsVisible = true;
@@ -142,11 +137,8 @@ namespace Notas.ViewModels
             AddVisible = false;
             SettingsVisible = false;
 
-            Settings settings = new SettingsRepository().Load();
-            ScreenSettings screenSettings = new ScreenSettings(settings.IsLight, settings.DefaultFont, settings.AutoAdd);
+            ScreenSettings screenSettings = new ScreenSettings();
             screenSettings.SwitchMode += Settings_SwitchMode;
-            screenSettings.SwitchFont += Settings_SwitchFont;
-            screenSettings.SwitchAutoAdd += Settings_AutoAdd;
             screenSettings.RenderTransform = new TranslateTransform(300, 0);
             GridField.Children.Add(screenSettings);
 
@@ -170,61 +162,7 @@ namespace Notas.ViewModels
 
         private void Settings_SwitchMode(object sender, RoutedEventArgs e)
         {
-            Settings settings = new SettingsRepository().Load();
-            settings.IsLight = (bool)sender;
-            new SettingsRepository().Save(settings);
-
-            SwitchColor();
-        }
-
-        public void SwitchColor()
-        {
-            /*Resources["DefaultFont"] = settings.DefaultFont;
-
-            if (settings.IsLight)
-            {
-                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
-                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#F2F2F2");
-                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#e3e3e3");
-                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#595959");
-                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
-                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
-                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#808080");
-            }
-            else
-            {
-                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#171717");
-                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#303030");
-                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#3A3A3A");
-                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1A1A1A");
-                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#494949");
-                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#272727");
-                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
-                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
-                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCCCCC");
-            }*/
-        }
-
-        private void Settings_SwitchFont(object sender, RoutedEventArgs e)
-        {
-            Settings settings = new SettingsRepository().Load();
-            settings.DefaultFont = new FontFamily(sender.ToString());
-            //Resources["DefaultFont"] = new FontFamily(settings.DefaultFont.ToString());
-
-            new SettingsRepository().Save(settings);
-        }
-
-        private void Settings_AutoAdd(object sender, RoutedEventArgs e)
-        {
-            Settings settings = new SettingsRepository().Load();
-            settings.AutoAdd = (bool)sender;
-            new SettingsRepository().Save(settings);
+            //SwitchColor();
         }
 
         private void Back_Click()
@@ -232,9 +170,7 @@ namespace Notas.ViewModels
             BackVisible = false;
             HelpVisible = false;
 
-            ScreenPostIt = new ScreenPostIt();
-            ScreenPostIt.TextChanged += ScreenPostIt_TextChanged;
-            ScreenPostIt.ToDelete += ScreenPostIt_ToDelete;
+            ScreenPostIt = GenerateNewScreenPostIt();
             ScreenPostIt.RenderTransform = new TranslateTransform(300, 0);
             GridField.Children.Add(ScreenPostIt);
 
@@ -252,6 +188,15 @@ namespace Notas.ViewModels
 
             ((TranslateTransform)screenSettings.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animHide);
             ((TranslateTransform)ScreenPostIt.RenderTransform).BeginAnimation(TranslateTransform.XProperty, animShow);
+        }
+
+        public ScreenPostIt GenerateNewScreenPostIt()
+        {
+            ScreenPostIt screenPostIt = new ScreenPostIt();
+            screenPostIt.TextChanged += ScreenPostIt_TextChanged;
+            screenPostIt.ToDelete += ScreenPostIt_ToDelete;
+
+            return screenPostIt;
         }
 
         public void ScreenPostIt_TextChanged(object sender, RoutedEventArgs e)

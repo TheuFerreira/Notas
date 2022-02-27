@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Icon="Resources/ic_notes.ico"
         AllowsTransparency="True" Background="Transparent"
+        IsVisibleChanged="MainWindow_IsVisibleChanged"
         Title="Notas" Height="500" Width="300" ResizeMode="NoResize" WindowStyle="None">
     <Border Background="{DynamicResource FieldBackground}" CornerRadius="15,15,0,0">
         <Grid Background="Transparent">

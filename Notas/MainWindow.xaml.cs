@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Notas
 {
@@ -27,12 +28,10 @@ namespace Notas
             DataContext = viewModel;
             viewModel.GridField = gridField;
 
-            IsVisibleChanged += MainWindow_IsVisibleChanged;
-
             settingsRepository = new SettingsRepository();
             settings = settingsRepository.Load();
 
-            viewModel.SwitchColor();
+            SwitchColor();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             titleNotas.ToolTip = $"Versão {version}";
@@ -56,9 +55,7 @@ namespace Notas
         {
             if (Visibility == Visibility.Visible)
             {
-                viewModel.ScreenPostIt = new ScreenPostIt();
-                viewModel.ScreenPostIt.TextChanged += viewModel.ScreenPostIt_TextChanged;
-                viewModel.ScreenPostIt.ToDelete += viewModel.ScreenPostIt_ToDelete;
+                viewModel.ScreenPostIt = viewModel.GenerateNewScreenPostIt();
                 viewModel.GridField.Children.Add(viewModel.ScreenPostIt);
             }
             else
@@ -88,6 +85,40 @@ namespace Notas
             viewModel.SettingsVisible = true;
 
             Close();
+        }
+
+        public void SwitchColor()
+        {
+            Resources["DefaultFont"] = settings.DefaultFont;
+
+            if (settings.IsLight)
+            {
+                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
+                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#F2F2F2");
+                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#e3e3e3");
+                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#595959");
+                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
+                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#ACACAC");
+                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#808080");
+            }
+            else
+            {
+                Resources["TopBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#171717");
+                Resources["Text"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["FieldBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#303030");
+                Resources["Selection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#3A3A3A");
+                Resources["PostItBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#1A1A1A");
+                Resources["ScrollColor"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#494949");
+                Resources["CheckboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                Resources["CheckboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#272727");
+                Resources["ComboboxBackground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFF");
+                Resources["ComboboxForeground"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#000");
+                Resources["ComboboxSelection"] = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCCCCC");
+            }
         }
     }
 }
