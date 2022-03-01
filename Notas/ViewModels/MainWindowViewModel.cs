@@ -88,7 +88,7 @@ namespace Notas.ViewModels
 
         public ScreenPostIt ScreenPostIt { get; set; }
         public Grid GridField { get; set; }
-        public Action SwitchMode { get; set; }
+        public EventHandler SwitchMode;
 
         public MainWindowViewModel()
         {
@@ -163,7 +163,7 @@ namespace Notas.ViewModels
 
         private void Settings_SwitchMode(object sender, RoutedEventArgs e)
         {
-            SwitchMode.Invoke();
+            SwitchMode.Invoke(sender, e);
         }
 
         private void Back_Click()

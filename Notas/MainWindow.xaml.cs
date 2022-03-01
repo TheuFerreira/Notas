@@ -17,7 +17,7 @@ namespace Notas
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel viewModel;
-        private readonly Settings settings;
+        private Settings settings;
         private readonly ISettingsRepository settingsRepository;
 
         public MainWindow()
@@ -26,7 +26,7 @@ namespace Notas
             InitializeComponent();
             DataContext = viewModel;
             viewModel.GridField = gridField;
-            viewModel.SwitchMode = SwitchColor;
+            viewModel.SwitchMode += (s, e) => SwitchColor();
 
             settingsRepository = new SettingsRepository();
             settings = settingsRepository.Load();
@@ -89,6 +89,7 @@ namespace Notas
 
         public void SwitchColor()
         {
+            settings = settingsRepository.Load();
             Resources["DefaultFont"] = settings.DefaultFont;
 
             if (settings.IsLight)
