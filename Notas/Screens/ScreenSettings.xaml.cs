@@ -1,4 +1,5 @@
 ﻿using Notas.Entities;
+using Notas.Interfaces;
 using Notas.Repositories;
 using System.Drawing.Text;
 using System.Linq;
@@ -14,17 +15,20 @@ namespace Notas.Screens
     public partial class ScreenSettings : UserControl
     {
         private FontFamily defaultFont;
+        private readonly ISettingsRepository _settingsRepository;
+        private readonly Settings settings;
 
         public ScreenSettings()
         {
             InitializeComponent();
 
-            Settings settings = new SettingsRepository().Load();
+            _settingsRepository = new SettingsRepository();
+            settings = _settingsRepository.Load();
 
             cbMode.IsChecked = !settings.IsLight;
             cbMode.Click += CbMode_Click;
 
-            this.defaultFont = settings.DefaultFont;
+            defaultFont = settings.DefaultFont;
             cbFonts.Loaded += CbFonts_Loaded;
 
             cbAutoAdd.IsChecked = !settings.AutoAdd;
@@ -35,9 +39,8 @@ namespace Notas.Screens
         {
             bool value = !cbMode.IsChecked.Value;
 
-            Settings settings = new SettingsRepository().Load();
             settings.IsLight = value;
-            new SettingsRepository().Save(settings);
+            _settingsRepository.Save(settings);
             SwitchMode?.Invoke(sender, e);
         }
 
@@ -49,7 +52,6 @@ namespace Notas.Screens
                 cbFonts.Items.Add(font.Name);
 
             cbFonts.SelectedIndex = cbFonts.Items.Cast<string>().ToList().IndexOf(defaultFont.ToString());
-
             cbFonts.SelectionChanged += CbFonts_SelectionChanged;
         }
 
@@ -57,20 +59,18 @@ namespace Notas.Screens
         {
             defaultFont = new FontFamily(cbFonts.SelectedItem.ToString());
 
-            Settings settings = new SettingsRepository().Load();
             settings.DefaultFont = new FontFamily(defaultFont.ToString());
             Resources["DefaultFont"] = new FontFamily(settings.DefaultFont.ToString());
 
-            new SettingsRepository().Save(settings);
+            _settingsRepository.Save(settings);
         }
 
         private void CbAutoAdd_Click(object sender, RoutedEventArgs e)
         {
             bool value = !cbAutoAdd.IsChecked.Value;
 
-            Settings settings = new SettingsRepository().Load();
             settings.AutoAdd = value;
-            new SettingsRepository().Save(settings);
+            _settingsRepository.Save(settings);
         }
 
         public event RoutedEventHandler SwitchMode;
