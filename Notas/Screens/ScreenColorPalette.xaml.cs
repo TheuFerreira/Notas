@@ -1,9 +1,4 @@
-﻿using Microsoft.Win32;
-using Notas.Database.Interfaces;
-using Notas.Database.Repositories;
-using Notas.Interfaces;
-using Notas.Repositories;
-using Notas.UserControls;
+﻿using Notas.Interfaces;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -16,57 +11,24 @@ namespace Notas.Screens
     /// </summary>
     public partial class ScreenColorPalette : Window
     {
-        public string HexColor { get; set; }
-
-        public PostItField PostItField { get; set; }
-
-
-
-        private readonly System.Windows.Media.SolidColorBrush oldBackgroundColor;
-        private readonly System.Windows.Media.SolidColorBrush oldTextColor;
-        private bool isLight;
+        private string hexColor;
         private bool isTextHex = false;
-        private readonly bool isFont;
-        private System.Windows.Media.FontFamily defaultFont;
-        private readonly IPostItRepository postItRepository;
 
-
-
-        public ScreenColorPalette(PostItField postItField, bool isFont = false)
+        public ScreenColorPalette(ISettingsRepository settingsRepository, System.Windows.Media.SolidColorBrush postItColor)
         {
             InitializeComponent();
+            SwitchColor(settingsRepository);
 
-            LoadPreferences();
-            SwitchColor();
-
-            this.isFont = isFont;
-
-            PostItField = postItField;
-            oldBackgroundColor = PostItField.BackgroundColor;
-            oldTextColor = PostItField.TextColor;
-
-            Color color = isFont ? ColorTranslator.FromHtml(oldTextColor.ToString()) : ColorTranslator.FromHtml(oldBackgroundColor.ToString());
+            Color color = ColorTranslator.FromHtml(postItColor.ToString());
             slRed.Value = color.R;
             slGreen.Value = color.G;
             slBlue.Value = color.B;
 
             Slider_ValueChanged(null, null);
 
-            topBar.MouseLeftButtonDown += TopBar_MouseDown;
-            btnClose.Click += BtnClose_Click;
-
             slRed.ValueChanged += Slider_ValueChanged;
             slGreen.ValueChanged += Slider_ValueChanged;
             slBlue.ValueChanged += Slider_ValueChanged;
-
-            tbHex.GotFocus += TbHex_GotFocus;
-            tbHex.TextChanged += TbHex_TextChanged;
-            tbHex.LostFocus += TbHex_LostFocus;
-
-            btnConfirm.Click += BtnConfirm_Click;
-
-            IDbRepository dbRepository = new DbRepository();
-            postItRepository = new PostItRepository(dbRepository);
         }
 
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -77,8 +39,7 @@ namespace Notas.Screens
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-            PostItField.BackgroundColor = oldBackgroundColor;
-            PostItField.TextColor = oldTextColor;
+            OnCancel.Invoke(sender, e);
             Close();
         }
 
@@ -91,28 +52,19 @@ namespace Notas.Screens
                 int blue = (int)slBlue.Value;
 
                 Color color = Color.FromArgb(red, green, blue);
-                HexColor = ColorTranslator.ToHtml(color);
+                hexColor = ColorTranslator.ToHtml(color);
 
-                tbHex.Text = HexColor;
+                tbHex.Text = hexColor;
             }
 
-            if (isFont)
-                PostItField.TextColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
-            else
-                PostItField.BackgroundColor = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFrom(HexColor);
+            OnColorChanged?.Invoke(sender, hexColor);
         }
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            if (isFont)
-                postItRepository.UpdateFontColor(PostItField.Id, HexColor);
-            else
-                postItRepository.UpdateColor(PostItField.Id, HexColor);
-
+            OnConfirm.Invoke(sender, hexColor);
             Close();
         }
-
-
 
         private void TbHex_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -121,22 +73,22 @@ namespace Notas.Screens
 
         private void TbHex_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (isTextHex)
+            if (!isTextHex)
+                return;
+
+            try
             {
-                try
-                {
-                    Color color = ColorTranslator.FromHtml(tbHex.Text);
+                Color color = ColorTranslator.FromHtml(tbHex.Text);
 
-                    HexColor = tbHex.Text;
+                hexColor = tbHex.Text;
 
-                    slRed.Value = color.R;
-                    slGreen.Value = color.G;
-                    slBlue.Value = color.B;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                slRed.Value = color.R;
+                slGreen.Value = color.G;
+                slBlue.Value = color.B;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -145,31 +97,12 @@ namespace Notas.Screens
             isTextHex = false;
         }
 
-
-
-        private void LoadPreferences()
+        private void SwitchColor(ISettingsRepository settingsRepository)
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Ferreira\Notas");
-            if (key != null)
-            {
-                isLight = bool.Parse(key.GetValue("Mode").ToString());
+            Entities.Settings settings = settingsRepository.Load();
+            Resources["DefaultFont"] = settings.DefaultFont;
 
-                object keyFont = key.GetValue("DefaultFont");
-                defaultFont = new System.Windows.Media.FontFamily(keyFont != null ? keyFont.ToString() : "Segoe UI");
-                key.Close();
-            }
-            else
-            {
-                isLight = true;
-                defaultFont = new System.Windows.Media.FontFamily("Segoe UI");
-            }
-        }
-
-        private void SwitchColor()
-        {
-            Resources["DefaultFont"] = defaultFont;
-
-            if (isLight)
+            if (settings.IsLight)
             {
                 Resources["TopBackground"] = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFromString("#FFFFFF");
                 Resources["Text"] = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFromString("#000");
@@ -200,5 +133,9 @@ namespace Notas.Screens
                 Resources["SliderBackground"] = (System.Windows.Media.SolidColorBrush)new System.Windows.Media.BrushConverter().ConvertFromString("#ACACAC");
             }
         }
+
+        public EventHandler<string> OnColorChanged;
+        public EventHandler OnCancel;
+        public EventHandler<string> OnConfirm;
     }
 }

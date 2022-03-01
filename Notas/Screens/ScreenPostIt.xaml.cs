@@ -21,6 +21,7 @@ namespace Notas.Screens
         public bool IsSelected { get; set; }
 
         private readonly IPostItRepository postItRepository;
+        private readonly ISettingsRepository settingsRepository;
 
         public ScreenPostIt()
         {
@@ -31,6 +32,8 @@ namespace Notas.Screens
 
             IDbRepository dbRepository = new DbRepository();
             postItRepository = new PostItRepository(dbRepository);
+
+            settingsRepository = new SettingsRepository();
         }
 
         public void AddPostIt(string key = "")
@@ -142,13 +145,43 @@ namespace Notas.Screens
 
         private void Pf_ColorClick(object sender, RoutedEventArgs e)
         {
-            ScreenColorPalette colorPalette = new ScreenColorPalette((PostItField)sender);
+            PostItField postItField = (PostItField)sender;
+            SolidColorBrush oldBackgroundColor = postItField.BackgroundColor;
+
+            ScreenColorPalette colorPalette = new ScreenColorPalette(settingsRepository, oldBackgroundColor);
+            colorPalette.OnColorChanged += (s, hexColor) =>
+            {
+                postItField.BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFrom(hexColor);
+            };
+            colorPalette.OnCancel += (s, ex) =>
+            {
+                postItField.BackgroundColor = oldBackgroundColor;
+            };
+            colorPalette.OnConfirm += (s, hexColor) =>
+            {
+                postItRepository.UpdateColor(postItField.Id, hexColor);
+            };
             colorPalette.ShowDialog();
         }
 
         private void Pf_FontColorClick(object sender, RoutedEventArgs e)
         {
-            ScreenColorPalette colorPalette = new ScreenColorPalette((PostItField)sender, true);
+            PostItField postItField = (PostItField)sender;
+            SolidColorBrush oldTextColor = postItField.TextColor;
+
+            ScreenColorPalette colorPalette = new ScreenColorPalette(settingsRepository, oldTextColor);
+            colorPalette.OnColorChanged += (s, hexColor) =>
+            {
+                postItField.TextColor = (SolidColorBrush)new BrushConverter().ConvertFrom(hexColor);
+            };
+            colorPalette.OnCancel += (s, ex) =>
+            {
+                postItField.TextColor = oldTextColor;
+            };
+            colorPalette.OnConfirm += (s, hexColor) =>
+            {
+                postItRepository.UpdateFontColor(postItField.Id, hexColor);
+            };
             colorPalette.ShowDialog();
         }
 

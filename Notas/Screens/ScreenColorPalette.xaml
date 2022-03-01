@@ -18,14 +18,14 @@
             <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="topBar" Grid.Row="0" Background="{DynamicResource TopBackground}">
+        <Grid x:Name="topBar" Grid.Row="0" Background="{DynamicResource TopBackground}" MouseDown="TopBar_MouseDown">
             <Grid.Effect>
                 <DropShadowEffect Direction="270" BlurRadius="15"/>
             </Grid.Effect>
             
             <Image HorizontalAlignment="Left" Margin="10,7,0,7" Source="/Notas;component/Resources/ic_color.png"/>
             <TextBlock FontFamily="{DynamicResource DefaultFont}" FontSize="14" Foreground="{DynamicResource Text}" HorizontalAlignment="Left" Margin="35,0,0,0" Text="{Binding ElementName=colorPalette, Path=Title}" VerticalAlignment="Center"/>
-            <controls:MenuButton x:Name="btnClose" FontSize="17" HorizontalAlignment="Right" SelectionColor="Red" Text="&#59540;" ToolTip="Fechar" Width="45"/>
+            <controls:MenuButton x:Name="btnClose" FontSize="17" HorizontalAlignment="Right" SelectionColor="Red" Text="&#59540;" ToolTip="Fechar" Width="45" Click="BtnClose_Click"/>
         </Grid>
         
         <StackPanel Grid.Row="1" Margin="0,5,0,0">
@@ -36,13 +36,25 @@
 
             <Grid HorizontalAlignment="Right" Margin="5,5">
                 <TextBlock Foreground="{DynamicResource Text}" HorizontalAlignment="Right" Margin="0,0,73,0" Text="Hexadecimal:"/>
-                <TextBox x:Name="tbHex" Background="{DynamicResource ComboboxBackground}" BorderBrush="{DynamicResource TopBackground}" Foreground="{DynamicResource ComboboxForeground}" HorizontalAlignment="Right" Text="#FFF000" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="70"/>
+                <TextBox 
+                    x:Name="tbHex" 
+                    Background="{DynamicResource ComboboxBackground}" 
+                    BorderBrush="{DynamicResource TopBackground}" 
+                    Foreground="{DynamicResource ComboboxForeground}" 
+                    HorizontalAlignment="Right" 
+                    Text="#FFF000" 
+                    VerticalAlignment="Top" 
+                    VerticalContentAlignment="Center" 
+                    Width="70" 
+                    GotFocus="TbHex_GotFocus"
+                    LostFocus="TbHex_LostFocus" 
+                    TextChanged="TbHex_TextChanged"/>
             </Grid>
             
         </StackPanel>
 
         <Grid Grid.Row="2">
-            <Button x:Name="btnConfirm" Content="Confirmar" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,4" VerticalAlignment="Center">
+            <Button x:Name="btnConfirm" Click="BtnConfirm_Click" Content="Confirmar" FontFamily="{DynamicResource DefaultFont}" FontSize="14" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,4" VerticalAlignment="Center">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
