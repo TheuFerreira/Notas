@@ -1,7 +1,6 @@
 ﻿using Notas.Entities;
 using Notas.Interfaces;
 using Notas.Repositories;
-using Notas.Screens;
 using Notas.Services;
 using Notas.ViewModels;
 using System.Linq;
@@ -27,6 +26,7 @@ namespace Notas
             InitializeComponent();
             DataContext = viewModel;
             viewModel.GridField = gridField;
+            viewModel.SwitchMode = SwitchColor;
 
             settingsRepository = new SettingsRepository();
             settings = settingsRepository.Load();
